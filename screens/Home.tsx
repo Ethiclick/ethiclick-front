@@ -9,7 +9,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Overlay } from "react-native-maps";
+import SearchBar from "../components/SearchBar";
+import ChangeHomeView from "../components/ChangeHomeView";
+import Locate from "../components/Locate";
 
 const Home = () => {
   const [currentLocation, setCurrentLocation] = useState<Location.LocationObjectCoords | null>(null);
@@ -57,7 +60,9 @@ const Home = () => {
           )}
         </MapView>
       )}
-      {/* Rest of your code */}
+      <SearchBar />
+      <ChangeHomeView />
+      <Locate />
     </View>
   );
 };
@@ -67,6 +72,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    position: 'relative',
+    zIndex: 2
   },
   map: {
     width: "100%",

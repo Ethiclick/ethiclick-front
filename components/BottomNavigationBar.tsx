@@ -48,7 +48,8 @@ const BottomNavigationBar = () => {
       onIndexChange={setIndex}
       renderScene={renderScene}
       compact={false}
-      barStyle={{ padding: 0}}
+      labeled={true}
+      // barStyle={{ display: 'flex', position: 'relative', width: '85%', bottom: 50, transform: [{ translateX: 50 }], borderRadius: 30 }}
     />
   );
 };
