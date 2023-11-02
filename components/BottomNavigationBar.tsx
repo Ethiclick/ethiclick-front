@@ -3,6 +3,8 @@ import { BottomNavigation, Text } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import Home from "../screens/Home";
 import About from "../screens/About";
+import Favorites from "../screens/Favorites";
+import Notifications from "../screens/Notifications";
 
 const BottomNavigationBar = () => {
   const [index, setIndex] = React.useState(0);
@@ -16,8 +18,8 @@ const BottomNavigationBar = () => {
     {
       key: "about",
       title: "About",
-      focusedIcon: "about",
-      unfocusedIcon: "about-outline",
+      focusedIcon: "information",
+      unfocusedIcon: "information-outline",
     },
     {
       key: "favorites",
@@ -36,31 +38,19 @@ const BottomNavigationBar = () => {
   const renderScene = BottomNavigation.SceneMap({
     home: Home,
     about: About,
-    // recents: RecentsRoute,
-    // notifications: NotificationsRoute,
+    favorites: Favorites,
+    notifications: Notifications,
   });
 
   return (
     <BottomNavigation
-      style={styles.container}
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
+      compact={false}
+      barStyle={{ padding: 0}}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: "auto",
-    width: "90%",
-    // justifyContent: "flex-end",
-    // alignItems: "center",
-    position: "absolute",
-    bottom: 40,
-    margin: 2,
-  },
-});
 
 export default BottomNavigationBar;

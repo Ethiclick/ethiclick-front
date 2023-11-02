@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 // import { StyleSheet } from 'react-native'
 // import { useColorScheme } from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import Home from './screens/Home'
-import About from './screens/About'
+import BottomNavigationBar from './components/BottomNavigationBar';
 
 // import AppBar from './components/layout/partials/AppBar';
 
@@ -13,12 +12,9 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
-        <Stack.Screen name="About" options={{ headerShown: false}} component={About} />
-      </Stack.Navigator>
-      <StatusBar />
-    </NavigationContainer>
+    <SafeAreaProvider>
+        <BottomNavigationBar />
+        <StatusBar />
+    </SafeAreaProvider>
   );
 }
