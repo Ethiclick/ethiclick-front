@@ -29,14 +29,14 @@ function BottomNavigationBar() {
           }}
           component={Home}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           options={{
             tabBarLabel: 'Rechercher',
             tabBarIcon: ({ color, size }) => <Icon source="magnify" color={color} size={size} />,
           }}
           name="Rechercher"
           component={Favorites}
-        />
+        /> */}
         <Tab.Screen
           options={{
             // headerShown: true, // Specific view
