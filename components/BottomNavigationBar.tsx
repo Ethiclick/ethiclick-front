@@ -1,37 +1,37 @@
-import * as React from "react";
-import { BottomNavigation, Text } from "react-native-paper";
-import { StyleSheet } from "react-native";
-import Home from "../screens/Home";
-import About from "../screens/About";
-import Favorites from "../screens/Favorites";
-import Notifications from "../screens/Notifications";
+import * as React from 'react';
+import { BottomNavigation } from 'react-native-paper';
+// import { StyleSheet } from 'react-native';
+import Home from '../screens/Home';
+import About from '../screens/About';
+import Favorites from '../screens/Favorites';
+import Notifications from '../screens/Notifications';
 
-const BottomNavigationBar = () => {
+function BottomNavigationBar() {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {
-      key: "home",
-      title: "Home",
-      focusedIcon: "home",
-      unfocusedIcon: "home-outline",
+      key: 'home',
+      title: 'Home',
+      focusedIcon: 'home',
+      unfocusedIcon: 'home-outline',
     },
     {
-      key: "about",
-      title: "About",
-      focusedIcon: "information",
-      unfocusedIcon: "information-outline",
+      key: 'about',
+      title: 'About',
+      focusedIcon: 'information',
+      unfocusedIcon: 'information-outline',
     },
     {
-      key: "favorites",
-      title: "Favorites",
-      focusedIcon: "heart",
-      unfocusedIcon: "heart-outline",
+      key: 'favorites',
+      title: 'Favorites',
+      focusedIcon: 'heart',
+      unfocusedIcon: 'heart-outline',
     },
     {
-      key: "notifications",
-      title: "Notifications",
-      focusedIcon: "bell",
-      unfocusedIcon: "bell-outline",
+      key: 'notifications',
+      title: 'Notifications',
+      focusedIcon: 'bell',
+      unfocusedIcon: 'bell-outline',
     },
   ]);
 
@@ -48,10 +48,17 @@ const BottomNavigationBar = () => {
       onIndexChange={setIndex}
       renderScene={renderScene}
       compact={false}
-      labeled={true}
-      // barStyle={{ display: 'flex', position: 'relative', width: '85%', bottom: 50, transform: [{ translateX: 50 }], borderRadius: 30 }}
+      labeled
+      barStyle={{
+        display: 'flex',
+        position: 'relative',
+        width: '85%',
+        bottom: 50,
+        transform: [{ translateX: 50 }],
+        borderRadius: 30,
+      }}
     />
   );
-};
+}
 
 export default BottomNavigationBar;

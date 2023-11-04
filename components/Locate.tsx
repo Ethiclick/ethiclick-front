@@ -2,14 +2,6 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
 
-const Locate = () => (
-  <FAB
-    icon="crosshairs-gps"
-    style={styles.fab}
-    onPress={() => console.log('Pressed')}
-  />
-);
-
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
@@ -17,6 +9,10 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-})
+});
+
+function Locate() {
+  return <FAB icon="crosshairs-gps" style={styles.fab} onPress={() => console.log('Pressed')} />;
+}
 
 export default Locate;
