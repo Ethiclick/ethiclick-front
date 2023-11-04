@@ -1,63 +1,61 @@
 import * as React from 'react';
-import { BottomNavigation } from 'react-native-paper';
-// import { StyleSheet } from 'react-native';
+
+import { BottomNavigation, Icon, Surface } from 'react-native-paper';
 import Home from '../screens/Home';
 import About from '../screens/About';
 import Favorites from '../screens/Favorites';
 import Notifications from '../screens/Notifications';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Settings from '../screens/Settings';
+import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 
+const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {
-      key: 'home',
-      title: 'Home',
-      focusedIcon: 'home',
-      unfocusedIcon: 'home-outline',
-    },
-    {
-      key: 'about',
-      title: 'About',
-      focusedIcon: 'information',
-      unfocusedIcon: 'information-outline',
-    },
-    {
-      key: 'favorites',
-      title: 'Favorites',
-      focusedIcon: 'heart',
-      unfocusedIcon: 'heart-outline',
-    },
-    {
-      key: 'notifications',
-      title: 'Notifications',
-      focusedIcon: 'bell',
-      unfocusedIcon: 'bell-outline',
-    },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    home: Home,
-    about: About,
-    favorites: Favorites,
-    notifications: Notifications,
-  });
-
   return (
-    <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-      compact={false}
-      labeled
-      barStyle={{
-        display: 'flex',
-        position: 'relative',
-        width: '85%',
-        bottom: 50,
-        transform: [{ translateX: 50 }],
-        borderRadius: 30,
-      }}
-    />
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={{
+          // headerShown: false, // Globally
+          tabBarStyle: { position: 'absolute', bottom: 30, left: 15, right: 15, borderRadius: 12, opacity: 0.8 },
+        }}
+      >
+        <Tab.Screen
+          name="Home"
+          options={{
+            headerShown: false,
+            tabBarLabel: 'Home',
+            tabBarIcon: ({ color, size }) => <Icon source="home" color={color} size={size} />,
+          }}
+          component={Home}
+        />
+        <Tab.Screen
+          options={{
+            tabBarLabel: 'Search',
+            tabBarIcon: ({ color, size }) => <Icon source="magnify" color={color} size={size} />,
+          }}
+          name="Search"
+          component={Favorites}
+        />
+        <Tab.Screen
+          options={{
+            // headerShown: true, // Specific view
+            tabBarLabel: 'Favorites',
+            tabBarIcon: ({ color, size }) => <Icon source="heart" color={color} size={size} />,
+          }}
+          name="Notifications"
+          component={Notifications}
+        />
+        <Tab.Screen
+          options={{
+            tabBarLabel: 'settings',
+            tabBarIcon: ({ color, size }) => <Icon source="cog" color={color} size={size} />,
+          }}
+          name="Settings"
+          component={Settings}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 

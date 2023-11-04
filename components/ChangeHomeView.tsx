@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     margin: 16,
     left: '50%',
     transform: [{ translateX: -40 }],
-    bottom: 0,
+    bottom: 110,
   },
 });
 

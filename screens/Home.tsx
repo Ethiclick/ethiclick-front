@@ -47,6 +47,8 @@ function Home() {
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       });
+
+      return true;
     };
 
     getLocation().then(console.log).catch(console.error);

@@ -34,6 +34,7 @@ function SearchBar() {
         style={{
           backgroundColor: 'white',
           borderRadius: 15,
+          paddingEnd: 65
         }}
         placeholder="Search"
         onChangeText={onChangeSearch}
