@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
-import { Avatar, Button, Divider, Icon, Menu, PaperProvider, Searchbar } from 'react-native-paper';
+import { View } from 'react-native';
+import { Avatar, Button, Menu, Searchbar } from 'react-native-paper';
 
-function SearchBar() {
+function SearchBar({ navigation }: any) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [visible, setVisible] = React.useState(false);
 
@@ -34,7 +34,7 @@ function SearchBar() {
         style={{
           backgroundColor: 'white',
           borderRadius: 15,
-          paddingEnd: 65
+          paddingEnd: 65,
         }}
         placeholder="Search"
         onChangeText={onChangeSearch}
@@ -43,7 +43,7 @@ function SearchBar() {
       <View style={{ flex: 1, position: 'absolute', right: 5, top: 7, bottom: 0 }}>
         <View style={{ alignItems: 'flex-end' }}>
           <Menu
-            anchorPosition='bottom'
+            anchorPosition="bottom"
             visible={visible}
             onDismiss={closeMenu}
             // contentStyle={{backgroundColor: COLORS.controlNormal}}
@@ -54,7 +54,14 @@ function SearchBar() {
               </Button>
             }
           >
-            <Menu.Item onPress={() => {}} title="My account" leadingIcon={'account-circle-outline'} />
+            <Menu.Item
+              onPress={() => {
+                setVisible(false);
+                navigation.navigate('Profil');
+              }}
+              title="My account"
+              leadingIcon={'account-circle-outline'}
+            />
             <Menu.Item onPress={() => {}} title="Log out" leadingIcon={'logout'} />
           </Menu>
         </View>

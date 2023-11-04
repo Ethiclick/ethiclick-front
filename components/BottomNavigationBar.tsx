@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import { BottomNavigation, Icon, Surface } from 'react-native-paper';
+import { Icon } from 'react-native-paper';
+
 import Home from '../screens/Home';
 import About from '../screens/About';
 import Favorites from '../screens/Favorites';
 import Notifications from '../screens/Notifications';
+import Profil from '../screens/Profil';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Settings from '../screens/Settings';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
@@ -21,38 +21,38 @@ function BottomNavigationBar() {
         }}
       >
         <Tab.Screen
-          name="Home"
+          name="Accueil"
           options={{
             headerShown: false,
-            tabBarLabel: 'Home',
+            tabBarLabel: 'Accueil',
             tabBarIcon: ({ color, size }) => <Icon source="home" color={color} size={size} />,
           }}
           component={Home}
         />
         <Tab.Screen
           options={{
-            tabBarLabel: 'Search',
+            tabBarLabel: 'Rechercher',
             tabBarIcon: ({ color, size }) => <Icon source="magnify" color={color} size={size} />,
           }}
-          name="Search"
+          name="Rechercher"
           component={Favorites}
         />
         <Tab.Screen
           options={{
             // headerShown: true, // Specific view
-            tabBarLabel: 'Favorites',
+            tabBarLabel: 'Favoris',
             tabBarIcon: ({ color, size }) => <Icon source="heart" color={color} size={size} />,
           }}
-          name="Notifications"
+          name="Favoris"
           component={Notifications}
         />
         <Tab.Screen
           options={{
-            tabBarLabel: 'settings',
-            tabBarIcon: ({ color, size }) => <Icon source="cog" color={color} size={size} />,
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({ color, size }) => <Icon source="account" color={color} size={size} />,
           }}
-          name="Settings"
-          component={Settings}
+          name="Profile"
+          component={Profil}
         />
       </Tab.Navigator>
     </NavigationContainer>

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 });
 
 function ChangeHomeView() {
-  return <FAB icon="view-list" style={styles.fab} onPress={() => console.log('Pressed')} />;
+  return <FAB size="small" icon="view-list" style={styles.fab} onPress={() => console.log('Pressed')} />;
 }
 
 export default ChangeHomeView;

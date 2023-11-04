@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 function Locate() {
-  return <FAB icon="crosshairs-gps" style={styles.fab} onPress={() => console.log('Pressed')} />;
+  return <FAB size="small" icon="crosshairs-gps" style={styles.fab} onPress={() => console.log('Pressed')} />;
 }
 
 export default Locate;

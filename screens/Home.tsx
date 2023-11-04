@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Home() {
+function Home({ navigation }: any) {
   const [currentLocation, setCurrentLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [initialRegion, setInitialRegion] = useState<{
     latitude: number;
@@ -69,7 +69,7 @@ function Home() {
           )}
         </MapView>
       )}
-      <SearchBar />
+      <SearchBar navigation={navigation} />
       <ChangeHomeView />
       <Locate />
     </View>
