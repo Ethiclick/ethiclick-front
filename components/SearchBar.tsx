@@ -50,7 +50,7 @@ function SearchBar({ navigation }: any) {
             anchor={
               <Button icon={'chevron-down'} style={{ padding: '0.75%' }} compact={true} onPress={() => openMenu()}>
                 {/* <Icon source={'chevron-down'} size={20} /> */}
-                <Avatar.Text size={30} label="XD" />
+                <Avatar.Text size={30} label="FW" />
               </Button>
             }
           >
@@ -59,10 +59,10 @@ function SearchBar({ navigation }: any) {
                 setVisible(false);
                 navigation.navigate('Profil');
               }}
-              title="My account"
+              title="Mon profil"
               leadingIcon={'account-circle-outline'}
             />
-            <Menu.Item onPress={() => {}} title="Log out" leadingIcon={'logout'} />
+            <Menu.Item onPress={() => {}} title="Se déconnecter" leadingIcon={'logout'} />
           </Menu>
         </View>
       </View>
