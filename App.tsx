@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 // import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BottomNavigationBar from './components/BottomNavigationBar';
-
+import { Provider } from 'react-native-paper';
 // import AppBar from './components/layout/partials/AppBar';
 
 // const Stack = createStackNavigator();
@@ -13,8 +13,10 @@ import BottomNavigationBar from './components/BottomNavigationBar';
 export default function App() {
   return (
     <SafeAreaProvider>
-      <BottomNavigationBar />
-      <StatusBar />
+      <Provider>
+        <BottomNavigationBar />
+        <StatusBar />
+      </Provider>
     </SafeAreaProvider>
   );
 }
