@@ -6,7 +6,7 @@ import MapView, { Marker } from 'react-native-maps';
 // import SearchBar from '../components/SearchBar';
 // import ChangeHomeView from '../components/ChangeHomeView';
 // import Locate from '../components/Locate';
-import { Avatar, FAB, Menu, Button, Searchbar, Chip, List } from 'react-native-paper';
+import { Avatar, FAB, Menu, Button, Searchbar, Chip, Text, Card } from 'react-native-paper';
 import { NavigationProp } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
@@ -247,7 +247,20 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
           )}
         </MapView>
       )}
-      {currentView === 'list' && <List.Item title="test" />}
+      {currentView === 'list' && (
+        <Card style={{ width: 'auto' }}>
+          <Card.Title title="Titre" subtitle="Sous titre" />
+          <Card.Content>
+            <Text variant="titleLarge">Card title</Text>
+            <Text variant="bodyMedium">Card content</Text>
+          </Card.Content>
+          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          <Card.Actions>
+            <Button>Cancel</Button>
+            <Button>Ok</Button>
+          </Card.Actions>
+        </Card>
+      )}
       {currentView === 'map' && <SearchBar navigation={navigation} />}
 
       <FAB
