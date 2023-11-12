@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
@@ -6,8 +6,8 @@ import MapView, { Marker } from 'react-native-maps';
 // import SearchBar from '../components/SearchBar';
 // import ChangeHomeView from '../components/ChangeHomeView';
 // import Locate from '../components/Locate';
-import { Avatar, FAB, Menu, Button, Searchbar, Chip } from 'react-native-paper';
-
+import { Avatar, FAB, Menu, Button, Searchbar, Chip, List } from 'react-native-paper';
+import { NavigationProp } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,15 +36,111 @@ const styles = StyleSheet.create({
   },
   filters: {
     marginTop: 10,
-    alignSelf: "flex-start"
+    alignSelf: 'flex-start',
   },
   filter: {
     margin: 2,
-    alignItems: 'baseline'
-  }
+    alignItems: 'baseline',
+  },
 });
 
-function SearchBar({ navigation }: any) {
+const filters = [
+  {
+    id: '1',
+    label: 'Alimentation',
+    bgColor: '#0BC0EC',
+    color: '#fff',
+    selected: false,
+  },
+  {
+    id: '2',
+    label: 'Bien être',
+    bgColor: '#F9DB67',
+    color: '#fff',
+    selected: false,
+  },
+  {
+    id: '3',
+    label: 'Finances',
+    bgColor: '#82D658',
+    color: '#fff',
+    selected: false,
+  },
+  {
+    id: '4',
+    label: 'Nettoyage',
+    bgColor: '#A80BEC',
+    color: '#fff',
+    selected: false,
+  },
+  {
+    id: '5',
+    label: 'Transport',
+    bgColor: '#EC370B',
+    color: '#fff',
+    selected: false,
+  },
+  {
+    id: '6',
+    label: 'Mode',
+    bgColor: '#F967CE',
+    color: '#fff',
+    selected: false,
+  },
+  {
+    id: '7',
+    label: 'Habitat',
+    bgColor: '#28D7D6',
+    color: '#fff',
+    selected: false,
+  },
+  {
+    id: '8',
+    label: 'Faune & flore',
+    bgColor: '#1EE153',
+    color: '#fff',
+    selected: false,
+  },
+];
+
+// function setFilterActive(setFilterQuery: React.Dispatch<React.SetStateAction<string>>, id: string) {
+
+// }
+
+function Filters() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [filterQuery, setFilterQuery] = React.useState('');
+  const [filterActive, setFilterActive] = React.useState(['']);
+
+  return (
+    <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
+      {filters.map<React.JSX.Element>((filter) => {
+        return (
+          <Chip
+            selected={filterActive.includes(filter.id)}
+            key={filter.id}
+            style={{ ...styles.filter, ...{ backgroundColor: filter.bgColor } }}
+            textStyle={{ color: filter.color }}
+            onPress={() => {
+              const filterObj = filters.find((f) => f.id === filter.id);
+
+              if (!filterObj) {
+                throw new Error('filter not found');
+              }
+              filterObj.selected = !filterObj.selected;
+              setFilterActive(filters.filter((fil) => fil.selected).map((a) => a.id));
+              setFilterQuery(filter.id);
+            }}
+          >
+            {filter.label}
+          </Chip>
+        );
+      })}
+    </ScrollView>
+  );
+}
+
+function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -68,7 +164,7 @@ function SearchBar({ navigation }: any) {
           borderRadius: 15,
           paddingEnd: 65,
         }}
-        placeholder="Search"
+        placeholder="Rechercher"
         onChangeText={onChangeSearch}
         value={searchQuery}
       />
@@ -80,7 +176,7 @@ function SearchBar({ navigation }: any) {
             onDismiss={closeMenu}
             // contentStyle={{backgroundColor: COLORS.controlNormal}}
             anchor={
-              <Button icon={'chevron-down'} style={{ padding: '0.75%' }} compact={true} onPress={() => openMenu()}>
+              <Button icon="chevron-down" style={{ padding: '0.75%' }} compact onPress={() => openMenu()}>
                 {/* <Icon source={'chevron-down'} size={20} /> */}
                 <Avatar.Text size={30} label="FW" />
               </Button>
@@ -89,12 +185,12 @@ function SearchBar({ navigation }: any) {
             <Menu.Item
               onPress={() => {
                 setVisible(false);
-                navigation.navigate('Profile');
+                navigation.navigate('Profile' as never);
               }}
               title="Mon profil"
-              leadingIcon={'account-circle-outline'}
+              leadingIcon="account-circle-outline"
             />
-            <Menu.Item onPress={() => {}} title="Se déconnecter" leadingIcon={'logout'} />
+            <Menu.Item onPress={() => {}} title="Se déconnecter" leadingIcon="logout" />
           </Menu>
         </View>
       </View>
@@ -103,32 +199,7 @@ function SearchBar({ navigation }: any) {
   );
 }
 
-function Filters() {
-  return (
-    <ScrollView horizontal style={styles.filters}>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Alimentation</Chip>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Bien être</Chip>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Finances</Chip>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Nettoyage</Chip>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Transport</Chip>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Mode</Chip>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Habitat</Chip>
-      <Chip style={styles.filter} onPress={() => console.log('Pressed')}>Faune & flore</Chip>
-    </ScrollView >
-  )
-}
-
-
-
-function ChangeHomeView() {
-  return <FAB size="small" icon="view-list" style={styles.changeHomeView} onPress={() => console.log('Pressed')} />;
-}
-
-function Locate() {
-  return <FAB size="small" icon="crosshairs-gps" style={styles.locate} onPress={() => console.log('Pressed')} />;
-}
-
-function Home({ navigation }: any) {
+function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
   const [currentLocation, setCurrentLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [initialRegion, setInitialRegion] = useState<{
     latitude: number;
@@ -136,6 +207,8 @@ function Home({ navigation }: any) {
     latitudeDelta: number;
     longitudeDelta: number;
   } | null>(null);
+  const [currentView, setCurrentView] = useState('map');
+  const mapViewRef = useRef<MapView>(null);
 
   useEffect(() => {
     const getLocation = async () => {
@@ -145,26 +218,24 @@ function Home({ navigation }: any) {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({});
+      const location = await Location.getCurrentPositionAsync({ accuracy: 6 });
       setCurrentLocation(location.coords);
 
       setInitialRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
+        latitudeDelta: 0.105,
+        longitudeDelta: 0.105,
       });
-
-      return true;
     };
 
-    getLocation().then(console.log).catch(console.error);
+    getLocation().catch(console.error);
   }, []);
 
   return (
     <View style={styles.container}>
-      {initialRegion && (
-        <MapView style={styles.map} initialRegion={initialRegion}>
+      {initialRegion && currentView === 'map' && (
+        <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion}>
           {currentLocation && (
             <Marker
               coordinate={{
@@ -176,9 +247,34 @@ function Home({ navigation }: any) {
           )}
         </MapView>
       )}
-      <SearchBar navigation={navigation} />
-      <ChangeHomeView />
-      <Locate />
+      {currentView === 'list' && <List.Item title="test" />}
+      {currentView === 'map' && <SearchBar navigation={navigation} />}
+
+      <FAB
+        size="small"
+        icon={currentView === 'map' ? 'view-list' : 'map'}
+        style={styles.changeHomeView}
+        onPress={() => {
+          if (currentView === 'map') {
+            setCurrentView('list');
+          } else {
+            setCurrentView('map');
+          }
+        }}
+      />
+
+      {currentView === 'map' && (
+        <FAB
+          size="small"
+          icon="crosshairs-gps"
+          style={styles.locate}
+          onPress={() => {
+            if (initialRegion && mapViewRef) {
+              mapViewRef.current?.animateToRegion(initialRegion);
+            }
+          }}
+        />
+      )}
     </View>
   );
 }
