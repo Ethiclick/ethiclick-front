@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 
 import { Icon, Portal } from 'react-native-paper';
 
@@ -11,9 +12,26 @@ import Home from '../screens/Home';
 import Notifications from '../screens/Notifications';
 import Profil from '../screens/Profil';
 import Favorites from '../screens/Favorites';
+// import { getToken, login, logout } from '../store';
+// import { logged } from '../store';
 
+// const connected = true;
 const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
+  const [connected] = useState(false);
+  useEffect(() => {
+    // async function logged() {
+    //   const token = await getToken();
+    //   const isLogged = token !== null && token !== '';
+    //   setConnected(!!isLogged);
+    // }
+    // // eslint-disable-next-line no-void
+    // void logout();
+    // if (!connected) {
+    //   // eslint-disable-next-line no-void
+    //   void logged();
+    // }
+  });
   return (
     <Portal>
       <NavigationContainer>
@@ -57,14 +75,16 @@ function BottomNavigationBar() {
             name="Notifications"
             component={Notifications}
           />
-          <Tab.Screen
-            options={{
-              tabBarLabel: 'Profile',
-              tabBarIcon: ({ color, size }) => <Icon source="account" color={color} size={size} />,
-            }}
-            name="Profile"
-            component={Profil}
-          />
+          {connected && (
+            <Tab.Screen
+              options={{
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color, size }) => <Icon source="account" color={color} size={size} />,
+              }}
+              name="Profile"
+              component={Profil}
+            />
+          )}
         </Tab.Navigator>
       </NavigationContainer>
     </Portal>
