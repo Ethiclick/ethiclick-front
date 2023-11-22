@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
@@ -26,13 +26,13 @@ const styles = StyleSheet.create({
     margin: 16,
     left: '50%',
     transform: [{ translateX: -40 }],
-    bottom: 110,
+    bottom: Platform.OS === 'ios' ? 110 : 80,
   },
   locate: {
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: 110,
+    bottom: Platform.OS === 'ios' ? 110 : 80,
   },
   filters: {
     marginTop: 10,
@@ -177,7 +177,6 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
             // contentStyle={{backgroundColor: COLORS.controlNormal}}
             anchor={
               <Button icon="chevron-down" style={{ padding: '0.75%' }} compact onPress={() => openMenu()}>
-                {/* <Icon source={'chevron-down'} size={20} /> */}
                 <Avatar.Text size={30} label="FW" />
               </Button>
             }

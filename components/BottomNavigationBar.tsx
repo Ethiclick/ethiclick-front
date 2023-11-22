@@ -1,37 +1,23 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-
 import { Icon, Portal } from 'react-native-paper';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Home from '../screens/Home';
 // import About from '../screens/About';
 // import Favorites from '../screens/Favorites';
 import Notifications from '../screens/Notifications';
 import Profil from '../screens/Profil';
 import Favorites from '../screens/Favorites';
-// import { getToken, login, logout } from '../store';
-// import { logged } from '../store';
+// import { RootState, useAppSelector } from '../store';
 
-// const connected = true;
+const connected = true;
 const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
-  const [connected] = useState(false);
-  useEffect(() => {
-    // async function logged() {
-    //   const token = await getToken();
-    //   const isLogged = token !== null && token !== '';
-    //   setConnected(!!isLogged);
-    // }
-    // // eslint-disable-next-line no-void
-    // void logout();
-    // if (!connected) {
-    //   // eslint-disable-next-line no-void
-    //   void logged();
-    // }
-  });
+  // const connected = useAppSelector((state: RootState) => state.counter.value);
+  // const dispatch = useAppDispatch();
   return (
     <Portal>
       <NavigationContainer>
@@ -50,14 +36,6 @@ function BottomNavigationBar() {
             }}
             component={Home}
           />
-          {/* <Tab.Screen
-          options={{
-            tabBarLabel: 'Rechercher',
-            tabBarIcon: ({ color, size }) => <Icon source="magnify" color={color} size={size} />,
-          }}
-          name="Rechercher"
-          component={Favorites}
-        /> */}
           <Tab.Screen
             options={{
               // headerShown: true, // Specific view

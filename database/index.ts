@@ -1,40 +1,29 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const login = async (token: string) => {
+export async function setUser(user: string) {
   try {
-    await AsyncStorage.setItem('token', token);
-  } catch (e) {
+    await AsyncStorage.setItem('user', user);
+  } catch (error) {
     // saving error
   }
-};
+}
 
-export const logout = async () => {
+export async function getUser() {
   try {
-    await AsyncStorage.removeItem('token');
-  } catch (e) {
+    await AsyncStorage.getItem('user');
+  } catch (error) {
     // saving error
   }
-};
+}
 
-export const getToken = async () => {
+/**
+ * Remove user table
+ */
+export async function clearUser() {
   try {
-    const token = await AsyncStorage.getItem('token');
-    return token;
-  } catch (e) {
+    await AsyncStorage.removeItem('user');
+  } catch (error) {
     // saving error
-    return '';
   }
-};
-
-export const logged = async () => {
-  try {
-    const token = await AsyncStorage.getItem('token');
-
-    if (token) return true;
-    return false;
-  } catch (e) {
-    // saving error
-    return false;
-  }
-};
+}
