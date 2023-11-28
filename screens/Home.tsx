@@ -8,6 +8,7 @@ import MapView, { Marker } from 'react-native-maps';
 // import Locate from '../components/Locate';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip, Text, Card } from 'react-native-paper';
 import { NavigationProp } from '@react-navigation/native';
+import { isLogged, useAppSelector } from '../store';
 
 const styles = StyleSheet.create({
   container: {
@@ -177,19 +178,25 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
             // contentStyle={{backgroundColor: COLORS.controlNormal}}
             anchor={
               <Button icon="chevron-down" style={{ padding: '0.75%' }} compact onPress={() => openMenu()}>
-                <Avatar.Text size={30} label="FW" />
+                <Avatar.Text size={30} label={useAppSelector(isLogged) ? 'FW' : '?'} />
               </Button>
             }
           >
-            <Menu.Item
-              onPress={() => {
-                setVisible(false);
-                navigation.navigate('Profile' as never);
-              }}
-              title="Mon profil"
-              leadingIcon="account-circle-outline"
-            />
-            <Menu.Item onPress={() => {}} title="Se déconnecter" leadingIcon="logout" />
+            <Menu.Item onPress={() => {}} title="Proposer un pro" leadingIcon="badge-account-outline" />
+            <Menu.Item onPress={() => {}} title="Signaler un pro" leadingIcon="badge-account-alert-outline" />
+            {useAppSelector(isLogged) ? (
+              <>
+                <Menu.Item
+                  onPress={() => {
+                    setVisible(false);
+                    navigation.navigate('Profile' as never);
+                  }}
+                  title="Mon profil"
+                  leadingIcon="account-circle-outline"
+                />
+                <Menu.Item onPress={() => {}} title="Se déconnecter" leadingIcon="logout" />
+              </>
+            ) : null}
           </Menu>
         </View>
       </View>

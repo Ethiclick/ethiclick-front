@@ -1,25 +1,26 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
-import { Icon, Portal } from 'react-native-paper';
+import { Icon } from 'react-native-paper';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from '../screens/Home';
 // import About from '../screens/About';
 // import Favorites from '../screens/Favorites';
 import Notifications from '../screens/Notifications';
 import Profil from '../screens/Profil';
 import Favorites from '../screens/Favorites';
-// import { RootState, useAppSelector } from '../store';
+import { isLogged, useAppSelector } from '../store';
 
-const connected = true;
 const Tab = createBottomTabNavigator();
+// const navigationRef = createNavigationContainerRef();
 function BottomNavigationBar() {
-  // const connected = useAppSelector((state: RootState) => state.counter.value);
-  // const dispatch = useAppDispatch();
+  // const connected = useAppSelector((state: RootState) => state.user.logged === true);
+
   return (
-    <Portal>
+    <SafeAreaProvider>
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={{
@@ -53,7 +54,7 @@ function BottomNavigationBar() {
             name="Notifications"
             component={Notifications}
           />
-          {connected && (
+          {useAppSelector(isLogged) ? (
             <Tab.Screen
               options={{
                 tabBarLabel: 'Profile',
@@ -62,11 +63,11 @@ function BottomNavigationBar() {
               name="Profile"
               component={Profil}
             />
-          )}
+          ) : null}
         </Tab.Navigator>
       </NavigationContainer>
-    </Portal>
+    </SafeAreaProvider>
   );
 }
 
-export default BottomNavigationBar;
+export default React.memo(BottomNavigationBar);
