@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import Home from '../screens/Home';
 // import About from '../screens/About';
 // import Favorites from '../screens/Favorites';
@@ -13,6 +14,7 @@ import Notifications from '../screens/Notifications';
 import Profil from '../screens/Profil';
 import Favorites from '../screens/Favorites';
 import { isLogged, useAppSelector } from '../store';
+import Login from '../screens/Login';
 
 const Tab = createBottomTabNavigator();
 // const navigationRef = createNavigationContainerRef();
@@ -63,7 +65,16 @@ function BottomNavigationBar() {
               name="Profile"
               component={Profil}
             />
-          ) : null}
+          ) : (
+            <Tab.Screen
+              options={{
+                tabBarLabel: 'Se connecter',
+                tabBarIcon: ({ color, size }) => <Icon source="login" color={color} size={size} />,
+              }}
+              name="Se connecter"
+              component={Login}
+            />
+          )}
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

@@ -1,13 +1,11 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-// import SearchBar from '../components/SearchBar';
-// import ChangeHomeView from '../components/ChangeHomeView';
-// import Locate from '../components/Locate';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip, Text, Card } from 'react-native-paper';
 import { NavigationProp } from '@react-navigation/native';
+// import SplashScreen from 'react-native-splash-screen';
 import { isLogged, useAppSelector } from '../store';
 
 const styles = StyleSheet.create({
@@ -220,7 +218,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
     const getLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== Location.PermissionStatus.GRANTED) {
-        console.log('Permission to access location was denied');
+        alert("Vous avez refusé l'accès à votre localisation.");
         return;
       }
 
