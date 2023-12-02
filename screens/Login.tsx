@@ -4,9 +4,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
+import type { NavigationProp } from '@react-navigation/native';
+import { login, useAppDispatch } from '../store';
+import HelperMessage from '../components/HelperMessage';
+// import ToastMessage from '../components/ToastMessage';
+// import { ToastColorEnum } from '../@types/toast.d';
 
 type FormData = {
   username: string;
@@ -27,7 +32,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Login() {
+export default function Login({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
   const {
     control,
     handleSubmit,
@@ -38,12 +43,18 @@ export default function Login() {
       password: '',
     },
   });
-  const onSubmit = (data: unknown) => Promise.resolve(data);
+  const dispatch = useAppDispatch();
+  const onSubmit = (data: unknown) => {
+    console.log(data);
+    dispatch(login());
+    navigation.navigate('Accueil' as never);
+  };
   const [secure, setSecure] = React.useState(true);
 
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={{ height: '100%' }}>
+        {/* <ToastMessage msg="test" duration={0} type={ToastColorEnum.Error} /> */}
         <View style={styles.container}>
           <Controller
             control={control}
@@ -62,7 +73,7 @@ export default function Login() {
             )}
             name="username"
           />
-          {errors.username && <Text>Ce champ est requis.</Text>}
+          {errors.username && <HelperMessage type="error" message="Ce champ est requis." />}
 
           <Controller
             control={control}
@@ -84,7 +95,7 @@ export default function Login() {
             )}
             name="password"
           />
-          {errors.password && <Text>Ce champ est requis.</Text>}
+          {errors.password && <HelperMessage type="error" message="Ce champ est requis." />}
           <Button
             mode="contained-tonal"
             compact

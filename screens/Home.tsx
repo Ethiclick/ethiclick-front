@@ -4,9 +4,9 @@ import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip, Text, Card } from 'react-native-paper';
-import { NavigationProp } from '@react-navigation/native';
+import type { NavigationProp } from '@react-navigation/native';
 // import SplashScreen from 'react-native-splash-screen';
-import { isLogged, useAppSelector } from '../store';
+import { isLogged, logout, useAppDispatch, useAppSelector } from '../store';
 
 const styles = StyleSheet.create({
   container: {
@@ -145,6 +145,8 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
   const onChangeSearch = (query: string) => setSearchQuery(query);
+  const dispatch = useAppDispatch();
+  const logged = useAppSelector(isLogged);
 
   return (
     <View
@@ -176,13 +178,13 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
             // contentStyle={{backgroundColor: COLORS.controlNormal}}
             anchor={
               <Button icon="chevron-down" style={{ padding: '0.75%' }} compact onPress={() => openMenu()}>
-                <Avatar.Text size={30} label={useAppSelector(isLogged) ? 'FW' : '?'} />
+                {logged ? <Avatar.Text size={30} label="FW" /> : <Avatar.Text size={30} label="?" />}
               </Button>
             }
           >
             <Menu.Item onPress={() => {}} title="Proposer un pro" leadingIcon="badge-account-outline" />
             <Menu.Item onPress={() => {}} title="Signaler un pro" leadingIcon="badge-account-alert-outline" />
-            {useAppSelector(isLogged) ? (
+            {logged ? (
               <>
                 <Menu.Item
                   onPress={() => {
@@ -192,7 +194,13 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
                   title="Mon profil"
                   leadingIcon="account-circle-outline"
                 />
-                <Menu.Item onPress={() => {}} title="Se déconnecter" leadingIcon="logout" />
+                <Menu.Item
+                  onPress={() => {
+                    dispatch(logout());
+                  }}
+                  title="Se déconnecter"
+                  leadingIcon="logout"
+                />
               </>
             ) : null}
           </Menu>
