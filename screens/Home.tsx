@@ -1,9 +1,10 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-import { Avatar, FAB, Menu, Button, Searchbar, Chip, Text, Card } from 'react-native-paper';
+import { Avatar, FAB, Menu, Button, Searchbar, Chip, Card, Icon } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
 // import SplashScreen from 'react-native-splash-screen';
 import { isLogged, logout, useAppDispatch, useAppSelector } from '../store';
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const filters = [
+const categories = [
   {
     id: '1',
     label: 'Alimentation',
@@ -113,7 +114,7 @@ function Filters() {
 
   return (
     <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
-      {filters.map<React.JSX.Element>((filter) => {
+      {categories.map<React.JSX.Element>((filter) => {
         return (
           <Chip
             selected={filterActive.includes(filter.id)}
@@ -121,13 +122,13 @@ function Filters() {
             style={{ ...styles.filter, ...{ backgroundColor: filter.bgColor } }}
             textStyle={{ color: filter.color }}
             onPress={() => {
-              const filterObj = filters.find((f) => f.id === filter.id);
+              const filterObj = categories.find((f) => f.id === filter.id);
 
               if (!filterObj) {
                 throw new Error('filter not found');
               }
               filterObj.selected = !filterObj.selected;
-              setFilterActive(filters.filter((fil) => fil.selected).map((a) => a.id));
+              setFilterActive(categories.filter((fil) => fil.selected).map((a) => a.id));
               setFilterQuery(filter.id);
             }}
           >
@@ -260,18 +261,18 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
         </MapView>
       )}
       {currentView === 'list' && (
-        <Card style={{ width: 'auto' }}>
-          <Card.Title title="Titre" subtitle="Sous titre" />
-          <Card.Content>
-            <Text variant="titleLarge">Card title</Text>
-            <Text variant="bodyMedium">Card content</Text>
-          </Card.Content>
-          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-          <Card.Actions>
-            <Button>Cancel</Button>
-            <Button>Ok</Button>
-          </Card.Actions>
-        </Card>
+        <ScrollView centerContent style={{ flex: 2, width: '100%', height: '100%' }}>
+          {categories.map((data) => {
+            return (
+              <Card.Title
+                style={{ backgroundColor: data.bgColor }}
+                title={data.label}
+                subtitle={data.label}
+                left={() => <Icon size={30} source="user" />}
+              />
+            );
+          })}
+        </ScrollView>
       )}
       {currentView === 'map' && <SearchBar navigation={navigation} />}
 
