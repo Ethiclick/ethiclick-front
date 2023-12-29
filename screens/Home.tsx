@@ -7,7 +7,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip, Card, Icon } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
 // import SplashScreen from 'react-native-splash-screen';
-import { isLogged, logout, useAppDispatch, useAppSelector } from '../store';
+import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 
 const styles = StyleSheet.create({
   container: {
@@ -148,6 +148,8 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
   const onChangeSearch = (query: string) => setSearchQuery(query);
   const dispatch = useAppDispatch();
   const logged = useAppSelector(isLogged);
+  console.log(logged);
+  const user = useAppSelector(getUser) as { email: string };
 
   return (
     <View
@@ -179,7 +181,7 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
             // contentStyle={{backgroundColor: COLORS.controlNormal}}
             anchor={
               <Button icon="chevron-down" style={{ padding: '0.75%' }} compact onPress={() => openMenu()}>
-                {logged ? <Avatar.Text size={30} label="FW" /> : <Avatar.Text size={30} label="?" />}
+                {logged ? <Avatar.Text size={30} label={user.email} /> : <Avatar.Text size={30} label="?" />}
               </Button>
             }
           >
@@ -242,7 +244,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
       });
     };
 
-    getLocation().catch(console.error);
+    getLocation().catch(alert);
   }, []);
 
   return (
@@ -268,7 +270,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
                 style={{ backgroundColor: data.bgColor }}
                 title={data.label}
                 subtitle={data.label}
-                left={() => <Icon size={30} source="user" />}
+                left={() => <Icon size={30} source="pasta" />}
               />
             );
           })}

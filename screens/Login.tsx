@@ -8,13 +8,14 @@ import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
-import { login, useAppDispatch } from '../store';
+import { login, useAppDispatch, setUser } from '../store';
 import HelperMessage from '../components/HelperMessage';
+import { postData } from '../utils/fetch';
 // import ToastMessage from '../components/ToastMessage';
 // import { ToastColorEnum } from '../@types/toast.d';
 
 type FormData = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -39,15 +40,23 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
   const dispatch = useAppDispatch();
-  const onSubmit = (data: unknown) => {
+  const onSubmit = async (data: { email: string; password: string }) => {
     console.log(data);
+    const loginData = await postData('login', data);
+    console.log(loginData);
+    if (loginData.errors) {
+      return alert(loginData.errors[0].message);
+    }
+
+    dispatch(setUser({ email: data.email, token: loginData.token }));
     dispatch(login());
     navigation.navigate('Accueil' as never);
+    return true;
   };
   const [secure, setSecure] = React.useState(true);
 
@@ -62,18 +71,11 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
               required: true,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                mode="outlined"
-                placeholder="Nom d'utilisateur / e-mail"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
+              <TextInput style={styles.input} mode="outlined" placeholder="E-mail" onBlur={onBlur} onChangeText={onChange} value={value} />
             )}
-            name="username"
+            name="email"
           />
-          {errors.username && <HelperMessage type="error" message="Ce champ est requis." />}
+          {errors.email && <HelperMessage type="error" message="Ce champ est requis." />}
 
           <Controller
             control={control}
@@ -99,7 +101,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
           <Button
             mode="contained-tonal"
             compact
-            disabled={errors.username !== undefined || errors.password !== undefined}
+            disabled={errors.email !== undefined || errors.password !== undefined}
             style={styles.login}
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onPress={handleSubmit(onSubmit)}

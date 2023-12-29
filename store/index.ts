@@ -40,6 +40,7 @@ export const userSlice = createSlice({
 
 export const { login, logout, setUser } = userSlice.actions;
 export const isLogged = (state: RootState) => state.user.logged === true;
+export const getUser = (state: RootState) => state.user.user;
 
 export default userSlice.reducer;
 
