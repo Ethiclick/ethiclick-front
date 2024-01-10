@@ -149,6 +149,7 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
   const dispatch = useAppDispatch();
   const logged = useAppSelector(isLogged);
   console.log(logged);
+  // todo : voir pourquoi le rendu searchbar n'est pas relancer après changement de page..
   const user = useAppSelector(getUser) as { email: string };
 
   return (
