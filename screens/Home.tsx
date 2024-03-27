@@ -1,13 +1,14 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useRef, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View, Text } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip, Card, Icon } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
 // import SplashScreen from 'react-native-splash-screen';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
+import Square from './../components/square';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,13 +38,23 @@ const styles = StyleSheet.create({
   filters: {
     marginTop: 10,
     alignSelf: 'flex-start',
+    // width: '96%',
   },
   filter: {
     margin: 2,
     alignItems: 'baseline',
   },
+  containerList: {
+    marginTop: 30,
+    backgroundColor: 'yellow',
+    flex: 1,
+    width: '100%',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
 });
 
+// TODO: récuprérer les categorie en base
 const categories = [
   {
     id: '1',
@@ -265,17 +276,23 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
       )}
       {currentView === 'list' && (
         <ScrollView centerContent style={{ flex: 2, width: '100%', height: '100%' }}>
-          {categories.map((data) => {
-            return (
-              <Card.Title
-                style={{ backgroundColor: data.bgColor }}
-                title={data.label}
-                subtitle={data.label}
-                left={() => <Icon size={30} source="pasta" />}
-              />
-            );
-          })}
-        </ScrollView>
+          <View style={styles.containerList}>
+        {(() => {
+            const squares = [];
+            for (let i = 0; i < categories.length; i++) {
+              const data1 = categories[i];
+              const data2 = categories[i + 1];
+              
+              squares.push(
+                <Square key={i} data1={data1} data2={data2} />
+              );
+              // On incrémente pour tjrs être sur le bon index
+              i++
+            }
+            return squares;
+        })()}
+        </View>
+      </ScrollView>
       )}
       {currentView === 'map' && <SearchBar navigation={navigation} />}
 
