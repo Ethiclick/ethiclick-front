@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   filters: {
     marginTop: 10,
     alignSelf: 'flex-start',
-    // width: '96%',
   },
   filter: {
     margin: 2,
@@ -46,8 +45,10 @@ const styles = StyleSheet.create({
   },
   containerList: {
     marginTop: 30,
+    paddingTop: '5%',
+    paddingLeft: '2%',
+    paddingRight: '2%',
     backgroundColor: 'yellow',
-    flex: 1,
     width: '100%',
     justifyContent: 'space-around',
     alignItems: 'center',

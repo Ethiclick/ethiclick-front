@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Icon } from 'react-native-paper';
+import { Avatar, Card, Icon, IconButton } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -7,29 +7,43 @@ const styles = StyleSheet.create({
     rowList: {
       width: '100%',
       flexDirection: 'row',
-      // backgroundColor: 'red',
       justifyContent: 'space-around',
-  
+      marginBottom: 10,
+      height: 100,
     },
     cardList: {
         borderRadius: 20,
         flex: 1,
-    }
+        width: '45%',
+        height: '100%',
+        // textAlign: 'center',
+        textAlign: 'center',
+
+    },
+    title: {
+        fontSize: 18,
+        // color: 'black',
+        // marginLeft: 20
+        // textAlign: 'center',
+      },
   });
 
 const Square = ({ data1, data2 }) => (
     <View style={styles.rowList}>
         <Card.Title
-            style={ [styles.cardList, { backgroundColor: data1.bgColor }]}
+            style={ [styles.cardList, { backgroundColor: data1.bgColor, marginRight: 10 }]}
             title={data1.label}
-            // subtitle={data1.label}
-            left={() => <Icon size={30} source="pasta" />}
+            titleStyle= { styles.title }
+            // titleStyle={{ textAlign: 'center' }}
+            // left={() => <Icon size={30} source="pasta" />}
+            // left={(props) => <Avatar.Icon {...props} icon="folder" />}
+            // right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
         />
         <Card.Title
-            style={ [styles.cardList, { backgroundColor: data2.bgColor }]}
+            style={ [styles.cardList, { backgroundColor: data2.bgColor, marginLeft: 10 }]}
             title={data2.label}
-            // subtitle={data2.label}
-            left={() => <Icon size={30} source="pasta" />}
+            titleStyle= { styles.title }
+            // left={() => <Icon size={30} source="pasta" />}
         />
     </View>
 );
