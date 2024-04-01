@@ -21,13 +21,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         // color: 'black',
       },
-  });
+});
+
 
 const Square = ({ data1, data2 }) => (
     <View style={styles.rowList}>
         <Card.Title
-            style={ [styles.cardList, { backgroundColor: data1.bgColor, marginRight: 10 }]}
-            title={data1.label}
+            style={ [styles.cardList, { backgroundColor: data1.color, marginRight: 10 }]}
+            title={data1.libelle}
             titleStyle= { styles.title }
             // titleStyle={{ textAlign: 'center' }}
             // left={() => <Icon size={30} source="pasta" />}
@@ -35,8 +36,8 @@ const Square = ({ data1, data2 }) => (
             // right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
         />
         <Card.Title
-            style={ [styles.cardList, { backgroundColor: data2.bgColor, marginLeft: 10 }]}
-            title={data2.label}
+            style={ [styles.cardList, { backgroundColor: data2.color, marginLeft: 10 }]}
+            title={data2.libelle}
             titleStyle= { styles.title }
             // left={() => <Icon size={30} source="pasta" />}
         />

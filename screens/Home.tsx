@@ -9,6 +9,7 @@ import type { NavigationProp } from '@react-navigation/native';
 // import SplashScreen from 'react-native-splash-screen';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import Square from './../components/square';
+// import * as Network from 'expo-network'; // récupération de l'ip
 
 const styles = StyleSheet.create({
   container: {
@@ -48,79 +49,36 @@ const styles = StyleSheet.create({
     paddingTop: '5%',
     paddingLeft: '2%',
     paddingRight: '2%',
-    backgroundColor: 'yellow',
+    // backgroundColor: 'yellow',
     width: '100%',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
 });
 
-// TODO: récuprérer les categorie en base
-const categories = [
-  {
-    id: '1',
-    label: 'Alimentation',
-    bgColor: '#0BC0EC',
-    color: '#fff',
-    selected: false,
-  },
-  {
-    id: '2',
-    label: 'Bien être',
-    bgColor: '#F9DB67',
-    color: '#fff',
-    selected: false,
-  },
-  {
-    id: '3',
-    label: 'Finances',
-    bgColor: '#82D658',
-    color: '#fff',
-    selected: false,
-  },
-  {
-    id: '4',
-    label: 'Nettoyage',
-    bgColor: '#A80BEC',
-    color: '#fff',
-    selected: false,
-  },
-  {
-    id: '5',
-    label: 'Transport',
-    bgColor: '#EC370B',
-    color: '#fff',
-    selected: false,
-  },
-  {
-    id: '6',
-    label: 'Mode',
-    bgColor: '#F967CE',
-    color: '#fff',
-    selected: false,
-  },
-  {
-    id: '7',
-    label: 'Habitat',
-    bgColor: '#28D7D6',
-    color: '#fff',
-    selected: false,
-  },
-  {
-    id: '8',
-    label: 'Faune & flore',
-    bgColor: '#1EE153',
-    color: '#fff',
-    selected: false,
-  },
-];
+function fectchCat1 () {
+  const [categories, setDataArray] = useState([]);
 
-// function setFilterActive(setFilterQuery: React.Dispatch<React.SetStateAction<string>>, id: string) {
+  useEffect(() => {
+    fetchData(); // Appel à l'API lors du chargement du composant
+  }, []);
 
-// }
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://51.77.193.240:42553/categorie/get/1'); // On récupère les categories de niv1
+      const jsonData = await response.json();
+
+      setDataArray(jsonData); // On stock les données dans un tableau
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
+  return categories;
+}
 
 function Filters() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  const categories = fectchCat1();
   const [filterQuery, setFilterQuery] = React.useState('');
   const [filterActive, setFilterActive] = React.useState(['']);
 
@@ -131,8 +89,8 @@ function Filters() {
           <Chip
             selected={filterActive.includes(filter.id)}
             key={filter.id}
-            style={{ ...styles.filter, ...{ backgroundColor: filter.bgColor } }}
-            textStyle={{ color: filter.color }}
+            style={{ ...styles.filter, ...{ backgroundColor: filter.color } }}
+            textStyle={{ color: "black" }} // à voir si on enregistre en base la couleur du txt pour la lisibilité pour si on le gère ici ?
             onPress={() => {
               const filterObj = categories.find((f) => f.id === filter.id);
 
@@ -144,7 +102,7 @@ function Filters() {
               setFilterQuery(filter.id);
             }}
           >
-            {filter.label}
+            {filter.libelle}
           </Chip>
         );
       })}
@@ -237,7 +195,9 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
   } | null>(null);
   const [currentView, setCurrentView] = useState('map');
   const mapViewRef = useRef<MapView>(null);
+  const categories = fectchCat1();
 
+  // Récupération de la localisation
   useEffect(() => {
     const getLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -260,6 +220,20 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
     getLocation().catch(alert);
   }, []);
 
+
+  // récupération adresse IP expoGo
+  // useEffect(() => {
+  //   fetchIpAddress();
+  // }, []);
+  // const fetchIpAddress = async () => {
+  //   try {
+  //     const ipAddress = await Network.getIpAddressAsync();
+  //     console.log(ipAddress);
+  //   } catch (error) {
+  //     console.error('Erreur lors de la récupération de l\'adresse IP:', error);
+  //   }
+  // };
+
   return (
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
@@ -279,10 +253,15 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
         <ScrollView centerContent style={{ flex: 2, width: '100%', height: '100%' }}>
           <View style={styles.containerList}>
         {(() => {
+
             const squares = [];
             for (let i = 0; i < categories.length; i++) {
+              // console.log(categories[i]);
+              // if (!categories[i]) continue;
               const data1 = categories[i];
               const data2 = categories[i + 1];
+
+              if (!data1 || !data2) break;
               
               squares.push(
                 <Square key={i} data1={data1} data2={data2} />
