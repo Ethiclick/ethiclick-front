@@ -8,23 +8,18 @@ const styles = StyleSheet.create({
       width: '100%',
       flexDirection: 'row',
       justifyContent: 'space-around',
-      marginBottom: 10,
-      height: 100,
+      marginBottom: 20,
+      height: 120,
     },
     cardList: {
         borderRadius: 20,
         flex: 1,
-        width: '45%',
         height: '100%',
-        // textAlign: 'center',
-        textAlign: 'center',
-
     },
     title: {
         fontSize: 18,
+        textAlign: 'center',
         // color: 'black',
-        // marginLeft: 20
-        // textAlign: 'center',
       },
   });
 
