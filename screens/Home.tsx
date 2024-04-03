@@ -127,9 +127,10 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
       style={{
         position: 'absolute',
         top: 50,
-        left: 30,
-        right: 30,
+        left: 5,
+        right: 5,
         borderRadius: 15,
+        width: "97%"
       }}
     >
       <Searchbar
@@ -202,7 +203,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
     const getLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== Location.PermissionStatus.GRANTED) {
-        alert("Vous avez refusé l'accès à votre localisation.");
+        alert("Vous avez refusé l'accès à votre localisation");
         return;
       }
 
