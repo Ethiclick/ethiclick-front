@@ -1,3 +1,3 @@
-export const API_URL = 'http://192.168.1.59:3333';
+export const API_URL = 'http://51.77.193.240:42553';
 
 export const CORS = '';

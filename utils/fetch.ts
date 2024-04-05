@@ -8,7 +8,7 @@ export async function fetchData(alias: string): Promise<FetchResponse> {
     const response = await fetch(ENDPOINT);
     const data = (await response.json()) as FetchResponse;
     return data;
-  } catch (error) {
+  } catch (error: any) {
     return error;
   }
 }
@@ -26,7 +26,7 @@ export async function postData(alias: string, body: object): Promise<FetchRespon
     });
     const data = (await response.json()) as FetchResponse;
     return data;
-  } catch (error: unknown) {
+  } catch (error: any) {
     return error;
   }
 }

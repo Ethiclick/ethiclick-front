@@ -46,9 +46,8 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
   });
   const dispatch = useAppDispatch();
   const onSubmit = async (data: { email: string; password: string }) => {
-    console.log(data);
-    const loginData = await postData('login', data);
-    console.log(loginData);
+    const loginData = await postData('users/login', data);
+
     if (loginData.errors) {
       return alert(loginData.errors[0].message);
     }
