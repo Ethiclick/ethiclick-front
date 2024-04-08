@@ -45,11 +45,10 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   containerList: {
-    marginTop: 30,
+    marginTop: "32%",
     paddingTop: '5%',
     paddingLeft: '2%',
     paddingRight: '2%',
-    // backgroundColor: 'yellow',
     width: '100%',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -109,8 +108,12 @@ function Filters() {
     </ScrollView>
   );
 }
-
-function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
+// Définition des type des props du composant SearchBar
+interface SearchBarProps {
+  navigation: NavigationProp<ReactNavigation.RootParamList>;
+  currentView: string;
+}
+function SearchBar({ navigation, currentView }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -118,8 +121,6 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
   const onChangeSearch = (query: string) => setSearchQuery(query);
   const dispatch = useAppDispatch();
   const logged = useAppSelector(isLogged);
-  console.log(logged);
-  // todo : voir pourquoi le rendu searchbar n'est pas relancer après changement de page..
   const user = useAppSelector(getUser) as { email: string };
 
   return (
@@ -150,7 +151,6 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
             anchorPosition="bottom"
             visible={visible}
             onDismiss={closeMenu}
-            // contentStyle={{backgroundColor: COLORS.controlNormal}}
             anchor={
               <Button icon="chevron-down" style={{ padding: '0.75%' }} compact onPress={() => openMenu()}>
                 {logged ? <Avatar.Text size={30} label={user.email} /> : <Avatar.Text size={30} label="?" />}
@@ -181,7 +181,7 @@ function SearchBar({ navigation }: { navigation: NavigationProp<ReactNavigation.
           </Menu>
         </View>
       </View>
-      <Filters />
+      {currentView === 'map' && <Filters/>}
     </View>
   );
 }
@@ -250,15 +250,15 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
           )}
         </MapView>
       )}
-      {currentView === 'list' && (
+      {currentView === 'list' && ( 
+        
         <ScrollView centerContent style={{ flex: 2, width: '100%', height: '100%' }}>
-          <View style={styles.containerList}>
+          <SearchBar navigation={navigation} currentView={currentView}/>
+            <View style={styles.containerList}>
         {(() => {
 
             const squares = [];
             for (let i = 0; i < categories.length; i++) {
-              // console.log(categories[i]);
-              // if (!categories[i]) continue;
               const data1 = categories[i];
               const data2 = categories[i + 1];
 
@@ -275,8 +275,9 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
         </View>
       </ScrollView>
       )}
-      {currentView === 'map' && <SearchBar navigation={navigation} />}
-
+      {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView}/>}
+        
+      {/* Icone de changement de vue List/carte */}
       <FAB
         size="small"
         icon={currentView === 'map' ? 'view-list' : 'map'}
@@ -290,6 +291,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
         }}
       />
 
+      {/* Icone centrer sur ma position */}
       {currentView === 'map' && (
         <FAB
           size="small"
