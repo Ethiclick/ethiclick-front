@@ -59,6 +59,7 @@ function BottomNavigationBar() {
           {useAppSelector(isLogged) ? (
             <Tab.Screen
               options={{
+              headerShown: false,
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({ color, size }) => <Icon source="account" color={color} size={size} />,
               }}

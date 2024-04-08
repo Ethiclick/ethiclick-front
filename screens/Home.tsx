@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useRef, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-import { Avatar, FAB, Menu, Button, Searchbar, Chip, Card, Icon } from 'react-native-paper';
+import { Avatar, FAB, Menu, Button, Searchbar, Chip } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
 // import SplashScreen from 'react-native-splash-screen';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
@@ -221,7 +221,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
     getLocation().catch(alert);
   }, []);
 
-
+ 
   // récupération adresse IP expoGo
   // useEffect(() => {
   //   fetchIpAddress();
@@ -251,7 +251,6 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
         </MapView>
       )}
       {currentView === 'list' && ( 
-        
         <ScrollView centerContent style={{ flex: 2, width: '100%', height: '100%' }}>
           <SearchBar navigation={navigation} currentView={currentView}/>
             <View style={styles.containerList}>
