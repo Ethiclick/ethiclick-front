@@ -83,7 +83,7 @@ function Filters() {
 
   return (
     <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
-      {categories.map<React.JSX.Element>((filter) => {
+      {categories.map<React.JSX.Element>((filter : Array) => {
         return (
           <Chip
             selected={filterActive.includes(filter.id)}
@@ -122,18 +122,32 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
   const dispatch = useAppDispatch();
   const logged = useAppSelector(isLogged);
   const user = useAppSelector(getUser) as { email: string };
+  
 
+ const sbStyle = StyleSheet.create({
+    map: {
+      position: 'absolute',
+      top: 50,
+      left: 5,
+      right: 5,
+      borderRadius: 15,
+      width: "97%"
+    },
+    list : {
+      position: "absolute",
+      top: 50,
+      left: 5,
+      right: 5,
+      width: '97%',
+      borderRadius: 15,
+      zIndex: 1,
+    }
+
+ });
+// console.log(currentView);
+//  TODO: ajouter condition map/list => style correspondant pour la searchBar
   return (
-    <View
-      style={{
-        position: 'absolute',
-        top: 50,
-        left: 5,
-        right: 5,
-        borderRadius: 15,
-        width: "97%"
-      }}
-    >
+    <View style={currentView === "map" ? sbStyle.map : sbStyle.list}>
       <Searchbar
         elevation={2}
         style={{
@@ -245,34 +259,36 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
                 latitude: currentLocation.latitude,
                 longitude: currentLocation.longitude,
               }}
-              title="Your Location"
+              title="Votre position"
             />
           )}
         </MapView>
       )}
       {currentView === 'list' && ( 
-        <ScrollView centerContent style={{ flex: 2, width: '100%', height: '100%' }}>
-          <SearchBar navigation={navigation} currentView={currentView}/>
-            <View style={styles.containerList}>
-        {(() => {
+        <View style={{ flex: 1, width: '100%', height: '100%' }}>
+        <SearchBar navigation={navigation} currentView={currentView}/>
+          <ScrollView centerContent>
+              <View style={styles.containerList}>
+          {(() => {
+              const squares = [];
+              for (let i = 0; i < categories.length; i++) {
+                const data1 = categories[i];
+                const data2 = categories[i + 1];
 
-            const squares = [];
-            for (let i = 0; i < categories.length; i++) {
-              const data1 = categories[i];
-              const data2 = categories[i + 1];
+                if (!data1 || !data2) break;
+                
+                squares.push(
+                  <Square key={i} data1={data1} data2={data2} />
+                );
+                // On incrémente pour tjrs être sur le bon index
+                i++
+              }
+              return squares;
+          })()}
+          </View>
+        </ScrollView>
+      </View>
 
-              if (!data1 || !data2) break;
-              
-              squares.push(
-                <Square key={i} data1={data1} data2={data2} />
-              );
-              // On incrémente pour tjrs être sur le bon index
-              i++
-            }
-            return squares;
-        })()}
-        </View>
-      </ScrollView>
       )}
       {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView}/>}
         
