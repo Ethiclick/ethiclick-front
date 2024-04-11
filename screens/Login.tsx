@@ -74,7 +74,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
             )}
             name="email"
           />
-          {errors.email && <HelperMessage type="error" message="Ce champ est requis." />}
+          {errors.email && <HelperMessage type="error" message="Ce champ est requis" />}
 
           <Controller
             control={control}

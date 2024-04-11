@@ -144,8 +144,6 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
     }
 
  });
-// console.log(currentView);
-//  TODO: ajouter condition map/list => style correspondant pour la searchBar
   return (
     <View style={currentView === "map" ? sbStyle.map : sbStyle.list}>
       <Searchbar
