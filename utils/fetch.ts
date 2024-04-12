@@ -31,14 +31,14 @@ export async function postData(alias: string, body: object): Promise<FetchRespon
   }
 }
 
-export async function getData(alias: string, args : string): Promise<FetchResponse> {
+export async function getData(alias: string, token : string): Promise<FetchResponse> {
   try {
-    const ENDPOINT = `${API_URL}/${alias}/${args}`;
+    const ENDPOINT = `${API_URL}/${alias}`;
     const response = await fetch(ENDPOINT, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json', // Vous pouvez ajouter d'autres en-têtes si nécessaire
-        // Ajoutez ici les en-têtes d'authentification si vous en avez besoin
+        'Authorization': `Bearer ${token}`
       },
     });
 
