@@ -1,19 +1,18 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import * as React from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-// import { useColorScheme } from "react-native";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as ReduxProvider, useSelector } from 'react-redux';
 import BottomNavigationBar from './components/BottomNavigationBar';
-import { store } from './store';
+import { isLogged, store, useAppSelector } from './store'; // Assurez-vous d'importer correctement votre store Redux
+import WelcomeScreen from './screens/Welcome'; // Assurez-vous que le chemin d'accès au fichier est correct
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <PaperProvider>
         <ReduxProvider store={store}>
-          <BottomNavigationBar />
+         <WelcomeScreen />
           <StatusBar />
         </ReduxProvider>
       </PaperProvider>
