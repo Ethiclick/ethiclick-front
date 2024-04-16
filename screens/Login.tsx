@@ -11,8 +11,6 @@ import type { NavigationProp } from '@react-navigation/native';
 import { login, useAppDispatch, setUser } from '../store';
 import HelperMessage from '../components/HelperMessage';
 import { postData } from '../utils/fetch';
-// import ToastMessage from '../components/ToastMessage';
-// import { ToastColorEnum } from '../@types/toast.d';
 
 type FormData = {
   email: string;
@@ -62,7 +60,6 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={{ height: '100%' }}>
-        {/* <ToastMessage msg="test" duration={0} type={ToastColorEnum.Error} /> */}
         <View style={styles.container}>
           <Controller
             control={control}

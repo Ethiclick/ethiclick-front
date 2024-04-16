@@ -8,8 +8,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Home from '../screens/Home';
-// import About from '../screens/About';
-// import Favorites from '../screens/Favorites';
 import Notifications from '../screens/Notifications';
 import Profil from '../screens/Profil';
 import Favorites from '../screens/Favorites';
@@ -17,18 +15,24 @@ import { isLogged, useAppSelector } from '../store';
 import Login from '../screens/Login';
 
 const Tab = createBottomTabNavigator();
-// const navigationRef = createNavigationContainerRef();
 function BottomNavigationBar() {
-  // const connected = useAppSelector((state: RootState) => state.user.logged === true);
 
   return (
     <SafeAreaProvider>
       <NavigationContainer>
         <Tab.Navigator
-          screenOptions={{
-            // headerShown: false, // Globally
-            tabBarStyle: { position: 'absolute', bottom: 30, left: 15, right: 15, borderRadius: 12, opacity: 0.9 },
-          }}
+          screenOptions={({ route }) => ({
+            tabBarStyle: {
+              position: 'absolute',
+              bottom: 30,
+              left: 15,
+              right: 15,
+              borderRadius: 12,
+              opacity: route.name === 'Se connecter' ? 0 : 1, // on cache la bar de nav pour la page de login
+            },
+            tabBarActiveTintColor: 'green',
+            tabBarInactiveTintColor: 'gray',
+          })}
         >
           <Tab.Screen
             name="Accueil"
