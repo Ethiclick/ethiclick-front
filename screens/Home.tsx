@@ -10,6 +10,12 @@ import type { NavigationProp } from '@react-navigation/native';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import Square from './../components/square';
 // import * as Network from 'expo-network'; // récupération de l'ip
+// Définition des type des props du composant SearchBar
+interface SearchBarProps {
+  navigation: NavigationProp<ReactNavigation.RootParamList>;
+  currentView: string;
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -108,11 +114,7 @@ function Filters() {
     </ScrollView>
   );
 }
-// Définition des type des props du composant SearchBar
-interface SearchBarProps {
-  navigation: NavigationProp<ReactNavigation.RootParamList>;
-  currentView: string;
-}
+
 function SearchBar({ navigation, currentView }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [visible, setVisible] = React.useState(false);
