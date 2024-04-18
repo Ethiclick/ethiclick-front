@@ -52,7 +52,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
 
     dispatch(setUser({ email: data.email, token: loginData.token }));
     dispatch(login());
-    navigation.navigate('Accueil' as never);
+    navigation.navigate("Home" as never);
     return true;
   };
   const [secure, setSecure] = React.useState(true);

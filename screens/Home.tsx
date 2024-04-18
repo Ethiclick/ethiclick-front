@@ -6,7 +6,6 @@ import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
-// import SplashScreen from 'react-native-splash-screen';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import Square from './../components/square';
 // import * as Network from 'expo-network'; // récupération de l'ip
