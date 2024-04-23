@@ -11,6 +11,8 @@ import Profil from './screens/Profil';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomNavigationBar from './components/BottomNavigationBar';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -31,12 +33,15 @@ export default function App() {
       <PaperProvider>
         <ReduxProvider store={store}>
           <NavigationContainer>
-            <Stack.Navigator>
-              {userLoggedIn ? (
-                  <>
-                    <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-                    <Stack.Screen name="Profil" component={Profil} options={{ headerShown: false }} />
-                  </>
+          <Stack.Navigator>
+            {userLoggedIn ? (
+                <Stack.Screen name="Home" options={{ headerShown: false }}>
+                  {() => (
+                    <>
+                      <BottomNavigationBar />
+                    </>
+                  )}
+                </Stack.Screen>
               ) : (
                 <>
                   <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />

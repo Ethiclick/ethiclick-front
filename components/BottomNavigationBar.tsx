@@ -18,8 +18,6 @@ const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarStyle: {
@@ -81,8 +79,6 @@ function BottomNavigationBar() {
             />
           )}
         </Tab.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
   );
 }
 
