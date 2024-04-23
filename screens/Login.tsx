@@ -1,8 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from 'react';
 import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -31,7 +26,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Login({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
+export default function Login({ onLogin }: { onLogin: () => void }) {
   const {
     control,
     handleSubmit,
@@ -52,7 +47,8 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
 
     dispatch(setUser({ email: data.email, token: loginData.token }));
     dispatch(login());
-    navigation.navigate("Home" as never);
+    // Appeler la fonction onLogin pour mettre à jour l'état connecté
+    onLogin();
     return true;
   };
   const [secure, setSecure] = React.useState(true);
@@ -99,7 +95,6 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
             compact
             disabled={errors.email !== undefined || errors.password !== undefined}
             style={styles.login}
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onPress={handleSubmit(onSubmit)}
           >
             Se connecter
@@ -108,4 +103,4 @@ export default function Login({ navigation }: { navigation: NavigationProp<React
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
