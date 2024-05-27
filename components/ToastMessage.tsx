@@ -43,7 +43,7 @@ function ToastMessage({ msg, duration = 9000, type = 'Info' }: { msg: string; du
   }, [animatedValue, state?.duration]);
 
   const showToast = useCallback(() => {
-    console.log("ii")
+    console.log('ii');
     Animated.timing(animatedValue, { toValue: 0, duration: 300, useNativeDriver: true }).start(() => closeToast());
   }, [animatedValue, closeToast]);
 

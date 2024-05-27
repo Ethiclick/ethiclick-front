@@ -56,15 +56,16 @@ export default function Login() {
     },
   });
   const dispatch = useAppDispatch();
+  // eslint-disable-next-line consistent-return
   const onSubmit = async (data: { email: string; password: string }) => {
     const loginData = await postData('users/login', data);
 
     if (loginData instanceof Error) {
-      return Alert.alert(loginData.message);
+      // return Alert.alert(loginData.message);
     }
 
     if (loginData.errors) {
-      return Alert.alert(loginData.errors[0].message);
+      // return Alert.alert(loginData.errors[0].message);
     }
 
     dispatch(setUser({ email: data.email, token: loginData.token }));

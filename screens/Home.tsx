@@ -1,5 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
@@ -9,11 +7,19 @@ import type { NavigationProp } from '@react-navigation/native';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import Square from '../components/square';
 import { API_URL } from '../utils/constantes';
+import { navigate } from '../router/Router';
 // import * as Network from 'expo-network'; // récupération de l'ip
 // Définition des type des props du composant SearchBar
 interface SearchBarProps {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   currentView: string;
+}
+
+interface Catergorie {
+  id: number;
+  libelle: string;
+  color: string;
+  selected: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -50,10 +56,8 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   containerList: {
-    marginTop: '32%',
-    paddingTop: '5%',
-    paddingLeft: '2%',
-    paddingRight: '2%',
+    marginVertical: '32%',
+    paddingHorizontal: '2%',
     width: '100%',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -81,16 +85,16 @@ function fectchCat1() {
 }
 
 function Filters() {
-  const categories = fectchCat1();
-  const [filterQuery, setFilterQuery] = React.useState('');
+  const categories = fectchCat1() as Catergorie[];
+  // const [filterQuery, setFilterQuery] = React.useState(defaultCat);
   const [filterActive, setFilterActive] = React.useState(['']);
 
   return (
     <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
-      {categories.map<React.JSX.Element>((filter: Array) => {
+      {categories.map<React.JSX.Element>((filter) => {
         return (
           <Chip
-            selected={filterActive.includes(filter.id)}
+            selected={filterActive.includes(filter.id.toString())}
             key={filter.id}
             style={{ ...styles.filter, ...{ backgroundColor: filter.color } }}
             textStyle={{ color: 'black' }} // à voir si on enregistre en base la couleur du txt pour la lisibilité pour si on le gère ici ?
@@ -101,8 +105,7 @@ function Filters() {
                 throw new Error('filter not found');
               }
               filterObj.selected = !filterObj.selected;
-              setFilterActive(categories.filter((fil) => fil.selected).map((a) => a.id));
-              setFilterQuery(filter.id);
+              setFilterActive(categories.filter((fil) => fil.selected).map((a) => a.id.toString()));
             }}
           >
             {filter.libelle}
@@ -174,7 +177,7 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
                 <Menu.Item
                   onPress={() => {
                     setVisible(false);
-                    navigation.navigate('Profile' as never);
+                    navigate('Profile');
                   }}
                   title="Mon profil"
                   leadingIcon="account-circle-outline"
@@ -262,19 +265,17 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
       {currentView === 'list' && (
         <View style={{ flex: 1, width: '100%', height: '100%' }}>
           <SearchBar navigation={navigation} currentView={currentView} />
-          <ScrollView centerContent>
+          <ScrollView>
             <View style={styles.containerList}>
               {(() => {
                 const squares = [];
-                for (let i = 0; i < categories.length; i++) {
+                for (let i = 0; i < categories.length; i += 2) {
                   const data1 = categories[i];
                   const data2 = categories[i + 1];
 
                   if (!data1 || !data2) break;
 
                   squares.push(<Square key={i} data1={data1} data2={data2} />);
-                  // On incrémente pour tjrs être sur le bon index
-                  i++;
                 }
                 return squares;
               })()}
