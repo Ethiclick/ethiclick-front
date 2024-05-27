@@ -1,7 +1,7 @@
 export interface IToastType {
   msg: string;
   duration?: number;
-  type?: ToastColorEnum;
+  type: keyof typeof ToastColorEnum;
 }
 
 export enum ToastColorEnum {

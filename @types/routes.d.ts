@@ -1,5 +1,4 @@
 enum Routes {
-  Welcome = 'welcome',
   Home = 'home',
   Login = 'login',
   Profile = 'profile',
@@ -11,7 +10,6 @@ enum Routes {
 export type NavigationParams = RootStackParams;
 
 export type RootStackParams = {
-  [Routes.Welcome]: undefined;
   [Routes.Home]: undefined;
   [Routes.Login]: undefined;
 };

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { FetchResponse } from '../@types/fetch';
 import { API_URL } from './constantes';
@@ -31,14 +33,14 @@ export async function postData(alias: string, body: object): Promise<FetchRespon
   }
 }
 
-export async function getData(alias: string, token : string): Promise<FetchResponse> {
+export async function getData(alias: string, token: string): Promise<FetchResponse> {
   try {
     const ENDPOINT = `${API_URL}/${alias}`;
     const response = await fetch(ENDPOINT, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json', // Vous pouvez ajouter d'autres en-têtes si nécessaire
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -46,9 +48,7 @@ export async function getData(alias: string, token : string): Promise<FetchRespo
       throw new Error(`Erreur ${response.status} lors de la requête.`);
     }
 
-    const data = await response.json();
-
-// console.log(data)
+    const data = (await response.json()) as FetchResponse;
 
     return data;
   } catch (error: any) {

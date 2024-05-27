@@ -1,57 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
-import { store } from './store'; // Assurez-vous d'importer correctement votre store Redux
-import WelcomeScreen from './screens/Welcome';
 import Login from './screens/Login';
-import Home from './screens/Home';
-import Profil from './screens/Profil';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomNavigationBar from './components/BottomNavigationBar';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-const Tab = createBottomTabNavigator();
+import { isLogged, store, useAppSelector } from './store';
 
-export default function App() {
+function App() {
   const Stack = createNativeStackNavigator();
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  return (
+    <Stack.Navigator>
+      {useAppSelector(isLogged) ? (
+        <Stack.Screen name="Home" options={{ headerShown: false }}>
+          {() => <BottomNavigationBar />}
+        </Stack.Screen>
+      ) : (
+        <Stack.Screen name="Login" options={{ headerShown: false }}>
+          {() => <Login />}
+        </Stack.Screen>
+      )}
+    </Stack.Navigator>
+  );
+}
 
-  const handleLogin = () => {
-    setUserLoggedIn(true);
-  };
-
-  // const handleLogout = () => {
-  //   setUserLoggedIn(false);
-  // };
-
-  console.log(userLoggedIn);
-
+export default function AppWrapper() {
   return (
     <SafeAreaProvider>
       <PaperProvider>
         <ReduxProvider store={store}>
           <NavigationContainer>
-          <Stack.Navigator>
-            {userLoggedIn ? (
-                <Stack.Screen name="Home" options={{ headerShown: false }}>
-                  {() => (
-                    <>
-                      <BottomNavigationBar />
-                    </>
-                  )}
-                </Stack.Screen>
-              ) : (
-                <>
-                  <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-                  <Stack.Screen name="Login">
-                    {(props) => <Login {...props} onLogin={handleLogin} />}
-                  </Stack.Screen>
-                </>
-              )}
-            </Stack.Navigator>
             <StatusBar />
+            <App />
           </NavigationContainer>
         </ReduxProvider>
       </PaperProvider>

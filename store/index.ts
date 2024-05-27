@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
-/* eslint-disable import/no-extraneous-dependencies */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { configureStore, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch = () => useDispatch<AppDispatch>();

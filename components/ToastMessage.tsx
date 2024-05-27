@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, Animated, TouchableWithoutFeedback } from 'react-native';
-import { ToastColorEnum, IToastType } from '../@types/toast.d';
+import type { ToastColorEnum, IToastType } from '../@types/toast.d';
 
 let stop = false;
 
@@ -28,9 +28,10 @@ const styles = StyleSheet.create({
   },
 });
 
-function ToastMessage({ msg, duration, type }: { msg: string; duration: number; type: ToastColorEnum }) {
+function ToastMessage({ msg, duration = 9000, type = 'Info' }: { msg: string; duration: number; type: keyof typeof ToastColorEnum }) {
+  console.log('ii');
   const animatedValue = useRef(new Animated.Value(-toastHeight)).current;
-  const [state, setState] = useState<IToastType>({ type: ToastColorEnum.Info, msg: '' });
+  const [state, setState] = useState<IToastType>({ type, msg: '' });
 
   const closeToast = useCallback(() => {
     setTimeout(
@@ -42,6 +43,7 @@ function ToastMessage({ msg, duration, type }: { msg: string; duration: number; 
   }, [animatedValue, state?.duration]);
 
   const showToast = useCallback(() => {
+    console.log("ii")
     Animated.timing(animatedValue, { toValue: 0, duration: 300, useNativeDriver: true }).start(() => closeToast());
   }, [animatedValue, closeToast]);
 
@@ -55,8 +57,8 @@ function ToastMessage({ msg, duration, type }: { msg: string; duration: number; 
     Animated.timing(animatedValue, { toValue: -toastHeight, duration: 300, useNativeDriver: true }).start();
   }, [animatedValue]);
 
-  setState({ msg: msg || '', duration: duration || 1500, type: type || ToastColorEnum.Info });
-
+  setState({ msg: msg || '', duration: duration || 1500, type: type || 'Info' });
+  console.log('ii');
   showToast();
 
   return (

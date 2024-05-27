@@ -7,14 +7,14 @@ import MapView, { Marker } from 'react-native-maps';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
-import Square from './../components/square';
+import Square from '../components/square';
+import { API_URL } from '../utils/constantes';
 // import * as Network from 'expo-network'; // récupération de l'ip
 // Définition des type des props du composant SearchBar
 interface SearchBarProps {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   currentView: string;
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   containerList: {
-    marginTop: "32%",
+    marginTop: '32%',
     paddingTop: '5%',
     paddingLeft: '2%',
     paddingRight: '2%',
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function fectchCat1 () {
+function fectchCat1() {
   const [categories, setDataArray] = useState([]);
 
   useEffect(() => {
@@ -69,8 +69,8 @@ function fectchCat1 () {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://51.77.193.240:42553/categorie/get/1'); // On récupère les categories de niv1
-      const jsonData = await response.json();
+      const response = await fetch(`${API_URL}/categorie/get/1`); // On récupère les categories de niv1
+      const jsonData = (await response.json()) as [];
 
       setDataArray(jsonData); // On stock les données dans un tableau
     } catch (error) {
@@ -81,20 +81,19 @@ function fectchCat1 () {
 }
 
 function Filters() {
-
   const categories = fectchCat1();
   const [filterQuery, setFilterQuery] = React.useState('');
   const [filterActive, setFilterActive] = React.useState(['']);
 
   return (
     <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
-      {categories.map<React.JSX.Element>((filter : Array) => {
+      {categories.map<React.JSX.Element>((filter: Array) => {
         return (
           <Chip
             selected={filterActive.includes(filter.id)}
             key={filter.id}
             style={{ ...styles.filter, ...{ backgroundColor: filter.color } }}
-            textStyle={{ color: "black" }} // à voir si on enregistre en base la couleur du txt pour la lisibilité pour si on le gère ici ?
+            textStyle={{ color: 'black' }} // à voir si on enregistre en base la couleur du txt pour la lisibilité pour si on le gère ici ?
             onPress={() => {
               const filterObj = categories.find((f) => f.id === filter.id);
 
@@ -123,30 +122,28 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
   const dispatch = useAppDispatch();
   const logged = useAppSelector(isLogged);
   const user = useAppSelector(getUser) as { email: string };
-  
 
- const sbStyle = StyleSheet.create({
+  const sbStyle = StyleSheet.create({
     map: {
       position: 'absolute',
       top: 50,
       left: 5,
       right: 5,
       borderRadius: 15,
-      width: "97%"
+      width: '97%',
     },
-    list : {
-      position: "absolute",
+    list: {
+      position: 'absolute',
       top: 50,
       left: 5,
       right: 5,
       width: '97%',
       borderRadius: 15,
       zIndex: 1,
-    }
-
- });
+    },
+  });
   return (
-    <View style={currentView === "map" ? sbStyle.map : sbStyle.list}>
+    <View style={currentView === 'map' ? sbStyle.map : sbStyle.list}>
       <Searchbar
         elevation={2}
         style={{
@@ -194,7 +191,7 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
           </Menu>
         </View>
       </View>
-      {currentView === 'map' && <Filters/>}
+      {currentView === 'map' && <Filters />}
     </View>
   );
 }
@@ -234,7 +231,6 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
     getLocation().catch(alert);
   }, []);
 
- 
   // récupération adresse IP expoGo
   // useEffect(() => {
   //   fetchIpAddress();
@@ -263,34 +259,31 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
           )}
         </MapView>
       )}
-      {currentView === 'list' && ( 
+      {currentView === 'list' && (
         <View style={{ flex: 1, width: '100%', height: '100%' }}>
-        <SearchBar navigation={navigation} currentView={currentView}/>
+          <SearchBar navigation={navigation} currentView={currentView} />
           <ScrollView centerContent>
-              <View style={styles.containerList}>
-          {(() => {
-              const squares = [];
-              for (let i = 0; i < categories.length; i++) {
-                const data1 = categories[i];
-                const data2 = categories[i + 1];
+            <View style={styles.containerList}>
+              {(() => {
+                const squares = [];
+                for (let i = 0; i < categories.length; i++) {
+                  const data1 = categories[i];
+                  const data2 = categories[i + 1];
 
-                if (!data1 || !data2) break;
-                
-                squares.push(
-                  <Square key={i} data1={data1} data2={data2} />
-                );
-                // On incrémente pour tjrs être sur le bon index
-                i++
-              }
-              return squares;
-          })()}
-          </View>
-        </ScrollView>
-      </View>
+                  if (!data1 || !data2) break;
 
+                  squares.push(<Square key={i} data1={data1} data2={data2} />);
+                  // On incrémente pour tjrs être sur le bon index
+                  i++;
+                }
+                return squares;
+              })()}
+            </View>
+          </ScrollView>
+        </View>
       )}
-      {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView}/>}
-        
+      {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView} />}
+
       {/* Icone de changement de vue List/carte */}
       <FAB
         size="small"
