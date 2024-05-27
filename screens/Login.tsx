@@ -82,6 +82,7 @@ export default function Login() {
               control={control}
               rules={{
                 required: true,
+                pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
@@ -97,7 +98,9 @@ export default function Login() {
               )}
               name="email"
             />
-            {errors.email && <HelperMessage type="error" message="Ce champ est requis" />}
+
+            {errors.email && errors.email.type === 'pattern' && <HelperMessage type="error" message="Adresse mail invalide" />}
+            {errors.email && errors.email.type === 'required' && <HelperMessage type="error" message="Ce champ est requis" />}
 
             <Controller
               control={control}
