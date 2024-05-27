@@ -25,6 +25,7 @@ interface VignetteData {
   title: string;
   icone?: string;
 }
+
 export default function Profil() {
   const user = useAppSelector(getUser) as { token: string };
   const [userData, setUserData] = useState<UserData | null>(null);

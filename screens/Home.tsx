@@ -177,7 +177,7 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
                 <Menu.Item
                   onPress={() => {
                     setVisible(false);
-                    navigate('Profile');
+                    navigation.navigate('Profile');
                   }}
                   title="Mon profil"
                   leadingIcon="account-circle-outline"
