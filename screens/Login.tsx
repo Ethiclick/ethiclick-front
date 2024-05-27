@@ -1,5 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, ImageBackground, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard, Alert } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
+  Keyboard,
+  Alert,
+  Dimensions,
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
 import { login, useAppDispatch, setUser } from '../store';
@@ -13,19 +23,18 @@ type FormData = {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, height: '100%' },
+  container: { flex: 1 },
   inner: {
     padding: 24,
     marginTop: 50,
     flex: 1,
     justifyContent: 'center',
-    height: '100%',
+    minHeight: Dimensions.get('screen').height / 1.3,
   },
   input: { marginVertical: 5 },
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    height: '100%',
   },
   btnContainer: {
     display: 'flex',
@@ -47,7 +56,6 @@ export default function Login() {
     },
   });
   const dispatch = useAppDispatch();
-  // eslint-disable-next-line consistent-return
   const onSubmit = async (data: { email: string; password: string }) => {
     const loginData = await postData('users/login', data);
 
@@ -67,7 +75,7 @@ export default function Login() {
   return (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     <ImageBackground source={LoginPNG} style={styles.backgroundImage}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'height' : 'height'} style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
             <Controller
