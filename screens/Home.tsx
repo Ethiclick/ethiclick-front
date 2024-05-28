@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import { Avatar, FAB, Menu, Button, Searchbar, Chip } from 'react-native-paper';
@@ -216,7 +216,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
     const getLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== Location.PermissionStatus.GRANTED) {
-        alert("Vous avez refusé l'accès à votre localisation");
+        Alert.alert("Vous avez refusé l'accès à votre localisation");
         return;
       }
 

@@ -51,8 +51,8 @@ export default function Login() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'contact@ethiclick.fr', // / ! \ REMOVE!!
+      password: 'lolita64', // / ! \ REMOVE!!
     },
   });
   const dispatch = useAppDispatch();
