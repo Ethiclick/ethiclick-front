@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function setUser(user: string) {
@@ -6,6 +5,7 @@ export async function setUser(user: string) {
     await AsyncStorage.setItem('user', user);
   } catch (error) {
     // saving error
+    console.error(error);
   }
 }
 
@@ -14,6 +14,7 @@ export async function getUser() {
     await AsyncStorage.getItem('user');
   } catch (error) {
     // saving error
+    console.error(error);
   }
 }
 
@@ -25,5 +26,6 @@ export async function clearUser() {
     await AsyncStorage.removeItem('user');
   } catch (error) {
     // saving error
+    console.error(error);
   }
 }

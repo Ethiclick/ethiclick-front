@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
-  Alert,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
@@ -61,11 +61,11 @@ export default function Login() {
     const loginData = await postData('users/login', data);
 
     if (loginData instanceof Error) {
-      // return Alert.alert(loginData.message);
+      return Alert.alert(loginData.message);
     }
 
     if (loginData.errors) {
-      // return Alert.alert(loginData.errors[0].message);
+      return Alert.alert(loginData.errors[0].message);
     }
 
     dispatch(setUser({ email: data.email, token: loginData.token }));
@@ -90,7 +90,7 @@ export default function Login() {
                   error={!!errors.email}
                   style={styles.input}
                   mode="outlined"
-                  placeholder="E-mail"
+                  placeholder="Email"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}

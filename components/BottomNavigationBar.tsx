@@ -1,8 +1,9 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
-import { Icon } from 'react-native-paper';
+// import { Icon } from 'react-native-paper';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Feather';
 
 import Home from '../screens/Home';
 import Notifications from '../screens/Notifications';
@@ -33,7 +34,7 @@ function BottomNavigationBar() {
         options={{
           headerShown: false,
           tabBarLabel: 'Accueil',
-          tabBarIcon: ({ color, size }) => <Icon source="home" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <Icon name="home" color={color} size={size} />,
         }}
         component={Home}
       />
@@ -41,7 +42,7 @@ function BottomNavigationBar() {
         options={{
           // headerShown: true, // Specific view
           tabBarLabel: 'Favoris',
-          tabBarIcon: ({ color, size }) => <Icon source="heart" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <Icon name="heart" color={color} size={size} />,
         }}
         name="Favoris"
         component={Favorites}
@@ -49,7 +50,7 @@ function BottomNavigationBar() {
       <Tab.Screen
         options={{
           tabBarLabel: 'Notifications',
-          tabBarIcon: ({ color, size }) => <Icon source="bell" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <Icon name="bell" color={color} size={size} />,
         }}
         name="Notifications"
         component={Notifications}
@@ -59,7 +60,7 @@ function BottomNavigationBar() {
           options={{
             headerShown: false,
             tabBarLabel: 'Profile',
-            tabBarIcon: ({ color, size }) => <Icon source="account" color={color} size={size} />,
+            tabBarIcon: ({ color, size }) => <Icon name="user" color={color} size={size} />,
           }}
           name="Profile"
           component={Profil}
@@ -68,7 +69,7 @@ function BottomNavigationBar() {
         <Tab.Screen
           options={{
             tabBarLabel: 'Se connecter',
-            tabBarIcon: ({ color, size }) => <Icon source="login" color={color} size={size} />,
+            tabBarIcon: ({ color, size }) => <Icon name="login" color={color} size={size} />,
           }}
           name="Se connecter"
           component={Login}

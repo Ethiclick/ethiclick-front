@@ -11,6 +11,7 @@ import { isLogged, store, useAppSelector } from './store';
 
 function App() {
   const Stack = createNativeStackNavigator();
+
   return (
     <Stack.Navigator>
       {useAppSelector(isLogged) ? (

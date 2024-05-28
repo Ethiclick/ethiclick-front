@@ -7,8 +7,6 @@ import type { NavigationProp } from '@react-navigation/native';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import Square from '../components/square';
 import { API_URL } from '../utils/constantes';
-import { navigate } from '../router/Router';
-// import * as Network from 'expo-network'; // récupération de l'ip
 // Définition des type des props du composant SearchBar
 interface SearchBarProps {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
@@ -65,27 +63,29 @@ const styles = StyleSheet.create({
 });
 
 function fectchCat1() {
-  const [categories, setDataArray] = useState([]);
+  const [categories, setDataArray] = useState<Catergorie[]>([]);
 
   useEffect(() => {
-    fetchData(); // Appel à l'API lors du chargement du composant
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${API_URL}/categorie/get/1`); // On récupère les categories de niv1
+        const jsonData = (await response.json()) as Catergorie[];
+
+        setDataArray(jsonData); // On stock les données dans un tableau
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données:', error);
+      }
+    };
+
+    // eslint-disable-next-line no-void
+    void fetchData(); // Appel à l'API lors du chargement du composant
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${API_URL}/categorie/get/1`); // On récupère les categories de niv1
-      const jsonData = (await response.json()) as [];
-
-      setDataArray(jsonData); // On stock les données dans un tableau
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
-    }
-  };
   return categories;
 }
 
 function Filters() {
-  const categories = fectchCat1() as Catergorie[];
+  const categories = fectchCat1();
   // const [filterQuery, setFilterQuery] = React.useState(defaultCat);
   const [filterActive, setFilterActive] = React.useState(['']);
 
@@ -177,7 +177,7 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
                 <Menu.Item
                   onPress={() => {
                     setVisible(false);
-                    navigation.navigate('Profile');
+                    navigation.navigate('Profile' as never);
                   }}
                   title="Mon profil"
                   leadingIcon="account-circle-outline"
