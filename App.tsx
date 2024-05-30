@@ -8,9 +8,11 @@ import { Provider as ReduxProvider } from 'react-redux';
 import Login from './screens/Login';
 import BottomNavigationBar from './components/BottomNavigationBar';
 import { isLogged, store, useAppSelector } from './store';
+import Categorie from './screens/Categorie';
+import { RootStackParamList } from './@types/routes';
 
 function App() {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <Stack.Navigator>
@@ -23,6 +25,15 @@ function App() {
           {() => <Login />}
         </Stack.Screen>
       )}
+      <Stack.Screen
+        name="Categorie"
+        component={Categorie}
+        // eslint-disable-next-line react/no-unstable-nested-components
+        options={({ route }) => ({
+          headerBackTitle: 'Accueil',
+          title: route.params.name,
+        })}
+      />
     </Stack.Navigator>
   );
 }

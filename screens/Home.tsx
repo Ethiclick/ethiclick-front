@@ -5,15 +5,14 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { FAB, Icon, Text } from 'react-native-paper';
 // Icon
 import IconEntypo from 'react-native-vector-icons/Entypo';
-// react navigation type
-import type { NavigationProp } from '@react-navigation/native';
 // Types
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
 // Components
-import Square from '../components/square';
+import Square from '../components/Square';
 import { fetchData } from '../utils/fetch';
 import SearchBar from '../components/SearchBar';
+import { CategorieScreenNavigationProp } from '../@types/routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
+function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   const [categories, setCategories] = useState<Categorie[]>([]);
   const [professionnels, setProfessionnels] = useState<Professionnel[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,7 +89,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
         postal_code: 64100,
         website: 'https://www.otsokop.org/',
         acc_card: true,
-        photos: '[ {"1": "photos" } ]',
+        photos: 'https://www.ethiclick.fr/wp-content/uploads/2024/04/otsokop-300x150.jpg',
         id: 1,
         coordinates: [43.502246856780125, -1.468032644379112],
         createdAt: undefined,
@@ -111,7 +110,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
         postal_code: 64100,
         website: 'https://magasins.lescomptoirsdelabio.fr/fr/grain-de-soleil-bayonne-105456',
         acc_card: true,
-        photos: '[ {"1": "photo1.png" } ]',
+        photos: 'https://www.ethiclick.fr/wp-content/uploads/2024/04/grain2soleil.jpeg',
         id: 2,
         coordinates: [43.491955966018, -1.4947859130452246],
         createdAt: undefined,
@@ -250,12 +249,14 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
               {(() => {
                 const squares = [];
                 for (let i = 0; i < categories.length; i += 2) {
-                  const data1 = categories[i];
-                  const data2 = categories[i + 1];
+                  const firstCat = categories[i];
+                  const secondCat = categories[i + 1];
 
-                  if (!data1 || !data2) break;
+                  if (!firstCat || !secondCat) break;
 
-                  squares.push(<Square key={i} data1={data1} data2={data2} setCurrentView={setCurrentView} />);
+                  squares.push(
+                    <Square key={i} firstCat={firstCat} secondCat={secondCat} navigation={navigation} professionnels={professionnels} />
+                  );
                 }
                 return squares;
               })()}
