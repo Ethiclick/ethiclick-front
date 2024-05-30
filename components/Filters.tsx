@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { Categorie } from '../@types/categorie';
@@ -14,10 +14,22 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Filters({ categories, loading }: { categories: Categorie[]; loading: boolean }) {
+export default function Filters({
+  categories,
+  loading,
+  passFilterToMap,
+}: {
+  categories: Categorie[];
+  loading: boolean;
+  passFilterToMap: (filterActive: string[]) => void;
+}) {
   // const [filterQuery, setFilterQuery] = React.useState(defaultCat);
   const activeFilters = categories.map((cat) => cat.id.toString());
   const [filterActive, setFilterActive] = React.useState(activeFilters);
+
+  useEffect(() => {
+    passFilterToMap(filterActive);
+  });
 
   return (
     <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
@@ -35,8 +47,17 @@ export default function Filters({ categories, loading }: { categories: Categorie
                 if (!filterObj) {
                   throw new Error('filter not found');
                 }
-                filterObj.selected = !filterObj.selected;
-                setFilterActive(categories.filter((fil) => fil.selected).map((a) => a.id.toString()));
+                const id = filterObj.id.toString();
+                const selected = filterActive.includes(id);
+                let actualFilters: string[] = [];
+                if (!selected && !filterActive.includes(id)) {
+                  actualFilters = [...filterActive, id];
+                  setFilterActive(actualFilters);
+                } else if (selected) {
+                  actualFilters = filterActive.filter((f) => f !== id);
+                  setFilterActive(actualFilters);
+                }
+                passFilterToMap(actualFilters);
               }}
             >
               {filter.libelle}

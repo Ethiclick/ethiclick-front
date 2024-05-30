@@ -13,6 +13,7 @@ import { CategorieScreenNavigationProp } from '../@types/routes';
 import IconMarker from '../components/icons/IconMarker';
 import IconAdresse from '../components/icons/IconAdresse';
 import ListView from '../components/ListView';
+import Filters from '../components/Filters';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +26,14 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+  },
+  searchContainer: {
+    position: 'absolute',
+    top: 50,
+    left: 5,
+    right: 5,
+    borderRadius: 15,
+    width: '97%',
   },
   changeHomeView: {
     position: 'absolute',
@@ -54,7 +63,11 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   } | null>(null);
   const [currentView, setCurrentView] = useState<'map' | 'list'>('map');
   const mapViewRef = useRef<MapView>(null);
+  const [filters, setFilters] = useState<string[]>([]);
 
+  const getFilters = (f: string[]) => {
+    setFilters(f);
+  };
   const fetchAllData = async () => {
     const fetchedCat = await fetchData<Categorie[]>('/categorie/get/1');
     const fetchedPro = await fetchData<Professionnel[]>('/professionnel/');
@@ -190,49 +203,47 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
           )}
 
           {professionnels.length > 0 &&
-            professionnels.map((pro) => (
-              <Marker
-                key={pro.id}
-                coordinate={{
-                  latitude: pro.coordinates[0],
-                  longitude: pro.coordinates[1],
-                }}
-                pinColor={categories.filter((cat) => cat.id === pro.id_cat1)[0].color}
-              >
-                <View>
-                  <IconMarker size={40} color={categories.filter((cat) => cat.id === pro.id_cat1)[0].color} />
-                </View>
-                <Callout style={{ width: 250, gap: 10, padding: 5, overflow: 'visible' }}>
-                  <Text variant="titleMedium">{pro.nom}</Text>
-                  <Text>
-                    <IconAdresse />
-                    {pro.adresse}
-                  </Text>
-                  <Text style={{ flex: 1, justifyContent: 'center' }}>
-                    <Icon source="web" size={15} />
-                    Site :{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-                    <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => Linking.openURL(pro.website)}>
-                      <Text style={{ color: 'blue' }}>{pro.nom}</Text>
-                    </TouchableOpacity>
-                  </Text>
-                  <Text>Itinéraire : </Text>
-                </Callout>
-              </Marker>
-            ))}
+            professionnels.map(
+              (pro) =>
+                filters.includes(pro.id_cat1.toString()) && (
+                  <Marker
+                    key={pro.id}
+                    coordinate={{
+                      latitude: pro.coordinates[0],
+                      longitude: pro.coordinates[1],
+                    }}
+                    pinColor={categories.filter((cat) => cat.id === pro.id_cat1)[0].color}
+                  >
+                    <View>
+                      <IconMarker size={40} color={categories.filter((cat) => cat.id === pro.id_cat1)[0].color} />
+                    </View>
+                    <Callout style={{ width: 250, gap: 10, padding: 5, overflow: 'visible' }}>
+                      <Text variant="titleMedium">{pro.nom}</Text>
+                      <Text>
+                        <IconAdresse />
+                        {pro.adresse}
+                      </Text>
+                      <Text style={{ flex: 1, justifyContent: 'center' }}>
+                        <Icon source="web" size={15} />
+                        Site :{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+                        <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => Linking.openURL(pro.website)}>
+                          <Text style={{ color: 'blue' }}>{pro.nom}</Text>
+                        </TouchableOpacity>
+                      </Text>
+                      <Text>Itinéraire : </Text>
+                    </Callout>
+                  </Marker>
+                )
+            )}
         </MapView>
       )}
-      {currentView === 'list' && (
-        <ListView
-          navigation={navigation}
-          categories={categories}
-          professionnels={professionnels}
-          currentView={currentView}
-          loading={loading}
-        />
-      )}
+      {currentView === 'list' && <ListView navigation={navigation} categories={categories} professionnels={professionnels} />}
       {/* on check currentView pour éviter le doublon du composant */}
-      {!loading && currentView === 'map' && (
-        <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />
+      {!loading && (
+        <View style={styles.searchContainer}>
+          <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />
+          {currentView === 'map' && <Filters passFilterToMap={getFilters} categories={categories} loading={loading} />}
+        </View>
       )}
 
       {/* Icone de changement de vue List/carte */}

@@ -12,11 +12,11 @@ export interface Professionnel {
   createdAt: DateTime;
   updatedAt: DateTime;
   // ** Clé étrangère
-  iduser: number;
-  profile: HasOne<typeof User>;
-  id_cat1: HasMany<typeof CategorieOne>;
-  id_cat2: HasMany<typeof CategorieTwo>;
-  id_cat3: HasMany<typeof CategorieThree>;
-  id_priceRange: HasMany<typeof PriceRange>;
-  id_abo: HasMany<typeof Abonnement>;
+  iduser?: number;
+  profile?: number;
+  id_cat1: number;
+  id_cat2?: number;
+  id_cat3?: number;
+  id_priceRange?: number;
+  id_abo?: number;
 }
