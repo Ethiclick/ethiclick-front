@@ -6,14 +6,16 @@ import { Avatar, FAB, Menu, Button, Searchbar, Chip } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
 import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import Square from '../components/square';
-import { API_URL } from '../utils/constantes';
+import { fetchData } from '../utils/fetch';
 // Définition des type des props du composant SearchBar
 interface SearchBarProps {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   currentView: string;
+  categories: Categorie[];
+  loading: boolean;
 }
 
-interface Catergorie {
+interface Categorie {
   id: number;
   libelle: string;
   color: string;
@@ -62,61 +64,39 @@ const styles = StyleSheet.create({
   },
 });
 
-function fectchCat1() {
-  const [categories, setDataArray] = useState<Catergorie[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${API_URL}/categorie/get/1`); // On récupère les categories de niv1
-        const jsonData = (await response.json()) as Catergorie[];
-
-        setDataArray(jsonData); // On stock les données dans un tableau
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
-      }
-    };
-
-    // eslint-disable-next-line no-void
-    void fetchData(); // Appel à l'API lors du chargement du composant
-  }, []);
-
-  return categories;
-}
-
-function Filters() {
-  const categories = fectchCat1();
+function Filters({ categories, loading }: { categories: Categorie[]; loading: boolean }) {
   // const [filterQuery, setFilterQuery] = React.useState(defaultCat);
   const [filterActive, setFilterActive] = React.useState(['']);
-
+  console.log(categories);
   return (
     <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
-      {categories.map<React.JSX.Element>((filter) => {
-        return (
-          <Chip
-            selected={filterActive.includes(filter.id.toString())}
-            key={filter.id}
-            style={{ ...styles.filter, ...{ backgroundColor: filter.color } }}
-            textStyle={{ color: 'black' }} // à voir si on enregistre en base la couleur du txt pour la lisibilité pour si on le gère ici ?
-            onPress={() => {
-              const filterObj = categories.find((f) => f.id === filter.id);
+      {!loading &&
+        categories.map<React.JSX.Element>((filter) => {
+          return (
+            <Chip
+              selected={filterActive.includes(filter.id.toString())}
+              key={filter.id}
+              style={{ ...styles.filter, ...{ backgroundColor: filter.color } }}
+              textStyle={{ color: 'black' }} // à voir si on enregistre en base la couleur du txt pour la lisibilité pour si on le gère ici ?
+              onPress={() => {
+                const filterObj = categories.find((f) => f.id === filter.id);
 
-              if (!filterObj) {
-                throw new Error('filter not found');
-              }
-              filterObj.selected = !filterObj.selected;
-              setFilterActive(categories.filter((fil) => fil.selected).map((a) => a.id.toString()));
-            }}
-          >
-            {filter.libelle}
-          </Chip>
-        );
-      })}
+                if (!filterObj) {
+                  throw new Error('filter not found');
+                }
+                filterObj.selected = !filterObj.selected;
+                setFilterActive(categories.filter((fil) => fil.selected).map((a) => a.id.toString()));
+              }}
+            >
+              {filter.libelle}
+            </Chip>
+          );
+        })}
     </ScrollView>
   );
 }
 
-function SearchBar({ navigation, currentView }: SearchBarProps) {
+function SearchBar({ navigation, currentView, categories, loading }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -194,12 +174,14 @@ function SearchBar({ navigation, currentView }: SearchBarProps) {
           </Menu>
         </View>
       </View>
-      {currentView === 'map' && <Filters />}
+      {currentView === 'map' && <Filters categories={categories} loading={loading} />}
     </View>
   );
 }
 
 function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
+  const [categories, setCategories] = useState<Categorie[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentLocation, setCurrentLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [initialRegion, setInitialRegion] = useState<{
     latitude: number;
@@ -209,10 +191,18 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
   } | null>(null);
   const [currentView, setCurrentView] = useState('map');
   const mapViewRef = useRef<MapView>(null);
-  const categories = fectchCat1();
+
+  const fetchCategories = async () => {
+    const data = await fetchData<Categorie[]>('/categorie/get/1');
+    setCategories(data);
+    setLoading(false);
+  };
 
   // Récupération de la localisation
   useEffect(() => {
+    // eslint-disable-next-line no-void
+    void fetchCategories();
+
     const getLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== Location.PermissionStatus.GRANTED) {
@@ -234,19 +224,6 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
     getLocation().catch(alert);
   }, []);
 
-  // récupération adresse IP expoGo
-  // useEffect(() => {
-  //   fetchIpAddress();
-  // }, []);
-  // const fetchIpAddress = async () => {
-  //   try {
-  //     const ipAddress = await Network.getIpAddressAsync();
-  //     console.log(ipAddress);
-  //   } catch (error) {
-  //     console.error('Erreur lors de la récupération de l\'adresse IP:', error);
-  //   }
-  // };
-
   return (
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
@@ -264,7 +241,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
       )}
       {currentView === 'list' && (
         <View style={{ flex: 1, width: '100%', height: '100%' }}>
-          <SearchBar navigation={navigation} currentView={currentView} />
+          <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />
           <ScrollView>
             <View style={styles.containerList}>
               {(() => {
@@ -283,7 +260,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
           </ScrollView>
         </View>
       )}
-      {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView} />}
+      {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />}
 
       {/* Icone de changement de vue List/carte */}
       <FAB
