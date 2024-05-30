@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { Card, Text, Button, IconButton } from 'react-native-paper';
 import { CategorieScreenRouteProp } from '../@types/routes';
-import IconNewPro from '../components/icons/IconNewPro';
+// import IconNewPro from '../components/icons/IconNewPro';
 import IconAddFavoris from '../components/icons/IconAddFavoris';
 import IconItinerary from '../components/icons/IconItinerary';
 
@@ -21,7 +21,7 @@ export default function Categorie({ route }: { route: CategorieScreenRouteProp }
     >
       {filteredPro.length ? (
         filteredPro.map((pro) => (
-          <Card>
+          <Card key={pro.id}>
             <Card.Title titleVariant="titleLarge" title={pro.nom} subtitle="Activité: ..." />
             <Card.Content>
               <Text variant="bodyMedium">{pro.adresse}</Text>
@@ -41,9 +41,9 @@ export default function Categorie({ route }: { route: CategorieScreenRouteProp }
       ) : (
         <>
           <Text>Désolé, aucun professionnel n&apos;est disponible dans la catégorie {name}..</Text>
-          <Button mode="contained" onPress={() => console.log('pressed')} icon={IconNewPro}>
+          {/* <Button mode="contained" onPress={() => console.log('pressed')} icon={IconNewPro}>
             Suggerer un professionnel
-          </Button>
+          </Button> */}
         </>
       )}
     </ScrollView>

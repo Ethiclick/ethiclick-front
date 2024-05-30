@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Searchbar, Menu, Avatar, Button } from 'react-native-paper';
 import { SearchBarProps } from '../@types/home';
 import { useAppDispatch, useAppSelector, isLogged, getUser, logout } from '../store';
-import Filters from './Filters';
 
-export default function SearchBar({ navigation, currentView, categories, loading }: SearchBarProps) {
+export default function SearchBar({ navigation }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -17,27 +16,8 @@ export default function SearchBar({ navigation, currentView, categories, loading
   const logged = useAppSelector(isLogged);
   const user = useAppSelector(getUser) as { email: string };
 
-  const sbStyle = StyleSheet.create({
-    map: {
-      position: 'absolute',
-      top: 50,
-      left: 5,
-      right: 5,
-      borderRadius: 15,
-      width: '97%',
-    },
-    list: {
-      position: 'absolute',
-      top: 50,
-      left: 5,
-      right: 5,
-      width: '97%',
-      borderRadius: 15,
-      zIndex: 1,
-    },
-  });
   return (
-    <View style={currentView === 'map' ? sbStyle.map : sbStyle.list}>
+    <View>
       <Searchbar
         elevation={2}
         style={{
@@ -85,7 +65,6 @@ export default function SearchBar({ navigation, currentView, categories, loading
           </Menu>
         </View>
       </View>
-      {currentView === 'map' && <Filters categories={categories} loading={loading} />}
     </View>
   );
 }

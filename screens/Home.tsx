@@ -230,7 +230,10 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
           loading={loading}
         />
       )}
-      {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />}
+      {/* on check currentView pour éviter le doublon du composant */}
+      {!loading && currentView === 'map' && (
+        <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />
+      )}
 
       {/* Icone de changement de vue List/carte */}
       <FAB

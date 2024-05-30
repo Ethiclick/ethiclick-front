@@ -4,7 +4,6 @@ import Square from './Square';
 import { Categorie } from '../@types/categorie';
 import { Professionnel } from '../@types/professionnel';
 import { CategorieScreenNavigationProp } from '../@types/routes';
-import SearchBar from './SearchBar';
 
 const styles = StyleSheet.create({
   listView: {
@@ -20,20 +19,15 @@ const styles = StyleSheet.create({
 
 export default function ListView({
   navigation,
-  currentView,
   categories,
   professionnels,
-  loading,
 }: {
   navigation: CategorieScreenNavigationProp;
-  currentView: 'map' | 'list';
   categories: Categorie[];
   professionnels: Professionnel[];
-  loading: boolean;
 }) {
   return (
     <View style={styles.listView}>
-      <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />
       <FlatList
         contentContainerStyle={styles.containerList}
         keyExtractor={(item) => item.id.toString()}
