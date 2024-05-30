@@ -2,25 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-import { Avatar, FAB, Menu, Button, Searchbar, Chip } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import type { NavigationProp } from '@react-navigation/native';
-import { isLogged, getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import Square from '../components/square';
 import { fetchData } from '../utils/fetch';
+import { Categorie } from '../@types/categorie';
+import SearchBar from '../components/SearchBar';
 // Définition des type des props du composant SearchBar
-interface SearchBarProps {
-  navigation: NavigationProp<ReactNavigation.RootParamList>;
-  currentView: string;
-  categories: Categorie[];
-  loading: boolean;
-}
-
-interface Categorie {
-  id: number;
-  libelle: string;
-  color: string;
-  selected: boolean;
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -63,121 +51,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-function Filters({ categories, loading }: { categories: Categorie[]; loading: boolean }) {
-  // const [filterQuery, setFilterQuery] = React.useState(defaultCat);
-  const [filterActive, setFilterActive] = React.useState(['']);
-  console.log(categories);
-  return (
-    <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
-      {!loading &&
-        categories.map<React.JSX.Element>((filter) => {
-          return (
-            <Chip
-              selected={filterActive.includes(filter.id.toString())}
-              key={filter.id}
-              style={{ ...styles.filter, ...{ backgroundColor: filter.color } }}
-              textStyle={{ color: 'black' }} // à voir si on enregistre en base la couleur du txt pour la lisibilité pour si on le gère ici ?
-              onPress={() => {
-                const filterObj = categories.find((f) => f.id === filter.id);
-
-                if (!filterObj) {
-                  throw new Error('filter not found');
-                }
-                filterObj.selected = !filterObj.selected;
-                setFilterActive(categories.filter((fil) => fil.selected).map((a) => a.id.toString()));
-              }}
-            >
-              {filter.libelle}
-            </Chip>
-          );
-        })}
-    </ScrollView>
-  );
-}
-
-function SearchBar({ navigation, currentView, categories, loading }: SearchBarProps) {
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [visible, setVisible] = React.useState(false);
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
-  const onChangeSearch = (query: string) => setSearchQuery(query);
-  const dispatch = useAppDispatch();
-  const logged = useAppSelector(isLogged);
-  const user = useAppSelector(getUser) as { email: string };
-
-  const sbStyle = StyleSheet.create({
-    map: {
-      position: 'absolute',
-      top: 50,
-      left: 5,
-      right: 5,
-      borderRadius: 15,
-      width: '97%',
-    },
-    list: {
-      position: 'absolute',
-      top: 50,
-      left: 5,
-      right: 5,
-      width: '97%',
-      borderRadius: 15,
-      zIndex: 1,
-    },
-  });
-  return (
-    <View style={currentView === 'map' ? sbStyle.map : sbStyle.list}>
-      <Searchbar
-        elevation={2}
-        style={{
-          backgroundColor: 'white',
-          borderRadius: 15,
-          paddingEnd: 65,
-        }}
-        placeholder="Rechercher"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-      />
-      <View style={{ flex: 1, position: 'absolute', right: 5, top: 7, bottom: 0 }}>
-        <View style={{ alignItems: 'flex-end' }}>
-          <Menu
-            anchorPosition="bottom"
-            visible={visible}
-            onDismiss={closeMenu}
-            anchor={
-              <Button icon="chevron-down" style={{ padding: '0.75%' }} compact onPress={() => openMenu()}>
-                {logged ? <Avatar.Text size={30} label={user.email} /> : <Avatar.Text size={30} label="?" />}
-              </Button>
-            }
-          >
-            <Menu.Item onPress={() => {}} title="Proposer un pro" leadingIcon="badge-account-outline" />
-            <Menu.Item onPress={() => {}} title="Signaler un pro" leadingIcon="badge-account-alert-outline" />
-            {logged ? (
-              <>
-                <Menu.Item
-                  onPress={() => {
-                    setVisible(false);
-                    navigation.navigate('Profile' as never);
-                  }}
-                  title="Mon profil"
-                  leadingIcon="account-circle-outline"
-                />
-                <Menu.Item
-                  onPress={() => {
-                    dispatch(logout());
-                  }}
-                  title="Se déconnecter"
-                  leadingIcon="logout"
-                />
-              </>
-            ) : null}
-          </Menu>
-        </View>
-      </View>
-      {currentView === 'map' && <Filters categories={categories} loading={loading} />}
-    </View>
-  );
-}
 
 function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootParamList> }) {
   const [categories, setCategories] = useState<Categorie[]>([]);
@@ -252,7 +125,7 @@ function Home({ navigation }: { navigation: NavigationProp<ReactNavigation.RootP
 
                   if (!data1 || !data2) break;
 
-                  squares.push(<Square key={i} data1={data1} data2={data2} />);
+                  squares.push(<Square key={i} data1={data1} data2={data2} setCurrentView={setCurrentView} />);
                 }
                 return squares;
               })()}
