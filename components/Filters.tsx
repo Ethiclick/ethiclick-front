@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
 
 export default function Filters({ categories, loading }: { categories: Categorie[]; loading: boolean }) {
   // const [filterQuery, setFilterQuery] = React.useState(defaultCat);
-  const [filterActive, setFilterActive] = React.useState(['']);
+  const activeFilters = categories.map((cat) => cat.id.toString());
+  const [filterActive, setFilterActive] = React.useState(activeFilters);
 
   return (
     <ScrollView horizontal style={styles.filters} showsHorizontalScrollIndicator={false}>
