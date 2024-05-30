@@ -3,8 +3,6 @@ import { Alert, Linking, Platform, ScrollView, StyleSheet, TouchableOpacity, Vie
 import * as Location from 'expo-location';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { FAB, Icon, Text } from 'react-native-paper';
-// Icon
-import IconEntypo from 'react-native-vector-icons/Entypo';
 // Types
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
@@ -13,6 +11,8 @@ import Square from '../components/Square';
 import { fetchData } from '../utils/fetch';
 import SearchBar from '../components/SearchBar';
 import { CategorieScreenNavigationProp } from '../@types/routes';
+import IconMarker from '../components/icons/IconMarker';
+import IconAdresse from '../components/icons/IconAdresse';
 
 const styles = StyleSheet.create({
   container: {
@@ -220,12 +220,12 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
                 pinColor={categories.filter((cat) => cat.id === pro.id_cat1)[0].color}
               >
                 <View>
-                  <IconEntypo size={40} name="location-pin" color={categories.filter((cat) => cat.id === pro.id_cat1)[0].color} />
+                  <IconMarker size={40} color={categories.filter((cat) => cat.id === pro.id_cat1)[0].color} />
                 </View>
                 <Callout style={{ width: 250, gap: 10, padding: 5, overflow: 'visible' }}>
                   <Text variant="titleMedium">{pro.nom}</Text>
                   <Text>
-                    <IconEntypo name="pin" />
+                    <IconAdresse />
                     {pro.adresse}
                   </Text>
                   <Text style={{ flex: 1, justifyContent: 'center' }}>

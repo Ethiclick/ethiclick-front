@@ -3,7 +3,6 @@ import * as React from 'react';
 // import { Icon } from 'react-native-paper';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Feather';
 
 import Home from '../screens/Home';
 import Notifications from '../screens/Notifications';
@@ -11,6 +10,13 @@ import Profil from '../screens/Profil';
 import Favorites from '../screens/Favorites';
 import { isLogged, useAppSelector } from '../store';
 import Login from '../screens/Login';
+
+// Icons
+import IconHome from './icons/IconHome';
+import IconFavoris from './icons/IconFavoris';
+import IconNotif from './icons/IconNotif';
+import IconUser from './icons/IconUser';
+import IconLogin from './icons/IconLogin';
 
 const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
@@ -34,7 +40,7 @@ function BottomNavigationBar() {
         options={{
           headerShown: false,
           tabBarLabel: 'Accueil',
-          tabBarIcon: ({ color, size }) => <Icon name="home" color={color} size={size} />,
+          tabBarIcon: IconHome,
         }}
         component={Home}
       />
@@ -42,7 +48,7 @@ function BottomNavigationBar() {
         options={{
           // headerShown: true, // Specific view
           tabBarLabel: 'Favoris',
-          tabBarIcon: ({ color, size }) => <Icon name="heart" color={color} size={size} />,
+          tabBarIcon: IconFavoris,
         }}
         name="Favoris"
         component={Favorites}
@@ -50,7 +56,7 @@ function BottomNavigationBar() {
       <Tab.Screen
         options={{
           tabBarLabel: 'Notifications',
-          tabBarIcon: ({ color, size }) => <Icon name="bell" color={color} size={size} />,
+          tabBarIcon: IconNotif,
         }}
         name="Notifications"
         component={Notifications}
@@ -60,7 +66,7 @@ function BottomNavigationBar() {
           options={{
             headerShown: false,
             tabBarLabel: 'Profile',
-            tabBarIcon: ({ color, size }) => <Icon name="user" color={color} size={size} />,
+            tabBarIcon: IconUser,
           }}
           name="Profile"
           component={Profil}
@@ -69,7 +75,7 @@ function BottomNavigationBar() {
         <Tab.Screen
           options={{
             tabBarLabel: 'Se connecter',
-            tabBarIcon: ({ color, size }) => <Icon name="login" color={color} size={size} />,
+            tabBarIcon: IconLogin,
           }}
           name="Se connecter"
           component={Login}

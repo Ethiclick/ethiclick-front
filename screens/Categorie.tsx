@@ -1,8 +1,10 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { Card, Text, Button } from 'react-native-paper';
+import { Card, Text, Button, IconButton } from 'react-native-paper';
 import { CategorieScreenRouteProp } from '../@types/routes';
 import IconNewPro from '../components/icons/IconNewPro';
+import IconAddFavoris from '../components/icons/IconAddFavoris';
+import IconItinerary from '../components/icons/IconItinerary';
 
 export default function Categorie({ route }: { route: CategorieScreenRouteProp }) {
   const { id, professionnels, name } = route.params;
@@ -26,9 +28,10 @@ export default function Categorie({ route }: { route: CategorieScreenRouteProp }
             </Card.Content>
             <Card.Cover source={{ uri: pro.photos }} style={{ borderRadius: 0, marginTop: 10 }} />
             <Card.Actions>
-              <Button mode="contained-tonal" onPress={() => console.log('pressed')}>
+              <Button mode="contained-tonal" icon={IconItinerary} onPress={() => console.log('pressed')} style={{ marginRight: 'auto' }}>
                 Itinéraire
               </Button>
+              <IconButton mode="contained" icon={IconAddFavoris} onPress={() => console.log('pressed')} />
               {/* <Button mode="contained" onPress={() => console.log(`Consulter le pro ${pro.nom}`)}>
                 Consulter
               </Button> */}

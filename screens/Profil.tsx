@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { Avatar, Appbar, Card } from 'react-native-paper';
-import { getUser, useAppSelector } from '../store';
+import { getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import { getData } from '../utils/fetch';
 import AvatarPNG from '../assets/avatar.png';
 
@@ -121,6 +121,7 @@ export default function Profil() {
       </Card>
     );
   };
+  const dispatch = useAppDispatch();
 
   return (
     <View style={styles.container}>
@@ -129,13 +130,15 @@ export default function Profil() {
         {/* Afficher le nom d'utilisateur si userData existe */}
         {userData && (
           <>
-            {/* uri pour charger une source distante, require pour une source local */}
+            {/* uri pour charger une source distante, import pour une source local */}
             <Avatar.Image
               size={50}
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               source={userData.avatar ? { uri: userData.avatar } : AvatarPNG}
               style={{ backgroundColor: 'transparent', marginLeft: '3%' }}
             />
             <Appbar.Content title={userData.username} style={{ marginLeft: '3%' }} />
+            <Appbar.Action icon="logout" onPress={() => dispatch(logout())} />
           </>
         )}
       </Appbar.Header>
