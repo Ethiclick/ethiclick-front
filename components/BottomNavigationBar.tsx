@@ -1,8 +1,10 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
 // import { Icon } from 'react-native-paper';
+import { TouchableOpacity } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MD3Colors } from 'react-native-paper';
 
 import Home from '../screens/Home';
 import Notifications from '../screens/Notifications';
@@ -20,19 +22,30 @@ import IconLogin from './icons/IconLogin';
 
 const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
+  const logged = useAppSelector(isLogged);
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      safeAreaInsets={{
+        bottom: 0,
+      }}
+      screenOptions={() => ({
         tabBarStyle: {
           position: 'absolute',
           bottom: 30,
           left: 15,
           right: 15,
           borderRadius: 12,
-          opacity: route.name === 'Se connecter' ? 0 : 1, // on cache la bar de nav pour la page de login
+          height: 60,
         },
-        tabBarActiveTintColor: 'green',
+        tabBarItemStyle: {
+          borderRadius: 12,
+          padding: 10,
+        },
+        tabBarActiveTintColor: MD3Colors.tertiary0,
         tabBarInactiveTintColor: 'gray',
+        tabBarActiveBackgroundColor: MD3Colors.primary60,
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        tabBarButton: (props) => <TouchableOpacity {...props} />,
       })}
     >
       <Tab.Screen
@@ -61,7 +74,7 @@ function BottomNavigationBar() {
         name="Notifications"
         component={Notifications}
       />
-      {useAppSelector(isLogged) ? (
+      {logged ? (
         <Tab.Screen
           options={{
             headerShown: false,

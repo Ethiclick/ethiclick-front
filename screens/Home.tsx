@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { FAB, Icon, Text } from 'react-native-paper';
@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     margin: 16,
     left: '50%',
     transform: [{ translateX: -40 }],
-    bottom: Platform.OS === 'ios' ? 110 : 80,
+    bottom: 90,
   },
   locate: {
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: Platform.OS === 'ios' ? 110 : 80,
+    bottom: 90,
   },
 });
 
@@ -248,7 +248,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
 
       {/* Icone de changement de vue List/carte */}
       <FAB
-        size="small"
+        size="medium"
         icon={currentView === 'map' ? 'view-list' : 'map'}
         style={styles.changeHomeView}
         onPress={() => {
@@ -263,7 +263,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
       {/* Icone centrer sur ma position */}
       {currentView === 'map' && (
         <FAB
-          size="small"
+          size="medium"
           icon="crosshairs-gps"
           style={styles.locate}
           onPress={() => {
