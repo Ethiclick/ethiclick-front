@@ -2,6 +2,8 @@ import React from 'react';
 import { Button } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import { Categorie } from '../@types/categorie';
+import { CategorieScreenNavigationProp } from '../@types/routes';
+import { Professionnel } from '../@types/professionnel';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,13 +37,15 @@ function Col({ children }: { children: React.JSX.Element }) {
 }
 
 function Square({
-  data1,
-  data2,
-  setCurrentView,
+  navigation,
+  firstCat,
+  secondCat,
+  professionnels,
 }: {
-  data1: Categorie;
-  data2: Categorie;
-  setCurrentView: React.Dispatch<React.SetStateAction<'map' | 'list'>>;
+  navigation: CategorieScreenNavigationProp;
+  firstCat: Categorie;
+  secondCat: Categorie;
+  professionnels: Professionnel[];
 }) {
   return (
     <View style={styles.container}>
@@ -50,14 +54,12 @@ function Square({
           <Button
             style={styles.btn}
             labelStyle={styles.title}
-            buttonColor={data1.color}
+            buttonColor={firstCat.color}
             mode="contained"
             contentStyle={{ height: '100%' }}
-            // L'idée ici serait rendre visible une vue contenant les pro de cette catégorie
-            // identique à map/list (ex setCurrentView('pros&id=1')) afin de changer juste le contenu
-            onPress={() => setCurrentView(`list`)}
+            onPress={() => navigation.navigate('Categorie', { id: firstCat.id, name: firstCat.libelle, professionnels })}
           >
-            {data1.libelle}
+            {firstCat.libelle}
           </Button>
         </Col>
 
@@ -65,12 +67,12 @@ function Square({
           <Button
             style={styles.btn}
             labelStyle={styles.title}
-            buttonColor={data2.color}
+            buttonColor={secondCat.color}
             mode="contained"
             contentStyle={{ height: '100%' }}
-            onPress={() => setCurrentView(`list`)}
+            onPress={() => navigation.navigate('Categorie', { id: secondCat.id, name: secondCat.libelle, professionnels })}
           >
-            {data2.libelle}
+            {secondCat.libelle}
           </Button>
         </Col>
       </Row>
