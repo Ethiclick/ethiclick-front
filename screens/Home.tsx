@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Linking, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { FAB, Icon, Text } from 'react-native-paper';
@@ -7,12 +7,12 @@ import { FAB, Icon, Text } from 'react-native-paper';
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
 // Components
-import Square from '../components/Square';
 import { fetchData } from '../utils/fetch';
 import SearchBar from '../components/SearchBar';
 import { CategorieScreenNavigationProp } from '../@types/routes';
 import IconMarker from '../components/icons/IconMarker';
 import IconAdresse from '../components/icons/IconAdresse';
+import ListView from '../components/ListView';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,11 +23,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   map: {
-    width: '100%',
-    height: '100%',
-  },
-  listView: {
-    flex: 1,
     width: '100%',
     height: '100%',
   },
@@ -43,21 +38,6 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: Platform.OS === 'ios' ? 110 : 80,
-  },
-  filters: {
-    marginTop: 10,
-    alignSelf: 'flex-start',
-  },
-  filter: {
-    margin: 2,
-    alignItems: 'baseline',
-  },
-  containerList: {
-    marginVertical: '32%',
-    paddingHorizontal: '2%',
-    width: '100%',
-    justifyContent: 'space-around',
-    alignItems: 'center',
   },
 });
 
@@ -242,27 +222,13 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
         </MapView>
       )}
       {currentView === 'list' && (
-        <View style={styles.listView}>
-          <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />
-          <ScrollView>
-            <View style={styles.containerList}>
-              {(() => {
-                const squares = [];
-                for (let i = 0; i < categories.length; i += 2) {
-                  const firstCat = categories[i];
-                  const secondCat = categories[i + 1];
-
-                  if (!firstCat || !secondCat) break;
-
-                  squares.push(
-                    <Square key={i} firstCat={firstCat} secondCat={secondCat} navigation={navigation} professionnels={professionnels} />
-                  );
-                }
-                return squares;
-              })()}
-            </View>
-          </ScrollView>
-        </View>
+        <ListView
+          navigation={navigation}
+          categories={categories}
+          professionnels={professionnels}
+          currentView={currentView}
+          loading={loading}
+        />
       )}
       {currentView === 'map' && <SearchBar navigation={navigation} currentView={currentView} categories={categories} loading={loading} />}
 

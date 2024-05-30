@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'react-native-paper';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Categorie } from '../@types/categorie';
 import { CategorieScreenNavigationProp } from '../@types/routes';
 import { Professionnel } from '../@types/professionnel';
@@ -19,8 +19,11 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   btn: {
-    borderRadius: 20,
+    borderRadius: 8,
+    flex: 1,
     height: 110,
+    width: '100%',
+    margin: 8,
     justifyContent: 'center',
   },
   title: {
@@ -28,55 +31,27 @@ const styles = StyleSheet.create({
   },
 });
 
-function Row({ children }: { children: React.JSX.Element[] }) {
-  return <View style={styles.row}>{children}</View>;
-}
-
-function Col({ children }: { children: React.JSX.Element }) {
-  return <View style={styles.col}>{children}</View>;
-}
-
 function Square({
+  item,
   navigation,
-  firstCat,
-  secondCat,
   professionnels,
 }: {
+  item: Categorie;
   navigation: CategorieScreenNavigationProp;
-  firstCat: Categorie;
-  secondCat: Categorie;
   professionnels: Professionnel[];
 }) {
   return (
-    <View style={styles.container}>
-      <Row>
-        <Col>
-          <Button
-            style={styles.btn}
-            labelStyle={styles.title}
-            buttonColor={firstCat.color}
-            mode="contained"
-            contentStyle={{ height: '100%' }}
-            onPress={() => navigation.navigate('Categorie', { id: firstCat.id, name: firstCat.libelle, professionnels })}
-          >
-            {firstCat.libelle}
-          </Button>
-        </Col>
-
-        <Col>
-          <Button
-            style={styles.btn}
-            labelStyle={styles.title}
-            buttonColor={secondCat.color}
-            mode="contained"
-            contentStyle={{ height: '100%' }}
-            onPress={() => navigation.navigate('Categorie', { id: secondCat.id, name: secondCat.libelle, professionnels })}
-          >
-            {secondCat.libelle}
-          </Button>
-        </Col>
-      </Row>
-    </View>
+    <Button
+      key={item.id}
+      style={styles.btn}
+      labelStyle={styles.title}
+      buttonColor={item.color}
+      mode="contained"
+      contentStyle={{ height: '100%' }}
+      onPress={() => navigation.navigate('Categorie', { id: item.id, name: item.libelle, professionnels })}
+    >
+      {item.libelle}
+    </Button>
   );
 }
 
