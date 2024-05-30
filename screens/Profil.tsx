@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
-import { Avatar, Appbar, Card } from 'react-native-paper';
+import { Avatar, Appbar, Card, Button } from 'react-native-paper';
 import { getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import { getData } from '../utils/fetch';
 import AvatarPNG from '../assets/avatar.png';
@@ -112,13 +112,14 @@ export default function Profil() {
 
   // console.log(vignetteData.length);
   // Rendu d'une carte
-  const renderCard = ({ item }: { item: CardData }) => {
+  const renderBtn = ({ item }: { item: CardData }) => {
     return (
-      <Card style={[styles.card, { backgroundColor: item.bgColor || styles.card.backgroundColor }]}>
-        <Card.Content>
-          <Text>{item.title}</Text>
-        </Card.Content>
-      </Card>
+      <Button
+        onPress={() => console.log('pressed')}
+        style={[styles.card, { backgroundColor: item.bgColor || styles.card.backgroundColor }]}
+      >
+        {item.title}
+      </Button>
     );
   };
   const dispatch = useAppDispatch();
@@ -165,7 +166,7 @@ export default function Profil() {
         {/* Grille de cartes */}
         <FlatList
           data={cardsData}
-          renderItem={renderCard}
+          renderItem={renderBtn}
           keyExtractor={(item) => item.id.toString()}
           numColumns={2} // Deux colonnes pour la grille
           contentContainerStyle={styles.cardGrid}
