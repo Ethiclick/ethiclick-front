@@ -4,18 +4,20 @@
 import { FetchResponse } from '../@types/fetch';
 import { API_URL } from './constantes';
 
-export async function fetchData(alias: string): Promise<FetchResponse> {
+export async function fetchData<T>(alias: string): Promise<T> {
   try {
+    // eslint-disable-next-line no-param-reassign
+    if (alias.startsWith('/')) alias = alias.substring(1);
     const ENDPOINT = `${API_URL}/${alias}`;
     const response = await fetch(ENDPOINT);
-    const data = (await response.json()) as FetchResponse;
+    const data = (await response.json()) as T;
     return data;
   } catch (error: any) {
     return error;
   }
 }
 
-export async function postData(alias: string, body: object): Promise<FetchResponse> {
+export async function postData(alias: string, body: object, token?: string | null): Promise<FetchResponse> {
   try {
     const ENDPOINT = `${API_URL}/${alias}`;
     const response = await fetch(ENDPOINT, {
@@ -23,6 +25,7 @@ export async function postData(alias: string, body: object): Promise<FetchRespon
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });
