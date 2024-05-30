@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import { Categorie } from '../@types/categorie';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +34,15 @@ function Col({ children }: { children: React.JSX.Element }) {
   return <View style={styles.col}>{children}</View>;
 }
 
-function Square({ data1, data2 }: { data1: { libelle: string; color: string }; data2: { libelle: string; color: string } }) {
+function Square({
+  data1,
+  data2,
+  setCurrentView,
+}: {
+  data1: Categorie;
+  data2: Categorie;
+  setCurrentView: React.Dispatch<React.SetStateAction<'map' | 'list'>>;
+}) {
   return (
     <View style={styles.container}>
       <Row>
@@ -44,7 +53,9 @@ function Square({ data1, data2 }: { data1: { libelle: string; color: string }; d
             buttonColor={data1.color}
             mode="contained"
             contentStyle={{ height: '100%' }}
-            onPress={() => console.log(`${data1.libelle} pressed`)}
+            // L'idée ici serait rendre visible une vue contenant les pro de cette catégorie
+            // identique à map/list (ex setCurrentView('pros&id=1')) afin de changer juste le contenu
+            onPress={() => setCurrentView(`list`)}
           >
             {data1.libelle}
           </Button>
@@ -57,7 +68,7 @@ function Square({ data1, data2 }: { data1: { libelle: string; color: string }; d
             buttonColor={data2.color}
             mode="contained"
             contentStyle={{ height: '100%' }}
-            onPress={() => console.log(`${data2.libelle} pressed`)}
+            onPress={() => setCurrentView(`list`)}
           >
             {data2.libelle}
           </Button>
