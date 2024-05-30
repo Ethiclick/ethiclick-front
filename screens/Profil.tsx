@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 8,
     elevation: 2,
-    padding: 18,
     backgroundColor: '#f0f0f0',
     flex: 1,
     margin: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
     // padding: 18,
   },
   horizontalScroll: {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#0BC0EC',
     borderColor: 'grey',
-    marginHorizontal: 4,
+    // marginHorizontal: 4,
     marginLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -116,7 +116,17 @@ export default function Profil() {
     return (
       <Button
         onPress={() => console.log('pressed')}
-        style={[styles.card, { backgroundColor: item.bgColor || styles.card.backgroundColor }]}
+        style={{
+          borderRadius: 8,
+          flex: 1,
+          height: 110,
+          width: '100%',
+          margin: 8,
+          justifyContent: 'center',
+          overflow: 'visible',
+        }}
+        buttonColor={item.bgColor || styles.card.backgroundColor}
+        contentStyle={{ height: '100%' }}
       >
         {item.title}
       </Button>
