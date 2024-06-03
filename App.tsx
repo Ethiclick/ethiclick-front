@@ -3,13 +3,19 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import Login from './screens/Login';
 import BottomNavigationBar from './components/BottomNavigationBar';
 import { isLogged, store, useAppSelector } from './store';
 import Categorie from './screens/Categorie';
 import { RootStackParamList } from './@types/routes';
+import { THEME } from './utils/constantes';
+
+const theme = {
+  ...DefaultTheme,
+  colors: THEME,
+};
 
 function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -41,7 +47,7 @@ function App() {
 export default function AppWrapper() {
   return (
     <SafeAreaProvider>
-      <PaperProvider>
+      <PaperProvider theme={THEME}>
         <ReduxProvider store={store}>
           <NavigationContainer>
             <StatusBar />
