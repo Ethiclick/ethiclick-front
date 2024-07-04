@@ -11,6 +11,7 @@ import { isLogged, store, useAppSelector } from './store';
 import Categorie from './screens/Categorie';
 import { RootStackParamList } from './@types/routes';
 import { THEME } from './utils/constantes';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const theme = {
   ...DefaultTheme,
@@ -21,26 +22,28 @@ function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
-    <Stack.Navigator>
-      {useAppSelector(isLogged) ? (
-        <Stack.Screen name="Home" options={{ headerShown: false }}>
-          {() => <BottomNavigationBar />}
-        </Stack.Screen>
-      ) : (
-        <Stack.Screen name="Login" options={{ headerShown: false }}>
-          {() => <Login />}
-        </Stack.Screen>
-      )}
-      <Stack.Screen
-        name="Categorie"
-        component={Categorie}
-        // eslint-disable-next-line react/no-unstable-nested-components
-        options={({ route }) => ({
-          headerBackTitle: 'Accueil',
-          title: route.params.name,
-        })}
-      />
-    </Stack.Navigator>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Stack.Navigator>
+        {useAppSelector(isLogged) ? (
+          <Stack.Screen name="Home" options={{ headerShown: false }}>
+            {() => <BottomNavigationBar />}
+          </Stack.Screen>
+        ) : (
+          <Stack.Screen name="Login" options={{ headerShown: false }}>
+            {() => <Login />}
+          </Stack.Screen>
+        )}
+        <Stack.Screen
+          name="Categorie"
+          component={Categorie}
+          // eslint-disable-next-line react/no-unstable-nested-components
+          options={({ route }) => ({
+            headerBackTitle: 'Accueil',
+            title: route.params.name,
+          })}
+        />
+      </Stack.Navigator>
+    </GestureHandlerRootView>
   );
 }
 
