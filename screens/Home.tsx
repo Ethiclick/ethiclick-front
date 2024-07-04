@@ -1,13 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { FAB, Icon, Text } from 'react-native-paper';
+import { fetchData } from '../utils/fetch';
+// import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+// import Animated from 'react-native-reanimated';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 // Types
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
 // Components
-import { fetchData } from '../utils/fetch';
 import SearchBar from '../components/SearchBar';
 import { CategorieScreenNavigationProp } from '../@types/routes';
 import IconMarker from '../components/icons/IconMarker';
@@ -47,6 +50,15 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 90,
+  },
+  containerPro: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });
 
@@ -188,6 +200,11 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
     getLocation().catch(alert);
   }, []);
 
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // callbacks bottomSheetRef
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
   return (
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
@@ -218,6 +235,16 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
                       <IconMarker size={40} color={categories.filter((cat) => cat.id === pro.id_cat1)[0].color} />
                     </View>
                     <Callout style={{ width: 250, gap: 10, padding: 5, overflow: 'visible' }}>
+                      {/* <BottomSheet
+                        ref={bottomSheetRef}
+                        onChange={handleSheetChanges}
+                        snapPoints={[1, '50%', '75%']}
+                        style={styles.containerPro}
+                        >
+                        <BottomSheetView style={styles.contentContainer}>
+                          <Text>Awesome 🎉</Text>
+                        </BottomSheetView>
+                      </BottomSheet> */}
                       <Text variant="titleMedium">{pro.nom}</Text>
                       <Text>
                         <IconAdresse />
