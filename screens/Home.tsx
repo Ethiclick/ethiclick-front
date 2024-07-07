@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Location from 'expo-location';
-import MapView, { Marker, Callout } from 'react-native-maps';
-import { FAB, Icon, Text } from 'react-native-paper';
+import MapView, { Marker } from 'react-native-maps';
+import { FAB, Text, Button } from 'react-native-paper';
 import { fetchData } from '../utils/fetch';
-// import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-// import Animated from 'react-native-reanimated';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 // Types
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
@@ -14,7 +12,6 @@ import type { Professionnel } from '../@types/professionnel';
 import SearchBar from '../components/SearchBar';
 import { CategorieScreenNavigationProp } from '../@types/routes';
 import IconMarker from '../components/icons/IconMarker';
-import IconAdresse from '../components/icons/IconAdresse';
 import ListView from '../components/ListView';
 import Filters from '../components/Filters';
 
@@ -51,15 +48,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 90,
   },
-  containerPro: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: 'grey',
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
 });
 
 function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
@@ -87,7 +75,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
     setProfessionnels(fetchedPro);
     setProfessionnels([
       {
-        nom: 'Otsokop',
+        nom: 'OTSOKOP',
         adresse: '4 Av. de Lattre de Tassigny',
         siret: '81463818500037',
         city: 'Bayonne',
@@ -201,10 +189,13 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   }, []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-  // callbacks bottomSheetRef
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
+  const [selectedPro, setSelectedPro] = useState<Professionnel | null>(null);
+
+  const handleMarkerPress = (pro: Professionnel) => {
+    setSelectedPro(pro);
+    bottomSheetRef.current?.snapToIndex(0);
+  };
+
   return (
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
@@ -230,35 +221,11 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
                       longitude: pro.coordinates[1],
                     }}
                     pinColor={categories.filter((cat) => cat.id === pro.id_cat1)[0].color}
+                    onPress={() => handleMarkerPress(pro)}
                   >
                     <View>
                       <IconMarker size={40} color={categories.filter((cat) => cat.id === pro.id_cat1)[0].color} />
                     </View>
-                    <Callout style={{ width: 250, gap: 10, padding: 5, overflow: 'visible' }}>
-                      {/* <BottomSheet
-                        ref={bottomSheetRef}
-                        onChange={handleSheetChanges}
-                        snapPoints={[1, '50%', '75%']}
-                        style={styles.containerPro}
-                        >
-                        <BottomSheetView style={styles.contentContainer}>
-                          <Text>Awesome 🎉</Text>
-                        </BottomSheetView>
-                      </BottomSheet> */}
-                      <Text variant="titleMedium">{pro.nom}</Text>
-                      <Text>
-                        <IconAdresse />
-                        {pro.adresse}
-                      </Text>
-                      <Text style={{ flex: 1, justifyContent: 'center' }}>
-                        <Icon source="web" size={15} />
-                        Site :{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-                        <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => Linking.openURL(pro.website)}>
-                          <Text style={{ color: 'blue' }}>{pro.nom}</Text>
-                        </TouchableOpacity>
-                      </Text>
-                      <Text>Itinéraire : </Text>
-                    </Callout>
                   </Marker>
                 )
             )}
@@ -279,11 +246,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
         icon={currentView === 'map' ? 'view-list' : 'map'}
         style={styles.changeHomeView}
         onPress={() => {
-          if (currentView === 'map') {
-            setCurrentView('list');
-          } else {
-            setCurrentView('map');
-          }
+          setCurrentView((prev) => (prev === 'map' ? 'list' : 'map'));
         }}
       />
 
@@ -294,11 +257,47 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
           icon="crosshairs-gps"
           style={styles.locate}
           onPress={() => {
-            if (initialRegion && mapViewRef) {
-              mapViewRef.current?.animateToRegion(initialRegion);
+            if (initialRegion && mapViewRef.current) {
+              mapViewRef.current.animateToRegion(initialRegion);
             }
           }}
         />
+      )}
+
+      {/* Fiche pro */}
+      {currentView === 'map' && (
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={['50%', '100%']}
+          index={-1}
+        >
+          <BottomSheetView style={{ padding: 20, flex: 1, backgroundColor: "grey" }}>
+            {selectedPro && (
+              <>
+              <Text style={{ fontWeight: 'bold'}}>{selectedPro.nom}</Text>
+              {/* Bouton d'action */}
+              <BottomSheetScrollView horizontal={true} contentContainerStyle={{ backgroundColor: "blue", flex: 1, flexDirection: 'row', height: "20%"}}>
+                <Button icon="map-marker" mode="elevated" onPress={() => console.log('Itineraire pressed')}>
+                  Itinéraire
+                </Button>
+                <Button icon="heart-outline" mode="elevated" onPress={() => console.log('Favoris pressed')}>
+                  Ajouter au favoris
+                </Button>
+                <Button icon="phone" mode="elevated" onPress={() => console.log('phone pressed')}>
+                  Appeler
+                </Button>
+                <Button icon="share-variant-outline" mode="elevated" onPress={() => console.log('share pressed')}>
+                  Partager
+                </Button>
+              </BottomSheetScrollView>
+                <Text>{selectedPro.adresse}, {selectedPro.city} {selectedPro.postal_code}</Text>
+                <TouchableOpacity onPress={() => Linking.openURL(selectedPro.website)}>
+                  <Text style={{ color: 'blue' }}>{selectedPro.website}</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </BottomSheetView>
+        </BottomSheet>
       )}
     </View>
   );
