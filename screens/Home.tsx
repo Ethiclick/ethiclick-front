@@ -271,6 +271,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
           ref={bottomSheetRef}
           snapPoints={['50%', '100%']}
           index={-1}
+          enablePanDownToClose={true}
         >
           <BottomSheetView style={{ padding: 20}}>
             {selectedPro && (
