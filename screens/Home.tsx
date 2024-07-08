@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-import { FAB, Text, Button } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import { fetchData } from '../utils/fetch';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { ScrollView } from 'react-native-gesture-handler';
 // Types
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
@@ -15,6 +13,7 @@ import { CategorieScreenNavigationProp } from '../@types/routes';
 import IconMarker from '../components/icons/IconMarker';
 import ListView from '../components/ListView';
 import Filters from '../components/Filters';
+import BottomSheetPro from '../components/BottomSheetPro';
 
 const styles = StyleSheet.create({
   container: {
@@ -189,12 +188,13 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
     getLocation().catch(alert);
   }, []);
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
   const [selectedPro, setSelectedPro] = useState<Professionnel | null>(null);
 
   const handleMarkerPress = (pro: Professionnel) => {
     setSelectedPro(pro);
-    bottomSheetRef.current?.snapToIndex(0);
+  };
+  const handleCloseBottomSheet = () => {
+    setSelectedPro(null);
   };
 
   return (
@@ -267,39 +267,11 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
 
       {/* Fiche pro */}
       {currentView === 'map' && (
-        <BottomSheet
-          ref={bottomSheetRef}
-          snapPoints={['50%', '100%']}
-          index={-1}
-          enablePanDownToClose={true}
-        >
-          <BottomSheetView style={{ padding: 20}}>
-            {selectedPro && (
-              <>
-              <Text style={{ fontWeight: 'bold'}}>{selectedPro.nom}</Text>
-              {/* Bouton d'action */}
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: "flex-start", paddingTop: 5, paddingBottom:5, flexDirection: "row", justifyContent: "space-between"}}>
-                <Button icon="map-marker" mode="elevated" style={{marginRight: 5}} compact={true} onPress={() => console.log('Itineraire pressed')}>
-                  Itinéraire
-                </Button>
-                <Button icon="heart-outline" mode="elevated" style={{marginRight: 5}} compact={true} onPress={() => console.log('Favoris pressed')}>
-                  Ajouter au favoris
-                </Button>
-                <Button icon="phone" mode="elevated" style={{marginRight: 5}} compact={true} onPress={() => console.log('phone pressed')}>
-                  Appeler
-                </Button>
-                <Button icon="share-variant-outline" mode="elevated" compact={true} onPress={() => console.log('share pressed')}>
-                  Partager
-                </Button>
-              </ScrollView>
-                <Text>{selectedPro.adresse}, {selectedPro.city} {selectedPro.postal_code}</Text>
-                <TouchableOpacity onPress={() => Linking.openURL(selectedPro.website)}>
-                  <Text style={{ color: 'blue' }}>{selectedPro.website}</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </BottomSheetView>
-        </BottomSheet>
+        <BottomSheetPro
+          selectedPro={selectedPro}
+          // onClose={handleCloseBottomSheet}
+          categories= {categories}
+        />
       )}
     </View>
   );
