@@ -4,7 +4,8 @@ import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import { FAB, Text, Button } from 'react-native-paper';
 import { fetchData } from '../utils/fetch';
-import BottomSheet, { BottomSheetView, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { ScrollView } from 'react-native-gesture-handler';
 // Types
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
@@ -271,25 +272,25 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
           snapPoints={['50%', '100%']}
           index={-1}
         >
-          <BottomSheetView style={{ padding: 20, flex: 1, backgroundColor: "grey" }}>
+          <BottomSheetView style={{ padding: 20}}>
             {selectedPro && (
               <>
               <Text style={{ fontWeight: 'bold'}}>{selectedPro.nom}</Text>
               {/* Bouton d'action */}
-              <BottomSheetScrollView horizontal={true} contentContainerStyle={{ backgroundColor: "blue", flex: 1, flexDirection: 'row', height: "20%"}}>
-                <Button icon="map-marker" mode="elevated" onPress={() => console.log('Itineraire pressed')}>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: "flex-start", paddingTop: 5, paddingBottom:5, flexDirection: "row", justifyContent: "space-between"}}>
+                <Button icon="map-marker" mode="elevated" style={{marginRight: 5}} compact={true} onPress={() => console.log('Itineraire pressed')}>
                   Itinéraire
                 </Button>
-                <Button icon="heart-outline" mode="elevated" onPress={() => console.log('Favoris pressed')}>
+                <Button icon="heart-outline" mode="elevated" style={{marginRight: 5}} compact={true} onPress={() => console.log('Favoris pressed')}>
                   Ajouter au favoris
                 </Button>
-                <Button icon="phone" mode="elevated" onPress={() => console.log('phone pressed')}>
+                <Button icon="phone" mode="elevated" style={{marginRight: 5}} compact={true} onPress={() => console.log('phone pressed')}>
                   Appeler
                 </Button>
-                <Button icon="share-variant-outline" mode="elevated" onPress={() => console.log('share pressed')}>
+                <Button icon="share-variant-outline" mode="elevated" compact={true} onPress={() => console.log('share pressed')}>
                   Partager
                 </Button>
-              </BottomSheetScrollView>
+              </ScrollView>
                 <Text>{selectedPro.adresse}, {selectedPro.city} {selectedPro.postal_code}</Text>
                 <TouchableOpacity onPress={() => Linking.openURL(selectedPro.website)}>
                   <Text style={{ color: 'blue' }}>{selectedPro.website}</Text>
