@@ -5,10 +5,11 @@ import { Button } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 // Types
 import { Professionnel } from '../@types/professionnel';
+import { Categorie } from '../@types/categorie';
 
-export default function BottomSheetPro({ selectedPro, categories }: { selectedPro: Professionnel | null} ) {
+export default function BottomSheetPro({ selectedPro, categories }: { selectedPro: Professionnel | null, categories: Categorie[] | null} ) {
   if (!selectedPro) return;
-
+  if (!categories) return;
 
     // On récupère la categorie du pro sélectionné
     const CAT = categories.find(cat => cat.id === selectedPro?.id_cat1);
