@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { Text, TouchableOpacity, Linking, Image, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, Linking, Image, StyleSheet, View } from 'react-native';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { Button } from 'react-native-paper';
+import { Button, IconButton } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 // Types
 import { Professionnel } from '../@types/professionnel';
@@ -23,6 +23,10 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius:20,
     marginRight: 10
+  },
+  containerName: {
+    paddingLeft:15,
+    paddingTop:20
   },
   proName: {
     fontWeight: 'bold'
@@ -77,10 +81,23 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
               style={styles.pictures}
             />
             </ScrollView>
-            <Text style={styles.proName}>{selectedPro.nom}</Text>
-            <Text>{CAT.libelle}</Text>
+            <View style={styles.containerName}>
+              <Text style={styles.proName}>{selectedPro.nom}</Text>
+              <Text>{CAT.libelle}</Text>
+            </View>
             {/* Bouton d'action */}
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.buttonView}>
+              {/* <Button style={{display:"flex", flexDirection:"column", backgroundColor:"grey"}}> */}
+                <IconButton
+                  icon="camera"
+                  mode="contained"
+                  // iconColor={MD3Colors.error50}
+                  size={20}
+                  onPress={() => console.log('Pressed')}
+                />
+                <Text>Caméra</Text>
+              {/* </Button> */}
+
               <Button icon="map-marker" mode="elevated" style={{marginRight: 5}} compact={true} onPress={() => console.log('Itineraire pressed')}>
                 Itinéraire
               </Button>
