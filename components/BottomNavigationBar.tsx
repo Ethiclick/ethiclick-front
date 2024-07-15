@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
-// import { Icon } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
