@@ -77,6 +77,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
     return (
       <BottomSheet
         ref={bottomSheetRef}
+        // TODO: voir pourquoi la bottomSheet ne scroll pas ( on ne vois pas les horaires des jours suivant)
         snapPoints={['50%', '150%']}
         index={-1}
         enablePanDownToClose={true}
