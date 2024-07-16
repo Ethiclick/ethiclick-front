@@ -38,7 +38,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 20,
-  }
+  },
+  // listItem: {
+  //   padding:0
+  // }
 })
 export default function BottomSheetPro({ selectedPro, categories }: { selectedPro: Professionnel | null, categories: Categorie[] | null} ) {
   if (!selectedPro) return null;
@@ -49,6 +52,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
     const bottomSheetRef = useRef<BottomSheet>(null);
     const adress = `${selectedPro.adresse}, ${selectedPro.city} ${selectedPro.postal_code}`;
 
+    // ** TEST ***
     function isBetween8and17(): boolean {
       const currentDate = new Date();
       const currentHour = currentDate.getHours();
@@ -56,11 +60,14 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
       // Vérifie si l'heure actuelle est entre 8h (inclus) et 17h (exclus)
       return currentHour >= 8 && currentHour < 17;
     }
-    
-    // Exemple d'utilisation :
     const isOfficeHours = isBetween8and17(); // Cette variable sera true si l'heure est entre 8h et 17h, sinon false
-    // console.log("Is office hours:", isOfficeHours);
+    // **********
 
+    // const listItemStyles = StyleSheet.compose(
+    //   { padding: 0 }, // Style inline pour remplacer le padding
+    //   styles.item // Utilisation de styles définis dans une feuille de style externe
+    // );
+    // const listItemDefaultStyles = StyleSheet.flatten(List.Item.styles.content);
 
     useEffect(() => {
       if (selectedPro) {
@@ -70,7 +77,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
       }
     }, [selectedPro]);
 
-    const [expanded, setExpanded] = React.useState(true);
+    const [expanded, setExpanded] = React.useState(false);
 
     const handlePress = () => setExpanded(!expanded);
 
@@ -164,18 +171,19 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
               left={props => <List.Icon {...props} color={MD3Colors.primary40} icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
               expanded={expanded}
               onPress={handlePress}
-              style={{marginLeft:0, paddingLeft:0}}
               >
               <List.Item
-                title={<Text>Lundi</Text>}
+                title={<Text style={{margin:0, padding:0, fontWeight:"bold", fontSize:14}}>Lundi</Text>}
+                style={{paddingVertical:0}}
                 left={props => <List.Icon {...props} color="white" icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
                 right={() =>
                   <View>
-                    <Text>16:30-20:00</Text>
+                    <Text style={{fontWeight:"bold", fontSize:14}}>16:30-20:00</Text>
                   </View>}
                 />
               <List.Item
-                title={<Text>Mardi</Text>}
+                title={<Text style={{fontSize:14}}>Mardi</Text>}
+                style={{paddingVertical:0}}
                 left={props => <List.Icon {...props} color="white" icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
                 right = {() =>
                   <View>
@@ -185,7 +193,8 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 }
                 />
                 <List.Item
-                title={<Text>Mercredi</Text>}
+                title={<Text style={{fontSize:14}}>Mercredi</Text>}
+                style={{paddingVertical:0}}
                 left={props => <List.Icon {...props} color="white" icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
                 right = {() =>
                   <View>
@@ -195,7 +204,8 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 }
                 />
                 <List.Item
-                title={<Text>Jeudi</Text>}
+                title={<Text style={{fontSize:14}}>Jeudi</Text>}
+                style={{paddingVertical:0}}
                 left={props => <List.Icon {...props} color="white" icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
                 right = {() =>
                   <View>
@@ -205,7 +215,8 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 }
                 />
                 <List.Item
-                title={<Text>Vendredi</Text>}
+                title={<Text style={{fontSize:14}}>Vendredi</Text>}
+                style={{paddingVertical:0}}
                 left={props => <List.Icon {...props} color="white" icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
                 right = {() =>
                   <View>
@@ -215,16 +226,18 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 }
                 />
                 <List.Item
-                title={<Text>Samedi</Text>}
+                title={<Text style={{fontSize:14}}>Samedi</Text>}
+                style={{paddingVertical:0}}
                 left={props => <List.Icon {...props} color="white" icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
                 right = {() =>
                   <View>
-                    <Text>09:00-19:00</Text>
+                    <Text style={{margin:0, padding:0}}>09:00-19:00</Text>
                   </View>
                 }
                 />
                 <List.Item
-                title={<Text>Dimanche</Text>}
+                title={<Text style={{fontSize:14}}>Dimanche</Text>}
+                style={{paddingVertical:0}}
                 left={props => <List.Icon {...props} color="white" icon="clock-time-five-outline" style={{margin:0, padding:0}}/>}
                 right = {() =>
                   <View>
