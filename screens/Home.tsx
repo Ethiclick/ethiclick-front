@@ -266,7 +266,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
       )}
 
       {/* Fiche pro */}
-      {currentView === 'map' && selectedPro && categories && (
+      {currentView === 'map' && selectedPro && categories && !loading && (
         <BottomSheetPro
           selectedPro={selectedPro}
           // onClose={handleCloseBottomSheet}

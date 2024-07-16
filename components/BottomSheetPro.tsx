@@ -75,10 +75,8 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
       <BottomSheet
         ref={bottomSheetRef}
         // TODO: voir pourquoi la bottomSheet ne scroll pas ( on ne vois pas les horaires des jours suivant)
-        // TODO: pourquoi l'init de la fiche à besoin d'un double click
         // TODO: centraliser tous les styles
-        snapPoints={['50%', '150%']}
-        index={-1}
+        snapPoints={['50%', '100%']}
         enablePanDownToClose={true}
       >
         <BottomSheetView 
