@@ -38,10 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 20,
-  },
-  // listItem: {
-  //   padding:0
-  // }
+  }
 })
 export default function BottomSheetPro({ selectedPro, categories }: { selectedPro: Professionnel | null, categories: Categorie[] | null} ) {
   if (!selectedPro) return null;
@@ -63,12 +60,6 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
     const isOfficeHours = isBetween8and17(); // Cette variable sera true si l'heure est entre 8h et 17h, sinon false
     // **********
 
-    // const listItemStyles = StyleSheet.compose(
-    //   { padding: 0 }, // Style inline pour remplacer le padding
-    //   styles.item // Utilisation de styles définis dans une feuille de style externe
-    // );
-    // const listItemDefaultStyles = StyleSheet.flatten(List.Item.styles.content);
-
     useEffect(() => {
       if (selectedPro) {
         bottomSheetRef.current?.snapToIndex(0)
@@ -78,13 +69,14 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
     }, [selectedPro]);
 
     const [expanded, setExpanded] = React.useState(false);
-
     const handlePress = () => setExpanded(!expanded);
 
     return (
       <BottomSheet
         ref={bottomSheetRef}
         // TODO: voir pourquoi la bottomSheet ne scroll pas ( on ne vois pas les horaires des jours suivant)
+        // TODO: pourquoi l'init de la fiche à besoin d'un double click
+        // TODO: centraliser tous les styles
         snapPoints={['50%', '150%']}
         index={-1}
         enablePanDownToClose={true}
@@ -115,6 +107,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
             {/* Bouton d'action */}
             <View style={styles.buttonView}>
               <View style={{ alignItems: 'center' }}>
+                {/* TODO: ouvrir Gmaps avec l'itineraires */}
                 <IconButton
                   icon="arrow-right-top"
                   mode="contained"
@@ -124,6 +117,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 <Text style={{fontSize: 13}}>Itinéraire</Text>
               </View>
               <View style={{ alignItems: 'center' }}>
+                {/* TODO: Enregistrer dans les favoris + snackBar pour l'util */}
                 <IconButton
                   icon="heart-outline"
                   mode="contained"
@@ -134,6 +128,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 <Text style={{fontSize: 13}}>au favoris</Text>
               </View>
               <View style={{ alignItems: 'center' }}>
+                {/* TODO: Renvoyer vers le clavier natif ou lançer l'appel directe ? */}
                 <IconButton
                   icon="phone"
                   mode="contained"
@@ -143,6 +138,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 <Text style={{fontSize: 13}}>Appeler</Text>
               </View>
               <View style={{ alignItems: 'center' }}>
+                {/* TODO: envoyer un lien vers la fiche pro Ethiclick */}
                 <IconButton
                   icon="share-variant-outline"
                   mode="contained"
@@ -152,12 +148,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 <Text style={{fontSize: 13}}>Partager</Text>
               </View>
               <View style={{ alignItems: 'center' }}>
-                <IconButton
-                  icon="web"
-                  mode="contained"
-                  size={25}
-                  onPress={() => Linking.openURL(selectedPro.website)}
-                />
+                <IconButton icon="web" mode="contained" size={25} onPress={() => Linking.openURL(selectedPro.website)}/>
                 <Text style={{fontSize: 13}}>Site</Text>
               </View>
             </View>
