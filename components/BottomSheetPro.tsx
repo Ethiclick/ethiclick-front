@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Text, Linking, Image, StyleSheet, View } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView, BottomSheetScrollView  } from '@gorhom/bottom-sheet';
 import { IconButton, MD3Colors, List } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 // Types
@@ -74,12 +74,11 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
     return (
       <BottomSheet
         ref={bottomSheetRef}
-        // TODO: voir pourquoi la bottomSheet ne scroll pas ( on ne vois pas les horaires des jours suivant)
         // TODO: centraliser tous les styles
         snapPoints={['50%', '100%']}
         enablePanDownToClose={true}
       >
-        <BottomSheetView 
+        <BottomSheetScrollView   
         style={styles.bottomView}>
           {selectedPro && CAT && (
             <>
@@ -237,7 +236,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
             </List.Accordion>
             </>
           )}
-        </BottomSheetView>
+        </BottomSheetScrollView>
       </BottomSheet>
     )
 }
