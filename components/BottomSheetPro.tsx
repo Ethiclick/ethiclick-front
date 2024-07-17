@@ -71,13 +71,13 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
       }
     }, [selectedPro]);
 
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(true);
     const handlePress = () => setExpanded(!expanded);
 
+    // TODO: pourquoi la nav bar passe au dessu du composant bottomSheet
     return (
       <BottomSheet
         ref={bottomSheetRef}
-        // TODO: centraliser tous les styles
         snapPoints={['50%', '100%']}
         enablePanDownToClose={true}
       >
