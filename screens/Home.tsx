@@ -200,8 +200,11 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   return (
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
-        <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion}>
-          {currentLocation && (
+        // TODO: Tester si on peux pas récuéprer plutot le btn natif se localiser
+        <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true}
+        // showsMyLocationButton={true}
+        >
+          {/* {currentLocation && (
             <Marker
               coordinate={{
                 latitude: currentLocation.latitude,
@@ -209,7 +212,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
               }}
               title="Votre position"
             />
-          )}
+          )} */}
 
           {professionnels.length > 0 &&
             professionnels.map(

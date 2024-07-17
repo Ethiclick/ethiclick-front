@@ -80,6 +80,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
         ref={bottomSheetRef}
         snapPoints={['50%', '100%']}
         enablePanDownToClose={true}
+        style={styles.bottomSheetParent}
       >
         <BottomSheetScrollView   
         style={styles.bottomView}>
