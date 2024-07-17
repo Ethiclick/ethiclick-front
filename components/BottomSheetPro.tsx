@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 20,
+  },
+  buttonComponent: {
+    alignItems: 'center'
   }
 })
 export default function BottomSheetPro({ selectedPro, categories }: { selectedPro: Professionnel | null, categories: Categorie[] | null} ) {
@@ -48,7 +51,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
     const CAT = categories.find(cat => cat.id === selectedPro?.id_cat1);
     const bottomSheetRef = useRef<BottomSheet>(null);
     const adress = `${selectedPro.adresse}, ${selectedPro.city} ${selectedPro.postal_code}`;
-
+    const iconSize = 25;
     // ** TEST ***
     function isBetween8and17(): boolean {
       const currentDate = new Date();
@@ -103,49 +106,29 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
             </View>
             {/* Bouton d'action */}
             <View style={styles.buttonView}>
-              <View style={{ alignItems: 'center' }}>
+              <View style={styles.buttonComponent}>
                 {/* TODO: ouvrir Gmaps avec l'itineraires */}
-                <IconButton
-                  icon="arrow-right-top"
-                  mode="contained"
-                  size={25}
-                  onPress={() => console.log('Itineraire Pressed')}
-                />
+                <IconButton icon="arrow-right-top" mode="contained" size={iconSize} onPress={() => console.log('Itineraire Pressed')}/>
                 <Text style={{fontSize: 13}}>Itinéraire</Text>
               </View>
-              <View style={{ alignItems: 'center' }}>
+              <View style={styles.buttonComponent}>
                 {/* TODO: Enregistrer dans les favoris + snackBar pour l'util */}
-                <IconButton
-                  icon="heart-outline"
-                  mode="contained"
-                  size={25}
-                  onPress={() => console.log('Favoris Pressed')}
-                />
+                <IconButton icon="heart-outline" mode="contained" size={iconSize} onPress={() => console.log('Favoris Pressed')}/>
                 <Text style={{fontSize: 13}}>Ajouter</Text>
                 <Text style={{fontSize: 13}}>au favoris</Text>
               </View>
-              <View style={{ alignItems: 'center' }}>
+              <View style={styles.buttonComponent}>
                 {/* TODO: Renvoyer vers le clavier natif ou lançer l'appel directe ? */}
-                <IconButton
-                  icon="phone"
-                  mode="contained"
-                  size={25}
-                  onPress={() => console.log('Phone pressed')}
-                />
+                <IconButton icon="phone" mode="contained" size={iconSize} onPress={() => console.log('Phone pressed')}/>
                 <Text style={{fontSize: 13}}>Appeler</Text>
               </View>
-              <View style={{ alignItems: 'center' }}>
+              <View style={styles.buttonComponent}>
                 {/* TODO: envoyer un lien vers la fiche pro Ethiclick */}
-                <IconButton
-                  icon="share-variant-outline"
-                  mode="contained"
-                  size={25}
-                  onPress={() => console.log('Share pressed')}
-                />
+                <IconButton icon="share-variant-outline" mode="contained" size={iconSize} onPress={() => console.log('Share pressed')}/>
                 <Text style={{fontSize: 13}}>Partager</Text>
               </View>
-              <View style={{ alignItems: 'center' }}>
-                <IconButton icon="web" mode="contained" size={25} onPress={() => Linking.openURL(selectedPro.website)}/>
+              <View style={styles.buttonComponent}>
+                <IconButton icon="web" mode="contained" size={iconSize} onPress={() => Linking.openURL(selectedPro.website)}/>
                 <Text style={{fontSize: 13}}>Site</Text>
               </View>
             </View>
@@ -234,7 +217,8 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
                 }
                 />
             </List.Accordion>
-            </>
+
+            </>   /* Fin du container*/
           )}
         </BottomSheetScrollView>
       </BottomSheet>
