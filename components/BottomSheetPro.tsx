@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Text, Linking, Image, StyleSheet, View } from 'react-native';
-import BottomSheet, { BottomSheetView, BottomSheetScrollView  } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetScrollView  } from '@gorhom/bottom-sheet';
 import { IconButton, MD3Colors, List } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 // Types
@@ -8,6 +8,10 @@ import { Professionnel } from '../@types/professionnel';
 import { Categorie } from '../@types/categorie';
 
 const styles = StyleSheet.create({
+  bottomSheetParent: {
+    position: 'absolute',
+    zIndex: 99999
+  },
   bottomView: {
     paddingLeft: 10
   },
@@ -43,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
-export default function BottomSheetPro({ selectedPro, categories }: { selectedPro: Professionnel | null, categories: Categorie[] | null} ) {
+export default function BottomSheetPro({ selectedPro, onClose, categories }: { selectedPro: Professionnel | null, onClose: () => void, categories: Categorie[] | null} ) {
   if (!selectedPro) return null;
   if (!categories) return null;
 
@@ -67,6 +71,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
       if (selectedPro) {
         bottomSheetRef.current?.snapToIndex(0)
       } else {
+        onClose();
         bottomSheetRef.current?.close();
       }
     }, [selectedPro]);
@@ -80,6 +85,7 @@ export default function BottomSheetPro({ selectedPro, categories }: { selectedPr
         ref={bottomSheetRef}
         snapPoints={['50%', '100%']}
         enablePanDownToClose={true}
+        onClose={onClose}
         style={styles.bottomSheetParent}
       >
         <BottomSheetScrollView   

@@ -189,11 +189,16 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   }, []);
 
   const [selectedPro, setSelectedPro] = useState<Professionnel | null>(null);
+  const [isNavVisible, setIsNavVisible] = useState(true);
 
+  
   const handleMarkerPress = (pro: Professionnel) => {
     setSelectedPro(pro);
+    // TODO: cacher la barre de nav
   };
   const handleCloseBottomSheet = () => {
+    console.log("handleCloseBottomSheet");
+    // console.log(isNavVisible);
     setSelectedPro(null);
   };
 
@@ -204,7 +209,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
         <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true}
         // showsMyLocationButton={true}
         >
-          {/* {currentLocation && (
+          {currentLocation && (
             <Marker
               coordinate={{
                 latitude: currentLocation.latitude,
@@ -212,7 +217,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
               }}
               title="Votre position"
             />
-          )} */}
+          )}
 
           {professionnels.length > 0 &&
             professionnels.map(
@@ -272,7 +277,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
       {currentView === 'map' && selectedPro && categories && !loading && (
         <BottomSheetPro
           selectedPro={selectedPro}
-          // onClose={handleCloseBottomSheet}
+          onClose={handleCloseBottomSheet}
           categories= {categories}
         />
       )}

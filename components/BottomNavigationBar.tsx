@@ -35,6 +35,7 @@ function BottomNavigationBar() {
           right: 15,
           borderRadius: 12,
           height: 60,
+          // display: 'none'
         },
         tabBarItemStyle: {
           borderRadius: 12,
