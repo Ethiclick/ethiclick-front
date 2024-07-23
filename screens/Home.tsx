@@ -201,8 +201,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
         // TODO: Tester si on peux pas récuéprer plutot le btn natif se localiser
-        <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true}
-        // showsMyLocationButton={true}
+        <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true} showsMyLocationButton={false}
         >
           {/* {currentLocation && (
             <Marker
