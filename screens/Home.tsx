@@ -189,16 +189,11 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   }, []);
 
   const [selectedPro, setSelectedPro] = useState<Professionnel | null>(null);
-  const [isNavVisible, setIsNavVisible] = useState(true);
 
-  
   const handleMarkerPress = (pro: Professionnel) => {
     setSelectedPro(pro);
-    // TODO: cacher la barre de nav
   };
   const handleCloseBottomSheet = () => {
-    console.log("handleCloseBottomSheet");
-    // console.log(isNavVisible);
     setSelectedPro(null);
   };
 
