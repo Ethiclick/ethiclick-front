@@ -204,7 +204,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
         <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true}
         // showsMyLocationButton={true}
         >
-          {currentLocation && (
+          {/* {currentLocation && (
             <Marker
               coordinate={{
                 latitude: currentLocation.latitude,
@@ -212,7 +212,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
               }}
               title="Votre position"
             />
-          )}
+          )} */}
 
           {professionnels.length > 0 &&
             professionnels.map(
