@@ -4,6 +4,8 @@ import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import { FAB } from 'react-native-paper';
 import { fetchData } from '../utils/fetch';
+import { useAppSelector, getUser } from '../store';
+
 // Types
 import type { Categorie } from '../@types/categorie';
 import type { Professionnel } from '../@types/professionnel';
@@ -68,9 +70,14 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   const getFilters = (f: string[]) => {
     setFilters(f);
   };
+
+  const user = useAppSelector(getUser) as { token: string };
+  const TOKEN = user.token;
+
   const fetchAllData = async () => {
-    const fetchedCat = await fetchData<Categorie[]>('/categorie/get/1');
-    const fetchedPro = await fetchData<Professionnel[]>('/professionnel/');
+    const fetchedCat = await fetchData<Categorie[]>('/categorie/get/1', TOKEN);
+    const fetchedPro = await fetchData<Professionnel[]>('/professionnel/', TOKEN);
+  
     setCategories(fetchedCat);
     setProfessionnels(fetchedPro);
     setProfessionnels([

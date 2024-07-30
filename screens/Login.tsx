@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
-import { login, useAppDispatch, setUser } from '../store';
+import { login, useAppDispatch, setUser, getUser, useAppSelector } from '../store';
 import HelperMessage from '../components/HelperMessage';
 import { postData } from '../utils/fetch';
 import LoginPNG from '../assets/login.png';
@@ -51,7 +51,7 @@ export default function Login() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      email: 'contact@ethiclick.fr', //! / ! \ REMOVE!!
+      email: 'admin@ethiclick.fr', //! / ! \ REMOVE!!
       password: 'admin', //! / ! \ REMOVE!!
     },
   });
