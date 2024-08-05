@@ -77,95 +77,8 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   const fetchAllData = async () => {
     const fetchedCat = await fetchData<Categorie[]>('/categorie/get/1', TOKEN);
     const fetchedPro = await fetchData<Professionnel[]>('/professionnel/', TOKEN);
-  
     setCategories(fetchedCat);
     setProfessionnels(fetchedPro);
-    setProfessionnels([
-      {
-        nom: 'OTSOKOP',
-        adresse: '4 Av. de Lattre de Tassigny',
-        siret: '81463818500037',
-        city: 'Bayonne',
-        postal_code: 64100,
-        website: 'https://www.otsokop.org/',
-        acc_card: true,
-        photos: 'https://www.ethiclick.fr/wp-content/uploads/2024/04/otsokop-300x150.jpg',
-        id: 1,
-        coordinates: [43.502246856780125, -1.468032644379112],
-        createdAt: undefined,
-        updatedAt: undefined,
-        iduser: 0,
-        profile: undefined,
-        id_cat1: 1,
-        id_cat2: undefined,
-        id_cat3: undefined,
-        id_priceRange: undefined,
-        id_abo: undefined,
-      },
-      {
-        nom: 'Grain de soleil',
-        siret: '479 509 762 00023',
-        adresse: '34 Rue Arnaud Détroyat',
-        city: 'Bayonne',
-        postal_code: 64100,
-        website: 'https://magasins.lescomptoirsdelabio.fr/fr/grain-de-soleil-bayonne-105456',
-        acc_card: true,
-        photos: 'https://www.ethiclick.fr/wp-content/uploads/2024/04/grain2soleil.jpeg',
-        id: 2,
-        coordinates: [43.491955966018, -1.4947859130452246],
-        createdAt: undefined,
-        updatedAt: undefined,
-        iduser: 0,
-        profile: undefined,
-        id_cat1: 1,
-        id_cat2: undefined,
-        id_cat3: undefined,
-        id_priceRange: undefined,
-        id_abo: undefined,
-      },
-      {
-        nom: 'La licorne de victorine',
-        siret: 'dde',
-        adresse: '15 Imp. Oihana, 64200 Bassussarry',
-        city: 'Bayonne',
-        postal_code: 64100,
-        website: 'https://lalicornedevictorine.com/',
-        acc_card: true,
-        photos: '[ {"1": "superPhoto.jpg" } ]',
-        id: 3,
-        coordinates: [43.44530395982366, -1.4864462418907547],
-        createdAt: undefined,
-        updatedAt: undefined,
-        iduser: 0,
-        profile: undefined,
-        id_cat1: 2,
-        id_cat2: undefined,
-        id_cat3: undefined,
-        id_priceRange: undefined,
-        id_abo: undefined,
-      },
-      {
-        nom: 'Brasserie BASA',
-        siret: '85332303800010',
-        adresse: "74 Rue d'Espagne",
-        city: 'Bayonne',
-        postal_code: 64100,
-        website: 'https://www.brasserie-basa.com/',
-        acc_card: true,
-        photos: '[ {"1": "superPhoto.jpg" } ]',
-        id: 0,
-        coordinates: [43.49026989376102, -1.4764395885596069],
-        createdAt: undefined,
-        updatedAt: undefined,
-        iduser: 0,
-        profile: undefined,
-        id_cat1: 1,
-        id_cat2: undefined,
-        id_cat3: undefined,
-        id_priceRange: undefined,
-        id_abo: undefined,
-      },
-    ]);
     setLoading(false);
   };
 
@@ -207,34 +120,23 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   return (
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
-        // TODO: Tester si on peux pas récuéprer plutot le btn natif se localiser
         <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true} showsMyLocationButton={false}
         >
-          {/* {currentLocation && (
-            <Marker
-              coordinate={{
-                latitude: currentLocation.latitude,
-                longitude: currentLocation.longitude,
-              }}
-              title="Votre position"
-            />
-          )} */}
-
           {professionnels.length > 0 &&
             professionnels.map(
               (pro) =>
-                filters.includes(pro.id_cat1.toString()) && (
+                filters && filters.includes(pro.idcat1.toString()) && (
                   <Marker
                     key={pro.id}
                     coordinate={{
-                      latitude: pro.coordinates[0],
-                      longitude: pro.coordinates[1],
+                      latitude: pro.coordinates.x,
+                      longitude: pro.coordinates.y,
                     }}
-                    pinColor={categories.filter((cat) => cat.id === pro.id_cat1)[0].color}
+                    pinColor={categories.filter((cat) => cat.id === pro.idcat1)[0].color}
                     onPress={() => handleMarkerPress(pro)}
-                  >
+                  > 
                     <View>
-                      <IconMarker size={40} color={categories.filter((cat) => cat.id === pro.id_cat1)[0].color} />
+                      <IconMarker size={40} color={categories.filter((cat) => cat.id === pro.idcat1)[0].color} />
                     </View>
                   </Marker>
                 )

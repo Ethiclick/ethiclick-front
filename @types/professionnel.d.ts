@@ -1,9 +1,13 @@
+interface Coordinates {
+  x: number,
+  y: number
+}
 export interface Professionnel {
   id: number;
   nom: string;
   siret: string;
   adresse: string;
-  coordinates: number[];
+  coordinates: Coordinates;
   city: string;
   postal_code: number;
   website: string;
@@ -14,9 +18,11 @@ export interface Professionnel {
   // ** Clé étrangère
   iduser?: number;
   profile?: number;
-  id_cat1: number;
-  id_cat2?: number;
-  id_cat3?: number;
-  id_priceRange?: number;
-  id_abo?: number;
+  idcat1: number;
+  idcat2?: number;
+  idcat3?: number;
+  idpriceRange?: number;
+  idabo?: number;
 }
+
+
