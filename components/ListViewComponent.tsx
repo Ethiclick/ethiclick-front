@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius:0,
   },
 });
-export default function ListView({
+export default function ListViewComponent({
   navigation,
   categories,
   professionnels,
@@ -49,15 +49,12 @@ export default function ListView({
   categories: Categorie[];
   professionnels: Professionnel[];
 }) {
-
-
-  console.log(categories);
   return (
     // Scroll vertical de la page
     <ScrollView style={styles.container}>
        {categories.length > 0 &&
         categories.map((cat) => (
-          <View style={styles.containerCat}>
+          <View key={cat.id} style={styles.containerCat}>
             <View style={styles.headerScroll}>
               <Text style={styles.titleScroll}>{cat.libelle}</Text>
               <Text onPress={ () => console.log("voir plus") }>voir plus</Text>

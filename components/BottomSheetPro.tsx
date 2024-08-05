@@ -52,7 +52,7 @@ export default function BottomSheetPro({ selectedPro, onClose, categories }: { s
   if (!categories) return null;
 
     // On récupère la categorie du pro sélectionné
-    const CAT = categories.find(cat => cat.id === selectedPro?.id_cat1);
+    const CAT = categories.find(cat => cat.id === selectedPro?.idcat1);
     const bottomSheetRef = useRef<BottomSheet>(null);
     const adress = `${selectedPro.adresse}, ${selectedPro.city} ${selectedPro.postal_code}`;
     const iconSize = 25;
@@ -93,6 +93,7 @@ export default function BottomSheetPro({ selectedPro, onClose, categories }: { s
           {selectedPro && CAT && (
             <>
             {/* ScrollView pictures */}
+            {/* TODO: mettre les photo en base et crée la boucle */}
              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.pictureView}>
               <Image
                 source={{ uri: 'https://lh3.googleusercontent.com/p/AF1QipNMlc6A5uO7LyofKQaXoxRI7W8QDr4nW-HdvJzv=s680-w680-h510' }}

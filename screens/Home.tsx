@@ -13,7 +13,7 @@ import type { Professionnel } from '../@types/professionnel';
 import SearchBar from '../components/SearchBar';
 import { CategorieScreenNavigationProp } from '../@types/routes';
 import IconMarker from '../components/icons/IconMarker';
-import ListView from '../components/ListView';
+import ListViewComponent from '../components/ListViewComponent';
 import Filters from '../components/Filters';
 import BottomSheetPro from '../components/BottomSheetPro';
 
@@ -143,7 +143,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
             )}
         </MapView>
       )}
-      {currentView === 'list' && <ListView navigation={navigation} categories={categories} professionnels={professionnels} />}
+      {currentView === 'list' && <ListViewComponent navigation={navigation} categories={categories} professionnels={professionnels} />}
       {/* on check currentView pour éviter le doublon du composant */}
       {!loading && (
         <View style={styles.searchContainer}>
