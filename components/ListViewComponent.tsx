@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Linking, ScrollView, View, StyleSheet } from 'react-native';
-import { Card, Text, IconButton } from 'react-native-paper';
+import { Card, Text, IconButton, Badge } from 'react-native-paper';
 
 // Type
 import { CategorieScreenNavigationProp } from '../@types/routes';
@@ -24,21 +24,24 @@ const styles = StyleSheet.create({
   titleScroll: {
     marginLeft:15,
     fontSize:18,
-    backgroundColor:"rgba(11, 192, 236, 0.7)",
     padding:5,
     borderRadius:7
   },
   card: {
     margin: 5, // Ajoute un espace entre les cartes
-    width: 250,
+    width: 200,
+    height: 150
   },
   cardCover: {
-    height: 140, // Hauteur fixe
+    height: 80, // Hauteur fixe
     width: '100%', // Largeur dynamique pour s'adapter au conteneur
     resizeMode: 'cover', // Ajuste l'image pour couvrir l'espace disponible
     borderBottomLeftRadius:0,
     borderBottomRightRadius:0,
   },
+  icones: {
+    margin: 0
+  }
 });
 export default function ListViewComponent({
   navigation,
@@ -49,6 +52,8 @@ export default function ListViewComponent({
   categories: Categorie[];
   professionnels: Professionnel[];
 }) {
+  const ICON_SIZE = 15;
+
   return (
     // Scroll vertical de la page
     <ScrollView style={styles.container}>
@@ -56,7 +61,11 @@ export default function ListViewComponent({
         categories.map((cat) => (
           <View key={cat.id} style={styles.containerCat}>
             <View style={styles.headerScroll}>
-              <Text style={styles.titleScroll}>{cat.libelle}</Text>
+
+              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Text style={styles.titleScroll}>{cat.libelle}</Text>
+                <Badge style={{backgroundColor: cat.color, margin: 5}}></Badge> 
+              </View>
               <Text onPress={ () => console.log("voir plus") }>voir plus</Text>
             </View>
             {/* Scroll Categorie 1 */}
@@ -64,47 +73,47 @@ export default function ListViewComponent({
               {/* Card1 */}
               <Card style={styles.card}>
                 <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={styles.cardCover} />
-                <Card.Content>
-                  <Text variant="titleMedium">Otsokop</Text>
+                <Card.Content style={{flexDirection: 'row', justifyContent: "space-between", marginTop: 5}}>
+                  <Text variant="titleSmall">Otsokop</Text>
                   <Text variant="bodySmall">Épicerie</Text>
                 </Card.Content>
-                <Card.Actions style={{}}>
-                  <IconButton icon="arrow-right-top" mode="contained" size={18} onPress={() => console.log('Itineraire Pressed')} />
-                  <IconButton icon="heart-outline" mode="contained" size={18} onPress={() => console.log('Favoris Pressed')} />
-                  <IconButton icon="phone" mode="contained" size={18} onPress={() => console.log('Phone pressed')} />
-                  <IconButton icon="share-variant-outline" mode="contained" size={18} onPress={() => console.log('Share pressed')} />
-                  <IconButton icon="web" mode="contained" size={18} onPress={() => Linking.openURL('http://www.otsokop.org')} />
+                <Card.Actions style={{flexDirection: 'row', justifyContent: 'space-around', alignItems:"center"}}>
+                  <IconButton style={styles.icones} icon="arrow-right-top" mode="contained" size={ICON_SIZE} onPress={() => console.log('Itineraire Pressed')} />
+                  <IconButton style={styles.icones} icon="heart-outline" mode="contained" size={ICON_SIZE} onPress={() => console.log('Favoris Pressed')} />
+                  <IconButton style={styles.icones} icon="phone" mode="contained" size={ICON_SIZE} onPress={() => console.log('Phone pressed')} />
+                  <IconButton style={styles.icones} icon="share-variant-outline" mode="contained" size={ICON_SIZE} onPress={() => console.log('Share pressed')} />
+                  <IconButton style={styles.icones} icon="web" mode="contained" size={ICON_SIZE} onPress={() => Linking.openURL('http://www.otsokop.org')} />
                 </Card.Actions>
               </Card>
 
               {/* Card2 */}
               <Card style={styles.card}>
                 <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={styles.cardCover} />
-                <Card.Content>
-                  <Text variant="titleMedium">Card title</Text>
-                  <Text variant="bodySmall">Card content</Text>
+                <Card.Content style={{flexDirection: 'row', justifyContent: "space-between", marginTop: 5}}>
+                  <Text variant="titleSmall">Otsokop</Text>
+                  <Text variant="bodySmall">Épicerie</Text>
                 </Card.Content>
-                <Card.Actions>
-                  <IconButton icon="arrow-right-top" mode="contained" size={18} onPress={() => console.log('Itineraire Pressed')} />
-                  <IconButton icon="heart-outline" mode="contained" size={18} onPress={() => console.log('Favoris Pressed')} />
-                  <IconButton icon="phone" mode="contained" size={18} onPress={() => console.log('Phone pressed')} />
-                  <IconButton icon="share-variant-outline" mode="contained" size={18} onPress={() => console.log('Share pressed')} />
-                  <IconButton icon="web" mode="contained" size={18} onPress={() => Linking.openURL('http://www.otsokop.org')} />
+                <Card.Actions style={{flexDirection: 'row', justifyContent: 'space-around', alignItems:"center"}}>
+                  <IconButton style={styles.icones} icon="arrow-right-top" mode="contained" size={ICON_SIZE} onPress={() => console.log('Itineraire Pressed')} />
+                  <IconButton style={styles.icones} icon="heart-outline" mode="contained" size={ICON_SIZE} onPress={() => console.log('Favoris Pressed')} />
+                  <IconButton style={styles.icones} icon="phone" mode="contained" size={ICON_SIZE} onPress={() => console.log('Phone pressed')} />
+                  <IconButton style={styles.icones} icon="share-variant-outline" mode="contained" size={ICON_SIZE} onPress={() => console.log('Share pressed')} />
+                  <IconButton style={styles.icones} icon="web" mode="contained" size={ICON_SIZE} onPress={() => Linking.openURL('http://www.otsokop.org')} />
                 </Card.Actions>
               </Card>
               {/* Card3 */}
               <Card style={styles.card}>
                 <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={styles.cardCover} />
-                <Card.Content>
-                  <Text variant="titleMedium">Card title</Text>
-                  <Text variant="bodySmall">Card content</Text>
+                <Card.Content style={{flexDirection: 'row', justifyContent: "space-between", marginTop: 5}}>
+                  <Text variant="titleSmall">Otsokop</Text>
+                  <Text variant="bodySmall">Épicerie</Text>
                 </Card.Content>
-                <Card.Actions>
-                  <IconButton icon="arrow-right-top" mode="contained" size={18} onPress={() => console.log('Itineraire Pressed')} />
-                  <IconButton icon="heart-outline" mode="contained" size={18} onPress={() => console.log('Favoris Pressed')} />
-                  <IconButton icon="phone" mode="contained" size={18} onPress={() => console.log('Phone pressed')} />
-                  <IconButton icon="share-variant-outline" mode="contained" size={18} onPress={() => console.log('Share pressed')} />
-                  <IconButton icon="web" mode="contained" size={18} onPress={() => Linking.openURL('http://www.otsokop.org')} />
+                <Card.Actions style={{flexDirection: 'row', justifyContent: 'space-around', alignItems:"center"}}>
+                  <IconButton style={styles.icones} icon="arrow-right-top" mode="contained" size={ICON_SIZE} onPress={() => console.log('Itineraire Pressed')} />
+                  <IconButton style={styles.icones} icon="heart-outline" mode="contained" size={ICON_SIZE} onPress={() => console.log('Favoris Pressed')} />
+                  <IconButton style={styles.icones} icon="phone" mode="contained" size={ICON_SIZE} onPress={() => console.log('Phone pressed')} />
+                  <IconButton style={styles.icones} icon="share-variant-outline" mode="contained" size={ICON_SIZE} onPress={() => console.log('Share pressed')} />
+                  <IconButton style={styles.icones} icon="web" mode="contained" size={ICON_SIZE} onPress={() => Linking.openURL('http://www.otsokop.org')} />
                 </Card.Actions>
               </Card>
             </ScrollView>
