@@ -12,9 +12,6 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 130
   },
-  containerCat: {
-    // backgroundColor:"rgba(11, 192, 236, 0.5)"
-  },
   headerScroll: {
     flexDirection:'row',
     justifyContent:'space-between',
@@ -59,7 +56,7 @@ export default function ListViewComponent({
     <ScrollView style={styles.container}>
        {categories.length > 0 &&
         categories.map((cat) => (
-          <View key={cat.id} style={styles.containerCat}>
+          <View key={cat.id}>
             <View style={styles.headerScroll}>
 
               <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -72,7 +69,7 @@ export default function ListViewComponent({
             <ScrollView style={{marginLeft:5}} horizontal={true} showsHorizontalScrollIndicator={false}>
               {/* Card1 */}
               <Card style={styles.card}>
-                <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={styles.cardCover} />
+                <Card.Cover source={{ uri: 'https://picsum.photos/0' }} style={styles.cardCover} />
                 <Card.Content style={{flexDirection: 'row', justifyContent: "space-between", marginTop: 5}}>
                   <Text variant="titleSmall">Otsokop</Text>
                   <Text variant="bodySmall">Épicerie</Text>
@@ -88,7 +85,7 @@ export default function ListViewComponent({
 
               {/* Card2 */}
               <Card style={styles.card}>
-                <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={styles.cardCover} />
+                <Card.Cover source={{ uri: 'https://picsum.photos/200' }} style={styles.cardCover} />
                 <Card.Content style={{flexDirection: 'row', justifyContent: "space-between", marginTop: 5}}>
                   <Text variant="titleSmall">Otsokop</Text>
                   <Text variant="bodySmall">Épicerie</Text>
@@ -103,7 +100,7 @@ export default function ListViewComponent({
               </Card>
               {/* Card3 */}
               <Card style={styles.card}>
-                <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={styles.cardCover} />
+                <Card.Cover source={{ uri: 'https://picsum.photos/300' }} style={styles.cardCover} />
                 <Card.Content style={{flexDirection: 'row', justifyContent: "space-between", marginTop: 5}}>
                   <Text variant="titleSmall">Otsokop</Text>
                   <Text variant="bodySmall">Épicerie</Text>
