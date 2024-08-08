@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList, ScrollView } from 'react-native';
-import { Avatar, Appbar, Card, Text, Button } from 'react-native-paper';
+import { View, StyleSheet, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Avatar, Appbar, Card, Text } from 'react-native-paper';
 import { getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import { getData } from '../utils/fetch';
 import AvatarPNG from '../assets/avatar.png';
+import { useNavigation } from '@react-navigation/native';
 
 interface UserData {
   username: string;
@@ -21,11 +22,6 @@ interface CardData {
   title: string;
   bgColor?: string;
 }
-interface VignetteData {
-  id: number;
-  title: string;
-  icone?: string;
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -35,8 +31,8 @@ const styles = StyleSheet.create({
   appBar: {
     backgroundColor: '#fff',
     elevation: 0, // Supprimer l'ombre
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#cecece',
   },
   mainContent: {
     flex: 1,
@@ -63,7 +59,7 @@ const styles = StyleSheet.create({
     margin: 7,
     justifyContent: 'center',
     overflow: 'visible',
-  }
+  },
 });
 
 export default function Profil() {
@@ -97,7 +93,7 @@ export default function Profil() {
   // Rendu d'une carte
   const renderBtn = ({ item }: { item: CardData }) => {
     return (
-      <Card style={{ ...styles.buttonCard, ...{ backgroundColor: item.bgColor || styles.card.backgroundColor } }}>
+      <Card style={{ ...styles.buttonCard, ...{ backgroundColor: item.bgColor ?? styles.card.backgroundColor } }}>
         <Card.Content>
           <Text variant="bodyMedium">{item.title}</Text>
         </Card.Content>
@@ -106,32 +102,31 @@ export default function Profil() {
   };
 
   // TODO: ajouter la route d'insertion d'un pro (+ création du user) directement depuis l'espace admin
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {/* Barre supérieure */}
-      <Appbar.Header>
-        <Appbar.BackAction onPress={() => console.log('goBack')} />
+      <Appbar.Header style={styles.appBar}>
+        <Appbar.BackAction onPress={() => navigation.navigate('Accueil' as never)} />
         <Appbar.Content title="Profil" />
-        <Appbar.Action icon="magnify" onPress={() => console.log('Search')} />
-        <Appbar.Action icon="dots-vertical" onPress={() => console.log('dots Menu')} />
+        {userData && (
+          <View>
+            <TouchableWithoutFeedback onPress={() => console.log('Avatar')}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff' }}>
+                <Text>{userData.username}</Text>
+                <Avatar.Image
+                  size={50}
+                  source={userData.avatar ? { uri: userData.avatar } : AvatarPNG}
+                  style={{ backgroundColor: 'transparent', marginLeft: '3%' }}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        )}
       </Appbar.Header>
 
       {/* Contenu principal */}
       <View style={styles.mainContent}>
-        {userData && (
-          <>
-            {/* Afficher le nom d'utilisateur si userData existe */}
-            <Text>{userData.username}</Text>
-            <Avatar.Image
-              size={50}
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              source={userData.avatar ? { uri: userData.avatar } : AvatarPNG}
-              style={{ backgroundColor: 'transparent', marginLeft: '3%' }}
-            ></Avatar.Image>
-          </>
-        )}
-
         {/* Grille de cartes */}
         <FlatList
           data={cardsData}
