@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     margin: 7,
     justifyContent: 'center',
     overflow: 'visible',
+    textAlign: 'justify'
   },
 });
 
@@ -83,19 +84,20 @@ export default function Profil() {
     void fetchProfileData();
   }, [user.token]);
 
+  // TODO: ajouter les route pour add & update pro et cat
   // Données des cartes
   const cardsData = [
-    { id: 1, title: 'Ajouter un pro', bgColor: '#FEF5CC' },
-    { id: 2, title: 'Mettre à jour un pro', bgColor: '#B4ECFD' },
-    { id: 3, title: 'Ajouter une catégorie', bgColor: '#D9F3CE' },
-    { id: 4, title: 'Mettre à jour une catégorie' },
+    { id: 1, title: 'Ajouter\n un pro', bgColor: '#FEF5CC' },
+    { id: 3, title: 'Ajouter une\n catégorie', bgColor: '#D9F3CE' },
+    { id: 2, title: 'Mettre à jour\n un pro', bgColor: '#B4ECFD' },
+    { id: 4, title: 'Mettre à jour\n une catégorie' },
   ];
   // Rendu d'une carte
   const renderBtn = ({ item }: { item: CardData }) => {
     return (
       <Card style={{ ...styles.buttonCard, ...{ backgroundColor: item.bgColor ?? styles.card.backgroundColor } }}>
         <Card.Content>
-          <Text variant="bodyMedium">{item.title}</Text>
+          <Text style={{textAlign:"center"}} variant="bodyMedium">{item.title}</Text>
         </Card.Content>
       </Card>
     );
