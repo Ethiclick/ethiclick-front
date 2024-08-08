@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
-import { Avatar, Appbar, Card, Button } from 'react-native-paper';
+import { View, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { Avatar, Appbar, Card, Text, Button } from 'react-native-paper';
 import { getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import { getData } from '../utils/fetch';
 import AvatarPNG from '../assets/avatar.png';
@@ -54,23 +54,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    // padding: 18,
   },
-  horizontalScroll: {
-    marginTop: '5%',
-    flexGrow: 0, // Pour empecher le scrollHorizontal de prendre trop de place
-  },
-  smallCard: {
-    width: 100,
-    height: 100,
+  buttonCard: {
     borderRadius: 8,
-    backgroundColor: '#0BC0EC',
-    borderColor: 'grey',
-    // marginHorizontal: 4,
-    marginLeft: 10,
+    flex: 1,
+    height: 110,
+    width: '100%',
+    margin: 7,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
+    overflow: 'visible',
+  }
 });
 
 export default function Profil() {
@@ -96,82 +89,48 @@ export default function Profil() {
 
   // Données des cartes
   const cardsData = [
-    { id: 1, title: 'Consulter mes favoris', bgColor: '#FEF5CC' },
-    { id: 2, title: 'Suggérer un professionnel', bgColor: '#B4ECFD' },
-    { id: 3, title: 'Nous contacter', bgColor: '#D9F3CE' },
-    { id: 4, title: 'La charte ethiclick' },
+    { id: 1, title: 'Ajouter un pro', bgColor: '#FEF5CC' },
+    { id: 2, title: 'Mettre à jour un pro', bgColor: '#B4ECFD' },
+    { id: 3, title: 'Ajouter une catégorie', bgColor: '#D9F3CE' },
+    { id: 4, title: 'Mettre à jour une catégorie' },
   ];
-
-  const vignetteData: VignetteData[] = [
-    { id: 1, title: 'Découvrir Ethiclick', icone: '' },
-    { id: 2, title: 'Consulter \n la charte', icone: '' },
-    { id: 3, title: 'Nous \n contacter', icone: '' },
-    { id: 4, title: 'FAQ', icone: '' },
-    { id: 5, title: "L'histoire \n d'Ethiclick", icone: '' },
-  ];
-
-  // console.log(vignetteData.length);
   // Rendu d'une carte
   const renderBtn = ({ item }: { item: CardData }) => {
     return (
-      <Button
-        onPress={() => console.log('pressed')}
-        style={{
-          borderRadius: 8,
-          flex: 1,
-          height: 110,
-          width: '100%',
-          margin: 8,
-          justifyContent: 'center',
-          overflow: 'visible',
-        }}
-        buttonColor={item.bgColor || styles.card.backgroundColor}
-        contentStyle={{ height: '100%' }}
-      >
-        {item.title}
-      </Button>
+      <Card style={{ ...styles.buttonCard, ...{ backgroundColor: item.bgColor || styles.card.backgroundColor } }}>
+        <Card.Content>
+          <Text variant="bodyMedium">{item.title}</Text>
+        </Card.Content>
+      </Card>
     );
   };
-  const dispatch = useAppDispatch();
+
+  // TODO: ajouter la route d'insertion d'un pro (+ création du user) directement depuis l'espace admin
 
   return (
     <View style={styles.container}>
       {/* Barre supérieure */}
-      <Appbar.Header style={styles.appBar}>
-        {/* Afficher le nom d'utilisateur si userData existe */}
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => console.log('goBack')} />
+        <Appbar.Content title="Profil" />
+        <Appbar.Action icon="magnify" onPress={() => console.log('Search')} />
+        <Appbar.Action icon="dots-vertical" onPress={() => console.log('dots Menu')} />
+      </Appbar.Header>
+
+      {/* Contenu principal */}
+      <View style={styles.mainContent}>
         {userData && (
           <>
-            {/* uri pour charger une source distante, import pour une source local */}
+            {/* Afficher le nom d'utilisateur si userData existe */}
+            <Text>{userData.username}</Text>
             <Avatar.Image
               size={50}
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               source={userData.avatar ? { uri: userData.avatar } : AvatarPNG}
               style={{ backgroundColor: 'transparent', marginLeft: '3%' }}
-            />
-            <Appbar.Content title={userData.username} style={{ marginLeft: '3%' }} />
-            <Appbar.Action icon="logout" onPress={() => dispatch(logout())} />
+            ></Avatar.Image>
           </>
         )}
-      </Appbar.Header>
-
-      {/* Contenu principal */}
-      <View style={styles.mainContent}>
-        {/* Carte de fidélité */}
-        <Card style={[styles.card, { backgroundColor: '#D9F3CE', height: 'auto' }]}>
-          <Card.Content>
-            <Text>Carte de fidélité</Text>
-            <Text style={{ color: 'grey' }}>Questionnaire sur les envies/besoins</Text>
-          </Card.Content>
-        </Card>
-
-        {/* Slider horizontal avec les petites vignettes */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-          {vignetteData.map((vignette) => (
-            <View key={vignette.id} style={styles.smallCard}>
-              <Text>{vignette.title}</Text>
-            </View>
-          ))}
-        </ScrollView>
 
         {/* Grille de cartes */}
         <FlatList
