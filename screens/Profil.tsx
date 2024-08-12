@@ -20,6 +20,7 @@ interface UserData {
 interface CardData {
   id: number;
   title: string;
+  onPress: Function;
   bgColor?: string;
 }
 
@@ -85,17 +86,22 @@ export default function Profil() {
   }, [user.token]);
 
   // TODO: ajouter les route pour add & update pro et cat
+  const addPro = () => {
+    console.log('addPro');
+  }
   // Données des cartes
   const cardsData = [
-    { id: 1, title: 'Ajouter\n un pro', bgColor: '#FEF5CC' },
-    { id: 3, title: 'Ajouter une\n catégorie', bgColor: '#D9F3CE' },
-    { id: 2, title: 'Mettre à jour\n un pro', bgColor: '#B4ECFD' },
-    { id: 4, title: 'Mettre à jour\n une catégorie' },
+    { id: 1, title: 'Ajouter\n un pro', onPress: addPro, bgColor: '#FEF5CC' },
+    { id: 3, title: 'Ajouter une\n catégorie', onPress: "Ajouter une catégorie", bgColor: '#D9F3CE' },
+    { id: 2, title: 'Mettre à jour\n un pro', onPress: "toto", bgColor: '#B4ECFD' },
+    { id: 4, title: 'Mettre à jour\n une catégorie', onPress: "toto"},
   ];
   // Rendu d'une carte
   const renderBtn = ({ item }: { item: CardData }) => {
     return (
-      <Card style={{ ...styles.buttonCard, ...{ backgroundColor: item.bgColor ?? styles.card.backgroundColor } }}>
+      <Card style={{ ...styles.buttonCard, ...{ backgroundColor: item.bgColor ?? styles.card.backgroundColor } }}
+            onPress={() => (item.onPress())}
+      >
         <Card.Content>
           <Text style={{textAlign:"center"}} variant="bodyMedium">{item.title}</Text>
         </Card.Content>
@@ -117,7 +123,7 @@ export default function Profil() {
               <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff' }}>
                 <Text>{userData.username}</Text>
                 <Avatar.Image
-                  size={50}
+                  size={30}
                   source={userData.avatar ? { uri: userData.avatar } : AvatarPNG}
                   style={{ backgroundColor: 'transparent', marginLeft: '3%' }}
                 />
