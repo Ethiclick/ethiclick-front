@@ -5,6 +5,9 @@ import { getUser, logout, useAppDispatch, useAppSelector } from '../store';
 import { getData } from '../utils/fetch';
 import AvatarPNG from '../assets/avatar.png';
 import { useNavigation } from '@react-navigation/native';
+// Component
+import AddProfessionalForm from '../components/proForm';
+
 
 interface UserData {
   username: string;
@@ -85,16 +88,24 @@ export default function Profil() {
     void fetchProfileData();
   }, [user.token]);
 
-  // TODO: ajouter les route pour add & update pro et cat
-  const addPro = () => {
-    console.log('addPro');
-  }
+  // Gestion des formulaire
+  const [modalProVisible, setModalProVisible] = useState(false); // Visibilité
+  const [professionals, setProfessionals] = useState([]); // Ajout de pro
+  // const handleAddProfessional = (professional) => {
+  //   setProfessionals([...professionals, professional]);
+  //   setModalProVisible(false); // Ferme le modal après ajout
+  // };
+
+  // TODO: Insertion d'un pro => user.register avec idRole = 2
+  // TODO: update d'un pro => pro.update
+  // TODO: affichage d'un formulaire d'ajout
+
   // Données des cartes
   const cardsData = [
-    { id: 1, title: 'Ajouter\n un pro', onPress: addPro, bgColor: '#FEF5CC' },
-    { id: 3, title: 'Ajouter une\n catégorie', onPress: "Ajouter une catégorie", bgColor: '#D9F3CE' },
-    { id: 2, title: 'Mettre à jour\n un pro', onPress: "toto", bgColor: '#B4ECFD' },
-    { id: 4, title: 'Mettre à jour\n une catégorie', onPress: "toto"},
+    { id: 1, title: 'Ajouter\n un pro', onPress: () => setModalProVisible(true), bgColor: '#FEF5CC' },
+    { id: 3, title: 'Ajouter une\n catégorie', onPress: () => setModalProVisible(true), bgColor: '#D9F3CE' },
+    { id: 2, title: 'Mettre à jour\n un pro', onPress: () => setModalProVisible(true), bgColor: '#B4ECFD' },
+    { id: 4, title: 'Mettre à jour\n une catégorie', onPress: () => setModalProVisible(true)},
   ];
   // Rendu d'une carte
   const renderBtn = ({ item }: { item: CardData }) => {
@@ -109,7 +120,6 @@ export default function Profil() {
     );
   };
 
-  // TODO: ajouter la route d'insertion d'un pro (+ création du user) directement depuis l'espace admin
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -142,6 +152,11 @@ export default function Profil() {
           keyExtractor={(item) => item.id.toString()}
           numColumns={2} // Deux colonnes pour la grille
           contentContainerStyle={styles.cardGrid}
+        />
+        <AddProfessionalForm 
+          visible={modalProVisible} 
+          onDismiss={() => (setModalProVisible(false))} 
+          onAddProfessional={() => (console.log("onAddPro"))} 
         />
       </View>
     </View>
