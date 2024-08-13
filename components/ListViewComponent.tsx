@@ -10,7 +10,9 @@ import { Professionnel } from '../@types/professionnel';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginTop: 130
+    marginTop: 130,
+    marginBottom: 180,
+    overflow: 'visible'
   },
   headerScroll: {
     flexDirection:'row',

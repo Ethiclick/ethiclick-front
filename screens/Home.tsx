@@ -120,7 +120,7 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   return (
     <View style={styles.container}>
       {initialRegion && currentView === 'map' && (
-        <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true} showsMyLocationButton={false}
+        <MapView ref={mapViewRef} style={styles.map} initialRegion={initialRegion} showsUserLocation={true} showsMyLocationButton={false} toolbarEnabled={false}
         >
           {professionnels.length > 0 &&
             professionnels.map(
