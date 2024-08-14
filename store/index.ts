@@ -9,12 +9,14 @@ export interface UserState {
   logged: boolean;
   user: object;
   status: 'user' | 'admin' | 'pro';
+  bottomNavigation: boolean;
 }
 
 const initialState: UserState = {
   logged: false,
   user: {},
   status: 'user',
+  bottomNavigation: true,
 };
 
 export const userSlice = createSlice({
@@ -32,12 +34,16 @@ export const userSlice = createSlice({
     setUser: (state, action: PayloadAction<object>) => {
       state.user = action.payload;
     },
+    setBottomNavigation: (state, action: PayloadAction<boolean>) => {
+      state.bottomNavigation = action.payload;
+    }
   },
 });
 
-export const { login, logout, setUser } = userSlice.actions;
+export const { login, logout, setUser, setBottomNavigation } = userSlice.actions;
 export const isLogged = (state: RootState) => state.user.logged === true;
 export const getUser = (state: RootState) => state.user.user;
+export const bottomNavigationVisible = (state: RootState) => state.user.bottomNavigation;
 
 export default userSlice.reducer;
 

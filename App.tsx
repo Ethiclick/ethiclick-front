@@ -1,4 +1,6 @@
-import React from 'react';
+// import React from 'react';
+import React, { useState } from 'react';
+
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,14 +15,14 @@ import { RootStackParamList } from './@types/routes';
 import { THEME } from './utils/constantes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-const theme = {
-  ...DefaultTheme,
-  colors: THEME,
-};
+// const theme = {
+//   ...DefaultTheme,
+//   colors: THEME,
+// };
 
 function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
-
+  
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack.Navigator>
@@ -50,7 +52,9 @@ function App() {
 export default function AppWrapper() {
   return (
     <SafeAreaProvider>
-      <PaperProvider theme={THEME}>
+      <PaperProvider 
+      // theme={THEME}
+      >
         <ReduxProvider store={store}>
           <NavigationContainer>
             <StatusBar />

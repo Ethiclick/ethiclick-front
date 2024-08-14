@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Text, Linking, Image, StyleSheet, View } from 'react-native';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { IconButton, MD3Colors, List } from 'react-native-paper';
@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 // Types
 import { Professionnel } from '../@types/professionnel';
 import { Categorie } from '../@types/categorie';
+import { useAppDispatch, setBottomNavigation } from '../store';
 
 const styles = StyleSheet.create({
   bottomSheetParent: {
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
 export default function BottomSheetPro({
   selectedPro,
   onClose,
@@ -56,13 +58,13 @@ export default function BottomSheetPro({
   onClose: () => void;
   categories: Categorie[] | null;
 }) {
-  if (!selectedPro) return null;
-  if (!categories) return null;
+
+  // const [isBottomNavVisible, setBottomNavVisible] = useState(false);
 
   // On récupère la categorie du pro sélectionné
-  const CAT = categories.find((cat) => cat.id === selectedPro?.idcat1);
+  const CAT = categories?.find((cat) => cat.id === selectedPro?.idcat1);
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const adress = `${selectedPro.adresse}, ${selectedPro.city} ${selectedPro.postal_code}`;
+  const adress = `${selectedPro?.adresse}, ${selectedPro?.city} ${selectedPro?.postal_code}`;
   const iconSize = 25;
   // ** TEST ***
   function isBetween8and17(): boolean {
@@ -74,10 +76,14 @@ export default function BottomSheetPro({
   }
   const isOfficeHours = isBetween8and17(); // Cette variable sera true si l'heure est entre 8h et 17h, sinon false
   // **********
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('close')
     if (selectedPro) {
       bottomSheetRef.current?.snapToIndex(0);
+      dispatch(setBottomNavigation(false));
+      console.log('ll')
     } else {
       onClose();
       bottomSheetRef.current?.close();
@@ -93,7 +99,10 @@ export default function BottomSheetPro({
       ref={bottomSheetRef}
       snapPoints={['50%', '100%']}
       enablePanDownToClose={true}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        dispatch(setBottomNavigation(true));
+      }}
       style={styles.bottomSheetParent}
     >
       <BottomSheetScrollView style={styles.bottomView}>

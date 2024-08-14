@@ -66,7 +66,6 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
   const [currentView, setCurrentView] = useState<'map' | 'list'>('map');
   const mapViewRef = useRef<MapView>(null);
   const [filters, setFilters] = useState<string[]>([]);
-
   const getFilters = (f: string[]) => {
     setFilters(f);
   };
@@ -112,6 +111,8 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
 
   const handleMarkerPress = (pro: Professionnel) => {
     setSelectedPro(pro);
+    // setBottomNavVisible(false);
+    
   };
   const handleCloseBottomSheet = () => {
     setSelectedPro(null);

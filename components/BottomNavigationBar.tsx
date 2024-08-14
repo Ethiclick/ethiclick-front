@@ -9,7 +9,7 @@ import Home from '../screens/Home';
 import Notifications from '../screens/Notifications';
 import Profil from '../screens/Profil';
 import Favorites from '../screens/Favorites';
-import { isLogged, useAppSelector } from '../store';
+import { bottomNavigationVisible, isLogged, useAppSelector } from '../store';
 import Login from '../screens/Login';
 
 // Icons
@@ -18,10 +18,15 @@ import IconFavoris from './icons/IconFavoris';
 import IconNotif from './icons/IconNotif';
 import IconUser from './icons/IconUser';
 import IconLogin from './icons/IconLogin';
-
+// Définir une interface pour les props
+interface BottomNavigationBarProps {
+  visible: boolean;
+}
 const Tab = createBottomTabNavigator();
 function BottomNavigationBar() {
   const logged = useAppSelector(isLogged);
+  const visible = useAppSelector(bottomNavigationVisible);
+
   return (
     <Tab.Navigator
       safeAreaInsets={{
@@ -35,7 +40,7 @@ function BottomNavigationBar() {
           right: 15,
           borderRadius: 12,
           height: 60,
-          // display: 'none'
+          display: !visible ? 'none' : 'flex',
         },
         tabBarItemStyle: {
           borderRadius: 12,
