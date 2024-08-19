@@ -53,7 +53,7 @@ export default function AppWrapper() {
   return (
     <SafeAreaProvider>
       <PaperProvider 
-      theme={theme}
+      theme={THEME}
       >
         <ReduxProvider store={store}>
           <NavigationContainer>
