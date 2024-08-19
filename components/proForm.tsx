@@ -14,10 +14,10 @@ export default function AddProfessionalForm({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [description, setDescription] = useState('');
+  const [siret, setSiret] = useState('');
 
   const handleSubmit = () => {
-    if (!name || !email || !phone || !description) {
+    if (!name || !email || !phone || !siret) {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs');
       return;
     }
@@ -28,10 +28,17 @@ export default function AddProfessionalForm({
     setName('');
     setEmail('');
     setPhone('');
-    setDescription('');
+    setSiret('');
     Alert.alert('Succès', 'Le professionnel a été ajouté avec succès !');
   };
 
+  // TODO: récupérer les infos pour crée un user
+    //! Obligatoire:  email, username (nom de l'entreprise), numéro de telephone, idRole = 2
+    //! mot de passe (à créer à la volée pour l'enregistrement puis à modifié par le user)
+  // TODO: puis les infos pour créer le pro
+    //! Obligatoire: siret (à vérifier avec l'API sirene ?), adresse complète (adresse + ville + cp - API ban), nom (sera le username)
+    // https://api.gouv.fr/documentation/sirene_v3
+    //! Site web, accèpte la cb, photos, catégories finale
   return (
     <Portal>
       <Modal visible={visible} animationType="slide" transparent>
@@ -41,14 +48,8 @@ export default function AddProfessionalForm({
             <TextInput label="Nom" value={name} onChangeText={setName} style={styles.input} />
             <TextInput label="E-mail" value={email} onChangeText={setEmail} keyboardType="email-address" style={styles.input} />
             <TextInput label="Numéro de téléphone" value={phone} onChangeText={setPhone} keyboardType="phone-pad" style={styles.input} />
-            <TextInput
-              label="Description"
-              value={description}
-              onChangeText={setDescription}
-              multiline
-              numberOfLines={4}
-              style={styles.input}
-            />
+            <TextInput label="Numéro siret" value={siret} onChangeText={setSiret} keyboardType="phone-pad" style={styles.input} />
+            
             <Button mode="contained" onPress={handleSubmit} style={styles.button}>
               Ajouter
             </Button>
