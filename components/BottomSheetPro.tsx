@@ -59,8 +59,6 @@ export default function BottomSheetPro({
   categories: Categorie[] | null;
 }) {
 
-  // const [isBottomNavVisible, setBottomNavVisible] = useState(false);
-
   // On récupère la categorie du pro sélectionné
   const CAT = categories?.find((cat) => cat.id === selectedPro?.idcat1);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -79,11 +77,9 @@ export default function BottomSheetPro({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('close')
     if (selectedPro) {
       bottomSheetRef.current?.snapToIndex(0);
       dispatch(setBottomNavigation(false));
-      console.log('ll')
     } else {
       onClose();
       bottomSheetRef.current?.close();
@@ -93,7 +89,6 @@ export default function BottomSheetPro({
   const [expanded, setExpanded] = React.useState(true);
   const handlePress = () => setExpanded(!expanded);
 
-  // TODO: pourquoi la nav bar passe au dessu du composant bottomSheet
   return (
     <BottomSheet
       ref={bottomSheetRef}

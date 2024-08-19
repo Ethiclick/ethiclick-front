@@ -15,10 +15,10 @@ import { RootStackParamList } from './@types/routes';
 import { THEME } from './utils/constantes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-// const theme = {
-//   ...DefaultTheme,
-//   colors: THEME,
-// };
+const theme = {
+  ...DefaultTheme,
+  colors: THEME,
+};
 
 function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -53,7 +53,7 @@ export default function AppWrapper() {
   return (
     <SafeAreaProvider>
       <PaperProvider 
-      // theme={THEME}
+      theme={theme}
       >
         <ReduxProvider store={store}>
           <NavigationContainer>

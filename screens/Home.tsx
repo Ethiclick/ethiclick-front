@@ -111,8 +111,6 @@ function Home({ navigation }: { navigation: CategorieScreenNavigationProp }) {
 
   const handleMarkerPress = (pro: Professionnel) => {
     setSelectedPro(pro);
-    // setBottomNavVisible(false);
-    
   };
   const handleCloseBottomSheet = () => {
     setSelectedPro(null);
