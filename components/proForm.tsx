@@ -1,6 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Alert, Modal, TouchableOpacity } from 'react-native';
 import { TextInput, Button, Title, Portal, Text, Provider as PaperProvider } from 'react-native-paper';
+
+interface DataSiret {
+  etablissement: Etablissement;
+}
+interface Etablissement {
+  uniteLegale: UniteLegale;
+  adresseEtablissement: AdresseEtablissement
+}
+interface AdresseEtablissement {
+  numeroVoieEtablissement: String,
+  typeVoieEtablissement: String,
+  libelleVoieEtablissement: String,
+  codePostalEtablissement: String,
+  libelleCommuneEtablissement: String,
+}
+interface UniteLegale {
+  denominationUniteLegale: string;
+}
 
 export default function AddProfessionalForm({
   visible,
@@ -29,6 +47,63 @@ export default function AddProfessionalForm({
     }
   };
 
+  // Récupération donnée Siret
+  const [dataSiret, setDataSiret] = useState<DataSiret | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    // URL de l'API que tu veux appeler
+    const API_SIREN_URL = 'https://api.insee.fr/entreprises/sirene/V3.11/siret/81463818500037';
+    // TODO: rendre dynamique le token => durée 1 semaine
+    const TOKEN = '66ebcdb8-e5aa-3220-94f1-e1296bb3fe11';
+    // Appel à l'API
+    fetch(API_SIREN_URL,{
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${TOKEN}`, // Ajout du Bearer Token dans l'en-tête Authorization
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => response.json()) // Convertir la réponse en JSON
+      .then((json: DataSiret) => {
+        setDataSiret(json); // Enregistre les données récupéré
+        setLoading(false); // Le chargement est terminé
+      })
+      .catch((err) => {
+        setError(err); // Enregistre l'erreur en cas de problème
+        setLoading(false); // Le chargement est terminé
+      });
+  }, []);
+
+
+  const findPro = () => {
+    if (!siret && !adresse && !name) {
+      Alert.alert('Erreur', 'Veuillez renseigner au moins un des champs');
+      return;
+    }
+
+    // Si on à renseigné le siret
+    if (siret) {
+      if (loading) {
+        // TODO: mettre un spinner
+        // TODO: et le retirer une fois terminé
+        return Alert.alert('Chargement en cours'); // Afficher un message de chargement
+      }
+      if (error) {
+        return Alert.alert('Erreur lors de la récupération du professionnel', error.message); // Afficher un message d'erreur
+      }
+      // On récupère la dénomination légale (le nom de l'entreprise)
+      const DENOMINATION = dataSiret?.etablissement?.uniteLegale.denominationUniteLegale || '';
+      setName(DENOMINATION);
+
+      // Et l'adresse
+      const ADRESSE_ETABLISSEMENT = dataSiret?.etablissement?.adresseEtablissement;
+      const ADRESSE = `${ADRESSE_ETABLISSEMENT?.numeroVoieEtablissement} ${ADRESSE_ETABLISSEMENT?.typeVoieEtablissement} ${ADRESSE_ETABLISSEMENT?.libelleVoieEtablissement}, ${ADRESSE_ETABLISSEMENT?.codePostalEtablissement} ${ADRESSE_ETABLISSEMENT?.libelleCommuneEtablissement}`;
+      setAdresse(ADRESSE);
+    }
+    // console.log(adresse);
+    // console.log(name);
+  }
   const handleSubmit = () => {
     if (!name || !email || !phone || !siret) {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs');
@@ -47,12 +122,13 @@ export default function AddProfessionalForm({
     Alert.alert('Succès', 'Le professionnel a été ajouté avec succès !');
   };
 
-  // TODO: récupérer les infos pour crée un user
+  // Infos pour crée un user
   // Obligatoire:  email, username (nom - Raison sociale - de l'entreprise), numéro de telephone
     //! A ajouter avant l'envoi du formualire => idRole = 2
     //! mot de passe (à créer à la volée pour l'enregistrement puis à modifié par le user)
-  // TODO: puis les infos pour créer le pro
-    //! Site web, accèpte la cb, photos, catégories finale
+  // Infos pour créer le pro
+    //  Obligatoire: siret ou raison social, adresse
+    //! Site web, accèpte la cb, photos, catégories finale, siret
   return (
     <Portal>
       <Modal visible={visible} animationType="slide" transparent>
@@ -62,12 +138,17 @@ export default function AddProfessionalForm({
             {/* STEP 1 */}
             {step === 1 && (
               <>
-                <Title style={{textAlign:'center', marginBottom: 16}}>Trouver le Professionnel</Title>
+                <Title style={{ textAlign: 'center', marginBottom: 5 }}>Trouver un Professionnel</Title>
+                <Text style={{ fontSize: 16, color: 'gray', marginBottom: 15, margin:'auto' }}>Veuillez saisir au moins une de ces informations pour lancer la recherche</Text>
                   {/* //! Obligatoire: siret (à vérifier avec l'API sirene ?), adresse complète (adresse + ville + cp - API ban), nom (sera le username) */}
                   {/* //! https://api.gouv.fr/documentation/sirene_v3 */}
                   <TextInput label="Nom - Raison sociale" value={name} onChangeText={setName} style={styles.input}/>
                   <TextInput label="Numéro siret" value={siret} onChangeText={setSiret} keyboardType="phone-pad" style={styles.input} maxLength={14}/>
                   <TextInput label="Adresse" value={adresse} onChangeText={setAdresse} keyboardType="default" style={styles.input}/>
+
+                  <Button mode="contained" onPress={findPro} style={styles.button}>
+                    Rechercher
+                  </Button>
               </>
             )}
 
