@@ -19,6 +19,9 @@ interface AdresseEtablissement {
 interface UniteLegale {
   denominationUniteLegale: string;
 }
+interface dataName {
+  etablissements: Etablissement;
+}
 
 export default function AddProfessionalForm({
   visible,
@@ -47,8 +50,10 @@ export default function AddProfessionalForm({
     }
   };
 
-  // Récupération donnée Siret
+  // Récupération donnée via le Siret
   const [dataSiret, setDataSiret] = useState<DataSiret | null>(null);
+  // Récupération des données via le Nom/Raison Sociale
+  const [dataName, setDataName] = useState<dataName | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -58,21 +63,40 @@ export default function AddProfessionalForm({
     const TOKEN = '66ebcdb8-e5aa-3220-94f1-e1296bb3fe11';
     // Appel à l'API
     fetch(API_SIREN_URL,{
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${TOKEN}`, // Ajout du Bearer Token dans l'en-tête Authorization
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((response) => response.json()) // Convertir la réponse en JSON
-      .then((json: DataSiret) => {
-        setDataSiret(json); // Enregistre les données récupéré
-        setLoading(false); // Le chargement est terminé
-      })
-      .catch((err) => {
-        setError(err); // Enregistre l'erreur en cas de problème
-        setLoading(false); // Le chargement est terminé
-      });
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${TOKEN}`, // Ajout du Bearer Token dans l'en-tête Authorization
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json()) // Convertir la réponse en JSON
+    .then((json: DataSiret) => {
+      setDataSiret(json); // Enregistre les données récupéré
+      setLoading(false); // Le chargement est terminé
+    })
+    .catch((err) => {
+      setError(err); // Enregistre l'erreur en cas de problème
+      setLoading(false); // Le chargement est terminé
+    });
+
+// TODO: on récupère également les siret des entreprise otsokop qui sont fermé !! à trié / voir si on peux filtrer par l'API
+    fetch ("https://api.insee.fr/entreprises/sirene/V3.11/siret?q=denominationUniteLegale:otsokop", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${TOKEN}`, // Ajout du Bearer Token dans l'en-tête Authorization
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json()) // Convertir la réponse en JSON
+    .then((json: dataName) => {
+      setDataName(json); // Enregistre les données récupéré
+      setLoading(false); // Le chargement est terminé
+    })
+    .catch((err) => {
+      setError(err); // Enregistre l'erreur en cas de problème
+      setLoading(false); // Le chargement est terminé
+    });
+
   }, []);
 
 
@@ -101,8 +125,11 @@ export default function AddProfessionalForm({
       const ADRESSE = `${ADRESSE_ETABLISSEMENT?.numeroVoieEtablissement} ${ADRESSE_ETABLISSEMENT?.typeVoieEtablissement} ${ADRESSE_ETABLISSEMENT?.libelleVoieEtablissement}, ${ADRESSE_ETABLISSEMENT?.codePostalEtablissement} ${ADRESSE_ETABLISSEMENT?.libelleCommuneEtablissement}`;
       setAdresse(ADRESSE);
     }
+    if (name) {
+      console.log(name);
+      console.log(dataName?.etablissements.siret);
+    }
     // console.log(adresse);
-    // console.log(name);
   }
   const handleSubmit = () => {
     if (!name || !email || !phone || !siret) {
