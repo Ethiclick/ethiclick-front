@@ -7,7 +7,8 @@ interface DataSiret {
 }
 interface Etablissement {
   uniteLegale: UniteLegale;
-  adresseEtablissement: AdresseEtablissement
+  adresseEtablissement: AdresseEtablissement,
+  siret: String,
 }
 interface AdresseEtablissement {
   numeroVoieEtablissement: String,
@@ -60,7 +61,7 @@ export default function AddProfessionalForm({
     // URL de l'API que tu veux appeler
     const API_SIREN_URL = 'https://api.insee.fr/entreprises/sirene/V3.11/siret/81463818500037';
     // TODO: rendre dynamique le token => durée 1 semaine
-    const TOKEN = '66ebcdb8-e5aa-3220-94f1-e1296bb3fe11';
+    const TOKEN = '6a1ac16f-222f-3832-bc18-943c592dcd81';
     // Appel à l'API
     fetch(API_SIREN_URL,{
       method: 'GET',
@@ -80,7 +81,9 @@ export default function AddProfessionalForm({
     });
 
 // TODO: on récupère également les siret des entreprise otsokop qui sont fermé !! à trié / voir si on peux filtrer par l'API
-    fetch ("https://api.insee.fr/entreprises/sirene/V3.11/siret?q=denominationUniteLegale:otsokop", {
+    // ! Requete qui filtre par nom + ville et exclu les établissement fermé!
+    // https://api.insee.fr/entreprises/sirene/V3.11/siret?q=periode(etatAdministratifEtablissement:A) AND denominationUniteLegale:otsokop AND libelleCommuneEtablissement:bayonne
+    fetch ("https://api.insee.fr/entreprises/sirene/V3.11/siret?q=periode(etatAdministratifEtablissement:A) AND denominationUniteLegale:otsokop AND libelleCommuneEtablissement:bayonne", {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${TOKEN}`, // Ajout du Bearer Token dans l'en-tête Authorization
@@ -127,6 +130,9 @@ export default function AddProfessionalForm({
     }
     if (name) {
       console.log(name);
+
+      console.log(dataName);
+      // TODO: ici on récupère pas le siret !!!!!
       console.log(dataName?.etablissements.siret);
     }
     // console.log(adresse);
