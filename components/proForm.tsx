@@ -1,3 +1,4 @@
+import { disableErrorHandling } from 'expo';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Alert, Modal, TouchableOpacity } from 'react-native';
 import { TextInput, Button, Title, Portal, Text, Provider as PaperProvider } from 'react-native-paper';
@@ -40,6 +41,7 @@ export default function AddProfessionalForm({
   const [phone, setPhone] = useState('');
   const [siret, setSiret] = useState('');
   const [adresse, setAdresse] = useState('');
+  const [city, setCity] = useState('');
   const [urlSite, seturlSite] = useState('');
 
   // Gestion de l'étape du formulaire d'ajout
@@ -80,10 +82,8 @@ export default function AddProfessionalForm({
       setLoading(false); // Le chargement est terminé
     });
 
-// TODO: on récupère également les siret des entreprise otsokop qui sont fermé !! à trié / voir si on peux filtrer par l'API
-    // ! Requete qui filtre par nom + ville et exclu les établissement fermé!
-    // https://api.insee.fr/entreprises/sirene/V3.11/siret?q=periode(etatAdministratifEtablissement:A) AND denominationUniteLegale:otsokop AND libelleCommuneEtablissement:bayonne
-    fetch ("https://api.insee.fr/entreprises/sirene/V3.11/siret?q=periode(etatAdministratifEtablissement:A) AND denominationUniteLegale:otsokop AND libelleCommuneEtablissement:bayonne", {
+    // Requete qui filtre par nom + ville et exclu les établissement fermé!
+    fetch (`https://api.insee.fr/entreprises/sirene/V3.11/siret?q=periode(etatAdministratifEtablissement:A) AND denominationUniteLegale:Otsokop AND libelleCommuneEtablissement:Bayonne`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${TOKEN}`, // Ajout du Bearer Token dans l'en-tête Authorization
@@ -104,7 +104,7 @@ export default function AddProfessionalForm({
 
 
   const findPro = () => {
-    if (!siret && !adresse && !name) {
+    if (!siret && !adresse && !name && !city) {
       Alert.alert('Erreur', 'Veuillez renseigner au moins un des champs');
       return;
     }
@@ -128,14 +128,13 @@ export default function AddProfessionalForm({
       const ADRESSE = `${ADRESSE_ETABLISSEMENT?.numeroVoieEtablissement} ${ADRESSE_ETABLISSEMENT?.typeVoieEtablissement} ${ADRESSE_ETABLISSEMENT?.libelleVoieEtablissement}, ${ADRESSE_ETABLISSEMENT?.codePostalEtablissement} ${ADRESSE_ETABLISSEMENT?.libelleCommuneEtablissement}`;
       setAdresse(ADRESSE);
     }
-    if (name) {
-      console.log(name);
-
-      console.log(dataName);
-      // TODO: ici on récupère pas le siret !!!!!
-      console.log(dataName?.etablissements.siret);
+    if (name && city) {
+      const ETABLISSEMENT = dataName?.etablissements;
+      if (ETABLISSEMENT) {
+        const SIRET = ETABLISSEMENT[0]?.siret;
+        setSiret(SIRET);
+      }
     }
-    // console.log(adresse);
   }
   const handleSubmit = () => {
     if (!name || !email || !phone || !siret) {
@@ -172,12 +171,13 @@ export default function AddProfessionalForm({
             {step === 1 && (
               <>
                 <Title style={{ textAlign: 'center', marginBottom: 5 }}>Trouver un Professionnel</Title>
-                <Text style={{ fontSize: 16, color: 'gray', marginBottom: 15, margin:'auto' }}>Veuillez saisir au moins une de ces informations pour lancer la recherche</Text>
+                <Text style={{ fontSize: 16, color: 'gray', marginBottom: 15, margin:'auto', textAlign: 'center'}}>Veuillez saisir le nom et la ville de l'établissement ou le numéro Siret</Text>
                   {/* //! Obligatoire: siret (à vérifier avec l'API sirene ?), adresse complète (adresse + ville + cp - API ban), nom (sera le username) */}
                   {/* //! https://api.gouv.fr/documentation/sirene_v3 */}
                   <TextInput label="Nom - Raison sociale" value={name} onChangeText={setName} style={styles.input}/>
                   <TextInput label="Numéro siret" value={siret} onChangeText={setSiret} keyboardType="phone-pad" style={styles.input} maxLength={14}/>
                   <TextInput label="Adresse" value={adresse} onChangeText={setAdresse} keyboardType="default" style={styles.input}/>
+                  <TextInput label="Ville" value={city} onChangeText={setCity} keyboardType="default" style={styles.input}/>
 
                   <Button mode="contained" onPress={findPro} style={styles.button}>
                     Rechercher
